@@ -9,7 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+<<<<<<< HEAD
     "react-router-dom": "^7.9.5",
+=======
+    "react-scripts": "5.0.1",
+>>>>>>> 5a45ecd (Initialize project using Create React App)
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -35,8 +39,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
   },
   "devDependencies": {
     "react-scripts": "^5.0.1"
+=======
+>>>>>>> 5a45ecd (Initialize project using Create React App)
   }
 }

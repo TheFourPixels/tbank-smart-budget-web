@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;900&display=swap');
 
 * {
@@ -8,17 +9,26 @@
 
 body {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+=======
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+>>>>>>> 5a45ecd (Initialize project using Create React App)
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+<<<<<<< HEAD
   background-color: #ffffff;
+=======
+>>>>>>> 5a45ecd (Initialize project using Create React App)
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+<<<<<<< HEAD
 
 /* Utility classes */
 .text-center {
@@ -44,3 +54,5 @@ code {
 .p-1 { padding: 10px; }
 .p-2 { padding: 20px; }
 .p-3 { padding: 30px; }
+=======
+>>>>>>> 5a45ecd (Initialize project using Create React App)
