@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;900&display=swap');
 
 * {
@@ -14,14 +15,30 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 >>>>>>> 5a45ecd (Initialize project using Create React App)
+=======
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+>>>>>>> 1dd6713 (init commit)
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 <<<<<<< HEAD
+<<<<<<< HEAD
   background-color: #ffffff;
 =======
 >>>>>>> 5a45ecd (Initialize project using Create React App)
+=======
+  background-color: #ffffff;
+>>>>>>> 1dd6713 (init commit)
 }
 
 code {
@@ -29,6 +46,9 @@ code {
     monospace;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1dd6713 (init commit)
 
 /* Utility classes */
 .text-center {
@@ -53,6 +73,10 @@ code {
 
 .p-1 { padding: 10px; }
 .p-2 { padding: 20px; }
+<<<<<<< HEAD
 .p-3 { padding: 30px; }
 =======
 >>>>>>> 5a45ecd (Initialize project using Create React App)
+=======
+.p-3 { padding: 30px; }
+>>>>>>> 1dd6713 (init commit)

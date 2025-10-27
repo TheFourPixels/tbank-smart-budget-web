@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -81,28 +82,36 @@ function App() {
 export default App;
 =======
 import logo from './logo.svg';
+=======
+import React from 'react';
+import Header from './components/Header/Header';
+import BudgetCard from './components/BudgetCard/BudgetCard';
+import AccountSelection from './components/AccountSelection/AccountSelection';
+import BudgetSettings from './components/BudgetSettings/BudgetSettings';
+>>>>>>> 1dd6713 (init commit)
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <div className="app-container">
+        <div className="main-content">
+          <BudgetCard />
+          
+          <div className="content-row">
+            <BudgetSettings />
+            <AccountSelection />
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
+<<<<<<< HEAD
 export default App;
 >>>>>>> 5a45ecd (Initialize project using Create React App)
+=======
+export default App;
+>>>>>>> 1dd6713 (init commit)
