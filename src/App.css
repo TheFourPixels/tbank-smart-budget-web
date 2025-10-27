@@ -1,38 +1,111 @@
-.App {
-  text-align: center;
+:root {
+  --color-primary: rgba(0, 136, 255, 255);
+  --color-primary-dark: rgba(0, 145, 255, 255);
+  --color-yellow: rgba(255, 204, 0, 255);
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(51, 51, 51, 1);
+  --color-gray-light: rgba(150, 156, 164, 1);
+  --color-gray-medium: rgba(146, 153, 162, 1);
+  --color-gray-dark: rgba(217, 217, 217, 1);
+  --color-background: rgba(248, 248, 248, 255);
+  --color-accent: rgba(189, 240, 80, 1);
+  --color-blue-light: rgba(66, 139, 249, 1);
+  
+  --shadow-card: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
+  --shadow-element: 0px 6px 34px 0px rgba(0, 0, 0, 0.12);
+  
+  --border-radius-sm: 15px;
+  --border-radius-md: 20px;
+  --border-radius-lg: 24px;
+  --border-radius-xl: 30px;
+  
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 13px;
+  --spacing-lg: 18px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 27px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html {
+  width: 100%;
+  height: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--color-white);
+}
+
+.app {
+  width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.app-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.main-content {
+  width: 100%;
+  position: relative;
+  padding: 20px;
+}
+
+.content-header {
+  margin-bottom: 25px;
+}
+
+.main-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.content-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .app-container {
+    padding: 0 20px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .content-row {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 10px;
+  }
+  
+  .content-row {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 5px;
   }
 }
