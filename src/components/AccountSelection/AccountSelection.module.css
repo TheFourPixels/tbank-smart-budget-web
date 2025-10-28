@@ -1,0 +1,277 @@
+.accountSection {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+  .sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 5px;
+}
+
+.categoriesTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.accountCard {
+  background: var(--color-white);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 25px;
+  width: 100%;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+/* Секция срока вклада */
+.durationSection {
+  margin-bottom: 25px;
+}
+
+.durationOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.durationButton {
+  padding: 10px 15px;
+  border: 2px solid var(--color-gray-dark);
+  border-radius: var(--border-radius-md);
+  background: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 70px;
+  text-align: center;
+}
+
+.durationButton.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-black);
+}
+
+.durationButton:hover:not(.active) {
+  background: var(--color-gray-dark);
+  border-color: var(--color-gray-medium);
+}
+
+/* Секция суммы вклада */
+.amountSection {
+  margin-bottom: 25px;
+}
+
+.amountCard {
+  background: var(--color-background);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.amountCard:hover {
+  border-color: var(--color-primary);
+}
+
+.amountValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.amountNote {
+  font-size: 14px;
+  color: var(--color-gray-light);
+  text-align: center;
+}
+
+/* Секция выбора счета */
+.accountsSection {
+  margin-bottom: 10px;
+}
+
+.accountsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+
+/* Стиль черной банковской карты */
+.bankCard {
+  background: #000000;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.cardChip {
+  width: 25px;
+  height: 20px;
+  background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%);
+  border-radius: 3px;
+  position: relative;
+}
+
+.cardChip::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+}
+
+.cardNumber {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cardBalance {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.cardType {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* Стиль карты "Изменить счет" */
+.changeCard {
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--color-gray-medium);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.changeCard:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, #f0f8ff 0%, #e0f0ff 100%);
+  transform: translateY(-2px);
+}
+
+.changeCardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.changeIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.changeText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-black);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .accountCard {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .accountsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .accountCard {
+    padding: 20px;
+  }
+  
+  .durationOptions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .bankCard,
+  .changeCard {
+    min-height: 100px;
+    padding: 12px;
+  }
+  
+  .cardBalance {
+    font-size: 14px;
+  }
+  
+  .cardNumber {
+    font-size: 12px;
+  }
+  
+
+  .durationButton {
+    min-width: 60px;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  
+  .amountValue {
+    font-size: 20px;
+  }
+}
