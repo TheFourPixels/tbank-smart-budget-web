@@ -6,6 +6,7 @@ import EmailAuthForm from './components/Auth/AuthForm/EmailAuthForm';
 import PasswordAuthForm from './components/Auth/AuthForm/PasswordAuthForm';
 import Budget from './components/Budget/Budget';
 import './App.css';
+import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -15,6 +16,12 @@ function ProtectedRoute({ children }) {
 function PublicRoute({ children }) {
   const { isAuthenticated } = useAuth();
   return !isAuthenticated ? children : children;
+  //<Navigate to="/" replace />;
+}
+
+function BudgetRoute({ children }) {
+  const { userData } = useAuth();
+  return userData.hasBudget ? children : <Navigate to="/create"/>;
   //<Navigate to="/" replace />;
 }
 
@@ -28,7 +35,16 @@ function App() {
             path="/" 
             element={
               <ProtectedRoute>
-                <Budget />
+                <BudgetRoute><Budget/></BudgetRoute>
+              </ProtectedRoute>
+            } 
+          />
+          {/* Создание бюджета */}
+          <Route 
+            path="/create" 
+            element={
+              <ProtectedRoute>
+                <CreateBudgetInfo />
               </ProtectedRoute>
             } 
           />

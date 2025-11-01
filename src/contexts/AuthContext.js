@@ -12,33 +12,31 @@ export function AuthProvider({ children }) {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Проверяем авторизацию при загрузке приложения
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const userEmail = localStorage.getItem('userEmail');
+    const hasBudget = localStorage.getItem('hasBudget');
+
     
     if (token && userEmail) {
       setIsAuthenticated(true);
-      setUserData({ email: userEmail });
+      setUserData({ email: userEmail , hasBudget: hasBudget});
     }
     setIsLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      // Здесь ваша реальная логика авторизации
-      // Пока используем заглушку как в вашем коде
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Симуляция успешной авторизации
-      const success = email && password.length >= 1; // Базовая валидация
+      const success = email && password.length >= 1;
       
       if (success) {
         const token = 'fake-jwt-token-' + Date.now();
         localStorage.setItem('authToken', token);
         localStorage.setItem('userEmail', email);
         setIsAuthenticated(true);
-        setUserData({ email });
+        setUserData({ email: email , hasBudget: false });
         return { success: true };
       } else {
         return { success: false, error: 'Неверные учетные данные' };

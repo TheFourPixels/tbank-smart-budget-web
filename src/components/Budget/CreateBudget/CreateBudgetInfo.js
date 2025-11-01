@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './MainContent.module.css';
+import styles from './CreateBudgetInfo.module.css';
 import Header from '../Header/Header';
 
 const CreateBudgetInfo = () => {
   const handleCreateBudget = () => {
-
   };
 
   const budgetFeatures = [
@@ -22,7 +21,6 @@ const CreateBudgetInfo = () => {
     <div className={styles.mainContent}>
       <div className={styles.container}>
         <h1 className={styles.title}>Добрый день, создайте свой первый бюджет</h1>
-        
         <div className={styles.card}>
           <div className={styles.cardContent}>
             <h2 className={styles.cardTitle}>Бюджет - это:</h2>
