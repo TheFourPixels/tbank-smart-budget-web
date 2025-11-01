@@ -71,7 +71,7 @@
   background-color: rgba(255, 255, 255, 0.3);
   padding: 8px 12px;
   border-radius: 20px;
-  margin-left: auto; /* Добавлено это свойство */
+  margin-left: auto;
 }
 
 .userAvatar {
@@ -87,7 +87,6 @@
   color: var(--color-black);
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
   .headerContainer {
     padding: 0 20px;
@@ -111,7 +110,7 @@
   }
   
   .userProfile {
-    margin-left: 0; /* Убираем авто-отступ на мобильных */
+    margin-left: 0;
   }
 }
 
