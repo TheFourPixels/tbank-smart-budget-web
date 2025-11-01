@@ -25,7 +25,7 @@ const PasswordAuthForm = () => {
     const result = await login(email, password);
     
     if (result.success) {
-+      localStorage.removeItem('tempEmail');
+      localStorage.removeItem('tempEmail');
       navigate('/', { replace: true });
     } else {
       console.error('Ошибка авторизации:', result.error);
