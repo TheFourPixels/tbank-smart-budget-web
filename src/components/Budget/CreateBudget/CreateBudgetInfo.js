@@ -1,9 +1,16 @@
 import React from 'react';
 import styles from './CreateBudgetInfo.module.css';
 import Header from '../Header/Header';
+import { useNavigate } from 'react-router-dom';
+import { useAuth} from '../../../contexts/AuthContext';
 
 const CreateBudgetInfo = () => {
+  const navigate = useNavigate();
+
   const handleCreateBudget = () => {
+    localStorage.setItem('hasBudget', true);
+    console.log(localStorage.getItem('hasBudget'));
+    navigate('/', { replace: true });
   };
 
   const budgetFeatures = [

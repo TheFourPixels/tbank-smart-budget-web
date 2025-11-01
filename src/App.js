@@ -20,8 +20,8 @@ function PublicRoute({ children }) {
 }
 
 function BudgetRoute({ children }) {
-  const { userData } = useAuth();
-  return userData.hasBudget ? children : <Navigate to="/create"/>;
+  const hasBudget = localStorage.getItem('hasBudget');
+  return hasBudget ? children : <Navigate to="/create"/>;
   //<Navigate to="/" replace />;
 }
 
