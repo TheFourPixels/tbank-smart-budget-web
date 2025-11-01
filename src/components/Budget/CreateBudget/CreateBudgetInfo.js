@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import styles from './CreateBudgetInfo.module.css';
 import Header from '../Header/Header';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,14 @@ const CreateBudgetInfo = () => {
     localStorage.setItem('hasBudget', true);
     console.log(localStorage.getItem('hasBudget'));
     navigate('/', { replace: true });
+=======
+import styles from './MainContent.module.css';
+import Header from '../Header/Header';
+
+const CreateBudgetInfo = () => {
+  const handleCreateBudget = () => {
+
+>>>>>>> c60e653 (авторизация)
   };
 
   const budgetFeatures = [
@@ -28,6 +37,10 @@ const CreateBudgetInfo = () => {
     <div className={styles.mainContent}>
       <div className={styles.container}>
         <h1 className={styles.title}>Добрый день, создайте свой первый бюджет</h1>
+<<<<<<< HEAD
+=======
+        
+>>>>>>> c60e653 (авторизация)
         <div className={styles.card}>
           <div className={styles.cardContent}>
             <h2 className={styles.cardTitle}>Бюджет - это:</h2>

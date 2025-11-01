@@ -25,7 +25,11 @@ const PasswordAuthForm = () => {
     const result = await login(email, password);
     
     if (result.success) {
+<<<<<<< HEAD
       localStorage.removeItem('tempEmail');
+=======
++      localStorage.removeItem('tempEmail');
+>>>>>>> c60e653 (авторизация)
       navigate('/', { replace: true });
     } else {
       console.error('Ошибка авторизации:', result.error);
