@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import EmailAuthForm from './components/Auth/AuthForm/EmailAuthForm';
 import PasswordAuthForm from './components/Auth/AuthForm/PasswordAuthForm';
+import CategoriesPage from './components/Categories/CategoriesPage';
 import Budget from './components/Budget/Budget';
 import './App.css';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
@@ -46,6 +47,15 @@ function App() {
               <ProtectedRoute>
                 <CreateBudgetInfo />
               </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/categories" 
+            element={
+                <BudgetRoute>
+                  <CategoriesPage />
+                </BudgetRoute>
             } 
           />
           
