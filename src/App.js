@@ -9,6 +9,7 @@ import Budget from './components/Budget/Budget';
 import './App.css';
 import CreateCategoryPage from './components/CreateCategory/CreateCategoryPage';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
+import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategories';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -50,7 +51,16 @@ function App() {
               </ProtectedRoute>
             } 
           />
+<Route 
+            path="/budget/categories" 
+            element={
+                              <BudgetRoute>
 
+                <BudgetCategories />
+                                </BudgetRoute>
+
+            } 
+          />
           <Route 
             path="/categories" 
             element={

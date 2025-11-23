@@ -1,0 +1,333 @@
+/* BudgetCategories.module.css */
+.container {
+  min-height: 100vh;
+  background: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  background: #D9D9D9;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 76px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.navLink {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #333333;
+}
+
+.navLinkActive {
+  color: #333333;
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userName {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.userAvatar {
+  width: 22px;
+  height: 24px;
+  border-radius: 50%;
+  background: #D9D9D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.sectionTitle {
+  color: #333333;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #333333;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.selectedCategories {
+  background: white;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.categoryIcons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.categoryIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconCircle {
+  width: 40px;
+  height: 40px;
+  background: #5589F1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+.addCategoryBtn {
+  width: 100%;
+  background: #FFDD2D;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  color: #333333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addCategoryBtn:hover {
+  background: #FFD700;
+}
+
+.budgetChart {
+  background: white;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chartNavBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.pieChart {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.chartOuter {
+  width: 100%;
+  height: 100%;
+  background: #D9D9D9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartInner {
+  width: 80%;
+  height: 80%;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartAmount {
+  color: #333333;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.chartLabel {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.chartLegend {
+  display: flex;
+  gap: 15px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendColor {
+  width: 15px;
+  height: 15px;
+  background: #D9D9D9;
+  border-radius: 3px;
+}
+
+.legendText {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.categoriesSection,
+.statisticsSection {
+  margin-top: 20px;
+}
+
+.categoriesGrid,
+.statisticsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+  .contentGrid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      "selected chart"
+      "categories categories"
+      "statistics statistics";
+  }
+  
+  .selectedCategories {
+    grid-area: selected;
+  }
+  
+  .budgetChart {
+    grid-area: chart;
+  }
+  
+  .categoriesSection {
+    grid-area: categories;
+  }
+  
+  .statisticsSection {
+    grid-area: statistics;
+  }
+  
+  .chartContainer {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: 
+      "selected chart"
+      "categories chart"
+      "statistics statistics";
+  }
+  
+  .categoriesGrid,
+  .statisticsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 0;
+  }
+  
+  .logo {
+    margin-bottom: 10px;
+  }
+  
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .main {
+    padding: 10px;
+  }
+  
+  .categoriesGrid,
+  .statisticsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chartContainer {
+    flex-direction: column;
+  }
+}

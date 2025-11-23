@@ -1,5 +1,6 @@
 import React from 'react';
 import CategoryCard from '../CategoryCard/CategoryCard';
+import { useNavigate } from 'react-router-dom';
 import styles from './BudgetSettings.module.css';
 
 const BudgetSettings = () => {
@@ -23,12 +24,16 @@ const BudgetSettings = () => {
       progress: 85
     }
   ];
+  const navigate = useNavigate();
+
+  const handleClick = () => { navigate('budget/categories') };  
+
 
   return (
     <section className={styles.settingsSection}>
       <div className={styles.sectionHeader}>
         <h3 className={styles.categoriesTitle}>Категории</h3>
-        <button className={styles.viewAllButton}>Посмотреть все</button>
+        <button onClick={handleClick} className={styles.viewAllButton}>Посмотреть все</button>
       </div>
       <div className={styles.categoriesGrid}>
         {categories.map(category => (

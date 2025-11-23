@@ -5,10 +5,8 @@ const BudgetCard = () => {
   return (
     <section className={styles.budgetSection}>
       <div className={styles.budgetCard}>
-        {/* Градиентный фон для всей карточки */}
         <div className={styles.budgetGradient}></div>
         
-        {/* Основной контент */}
         <div className={styles.budgetContent}>
           <div className={styles.budgetMain}>
             <div className={styles.budgetInfo}>
@@ -26,7 +24,6 @@ const BudgetCard = () => {
             </div>
           </div>
           
-          {/* Правая часть с информацией в белом контейнере */}
           <div className={styles.budgetStats}>
             <h3 className={styles.statsTitle}>Информация</h3>
             <div className={styles.statsGrid}>
