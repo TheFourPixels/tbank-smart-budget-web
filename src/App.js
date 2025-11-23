@@ -7,6 +7,7 @@ import PasswordAuthForm from './components/Auth/AuthForm/PasswordAuthForm';
 import CategoriesPage from './components/Categories/CategoriesPage';
 import Budget from './components/Budget/Budget';
 import './App.css';
+import CreateCategoryPage from './components/CreateCategory/CreateCategoryPage';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
 
 function ProtectedRoute({ children }) {
@@ -55,6 +56,15 @@ function App() {
             element={
                 <BudgetRoute>
                   <CategoriesPage />
+                </BudgetRoute>
+            } 
+          />
+
+          <Route 
+            path="/categories/create" 
+            element={
+                <BudgetRoute>
+                  <CreateCategoryPage />
                 </BudgetRoute>
             } 
           />
