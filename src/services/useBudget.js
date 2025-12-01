@@ -1,4 +1,3 @@
-// hooks/useBudget.js
 import { useState, useCallback } from 'react';
 import { budgetService } from '../services/budgetService';
 
@@ -22,7 +21,7 @@ export const useBudget = () => {
       setLoading(false);
     }
   }, []);
-
+  
   const getBudget = useCallback(async (year, month) => {
     setLoading(true);
     setError(null);

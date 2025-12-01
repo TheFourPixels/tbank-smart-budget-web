@@ -1,10 +1,14 @@
-// contexts/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authService } from '../services/authService';
 
 const AuthContext = createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }
 
 export function AuthProvider({ children }) {
@@ -13,51 +17,79 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = authService.getToken?.();
     const userEmail = localStorage.getItem('userEmail');
     const hasBudget = localStorage.getItem('hasBudget');
 
-    
     if (token && userEmail) {
       setIsAuthenticated(true);
-      setUserData({ email: userEmail , hasBudget: hasBudget});
+      setUserData({ email: userEmail, hasBudget: hasBudget === 'true' });
     }
     setIsLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const data = await authService.login(email, password);
       
-      const success = email && password.length >= 1;
+      localStorage.setItem('userEmail', email);
       
-      if (success) {
-        const token = 'fake-jwt-token-' + Date.now();
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userEmail', email);
-        setIsAuthenticated(true);
-        setUserData({ email: email , hasBudget: false });
-        return { success: true };
-      } else {
-        return { success: false, error: 'Неверные учетные данные' };
-      }
+      const hasBudget = localStorage.getItem('hasBudget') === 'true';
+      
+      setIsAuthenticated(true);
+      setUserData({ email, hasBudget });
+      
+      return { success: true };
     } catch (error) {
-      return { success: false, error: 'Ошибка сети' };
+      return { 
+        success: false, 
+        error: error.message || 'Ошибка авторизации' 
+      };
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    setIsAuthenticated(false);
-    setUserData(null);
+  const register = async (email, password) => {
+    try {
+      const data = await authService.register(email, password);
+      
+      localStorage.setItem('userEmail', email);
+      
+      setIsAuthenticated(true);
+      setUserData({ email, hasBudget: false });
+      
+      return { success: true, data };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.message || 'Ошибка регистрации' 
+      };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('userEmail');
+      setIsAuthenticated(false);
+      setUserData(null);
+    }
+  };
+
+  const updateBudgetStatus = (hasBudget) => {
+    localStorage.setItem('hasBudget', hasBudget.toString());
+    setUserData(prev => prev ? { ...prev, hasBudget } : null);
   };
 
   const value = {
     isAuthenticated,
     userData,
     login,
+    register,
     logout,
+    updateBudgetStatus,
     isLoading
   };
 

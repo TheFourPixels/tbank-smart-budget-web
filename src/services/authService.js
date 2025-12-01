@@ -1,7 +1,6 @@
 import { apiService } from './api';
 
 class AuthService {
-  
   async register(email, password) {
     const data = await apiService.request('/auth/register', {
       method: 'POST',
@@ -49,6 +48,10 @@ class AuthService {
 
   isAuthenticated() {
     return !!apiService.getToken();
+  }
+
+  getToken() {
+    return apiService.getToken();
   }
 }
 
