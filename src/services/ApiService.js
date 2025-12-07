@@ -1,36 +1,34 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || '/api/v1';
+const BUDGET_API_URL = 'http://109.196.101.167:8081/api/v1';
+const TRANSACTION_API_URL = 'http://109.196.101.167:8083/api/v1';
 
 class ApiService {
-  constructor() {
-    this.token = localStorage.getItem('authToken');
+  constructor(baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
   async request(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    
+    const url = `${this.baseUrl}${endpoint}`;
+    console.log(url);
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         ...options.headers,
       },
       ...options,
     };
 
-    if (this.token) {
-      config.headers.Authorization = `Bearer ${this.token}`;
-    }
-
     try {
       const response = await fetch(url, config);
+      console.error(response);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          code: response.status,
+          status: response.status,
           message: `HTTP error! status: ${response.status}`
         }));
         throw errorData;
       }
-
 
       if (response.status === 204) {
         return null;
@@ -42,23 +40,7 @@ class ApiService {
       throw error;
     }
   }
-
-  setToken(token) {
-    this.token = token;
-    if (token) {
-      localStorage.setItem('authToken', token);
-    } else {
-      localStorage.removeItem('authToken');
-    }
-  }
-
-  getToken() {
-    return this.token;
-  }
-
-  logout() {
-    this.setToken(null);
-  }
 }
 
-export const apiService = new ApiService();
+export const budgetApiService = new ApiService(BUDGET_API_URL);
+export const transactionApiService = new ApiService(TRANSACTION_API_URL);

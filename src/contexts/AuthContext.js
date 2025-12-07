@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
 
 const AuthContext = createContext();
 
@@ -12,70 +11,35 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = authService.getToken?.();
-    const userEmail = localStorage.getItem('userEmail');
-    const hasBudget = localStorage.getItem('hasBudget');
-
-    if (token && userEmail) {
-      setIsAuthenticated(true);
-      setUserData({ email: userEmail, hasBudget: hasBudget === 'true' });
-    }
-    setIsLoading(false);
+    const userEmail = localStorage.getItem('userEmail') || 'Пользователь';
+    const hasBudget = localStorage.getItem('hasBudget') === 'true';
+    
+    setUserData({ 
+      email: userEmail, 
+      hasBudget 
+    });
   }, []);
 
   const login = async (email, password) => {
-    try {
-      const data = await authService.login(email, password);
-      
-      localStorage.setItem('userEmail', email);
-      
-      const hasBudget = localStorage.getItem('hasBudget') === 'true';
-      
-      setIsAuthenticated(true);
-      setUserData({ email, hasBudget });
-      
-      return { success: true };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error.message || 'Ошибка авторизации' 
-      };
-    }
+    localStorage.setItem('userEmail', email);
+    setIsAuthenticated(true);
+    setUserData({ 
+      email, 
+      hasBudget: localStorage.getItem('hasBudget') === 'true' 
+    });
+    
+    return { success: true };
   };
 
-  const register = async (email, password) => {
-    try {
-      const data = await authService.register(email, password);
-      
-      localStorage.setItem('userEmail', email);
-      
-      setIsAuthenticated(true);
-      setUserData({ email, hasBudget: false });
-      
-      return { success: true, data };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error.message || 'Ошибка регистрации' 
-      };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await authService.logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      localStorage.removeItem('userEmail');
-      setIsAuthenticated(false);
-      setUserData(null);
-    }
+  const logout = () => {
+    localStorage.removeItem('userEmail');
+    setUserData(null);
+    setIsAuthenticated(false);
   };
 
   const updateBudgetStatus = (hasBudget) => {
@@ -87,7 +51,6 @@ export function AuthProvider({ children }) {
     isAuthenticated,
     userData,
     login,
-    register,
     logout,
     updateBudgetStatus,
     isLoading
