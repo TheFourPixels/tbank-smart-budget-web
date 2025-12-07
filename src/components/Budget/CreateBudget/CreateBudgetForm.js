@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { budgetService } from '../../../services/budgetService.js';
-import { categoryService } from '../../../services/categoryService.js';
+import { budgetService } from '../../../services/BudgetService.js';
+import { categoryService } from '../../../services/CategoryService.js';
 import Header from '../Header/Header.js';
 import './CreateBudgetForm.css';
 
