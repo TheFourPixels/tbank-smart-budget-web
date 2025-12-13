@@ -1,0 +1,72 @@
+.container {
+  margin-bottom: 20px;
+}
+
+.toggleButton {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.toggleButton:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.filters {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.filterGroup:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+  width: 40px;
+  margin-right: 12px;
+}
+
+.input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input:focus {
+  border-color: #000;
+}

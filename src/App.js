@@ -10,6 +10,7 @@ import CreateCategoryPage from './components/CreateCategory/CreateCategoryPage';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
 import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategories';
 import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
+import TransactionsScreen from './components/Transactions/TransactiondScreen';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -74,6 +75,15 @@ function App() {
             element={
                 <BudgetRoute>
                   <CategoriesPage />
+                </BudgetRoute>
+            } 
+          />
+
+          <Route 
+            path="/transactions" 
+            element={
+                <BudgetRoute>
+                  <TransactionsScreen />
                 </BudgetRoute>
             } 
           />

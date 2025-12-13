@@ -28,6 +28,7 @@ const BudgetCard = () => {
         
         // Загружаем данные бюджета
         const data = await budgetService.getBudgetSummary(year, month);
+        console.log(data);
         setBudgetData(data);
         
       } catch (error) {

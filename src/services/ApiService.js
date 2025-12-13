@@ -1,5 +1,5 @@
-const BUDGET_API_URL = 'http://109.196.101.167:8081/api/v1';
-const TRANSACTION_API_URL = 'http://109.196.101.167:8083/api/v1';
+const BUDGET_API_URL = 'http://158.160.206.124:8081/api/v1';
+const TRANSACTION_API_URL = 'http://158.160.206.124:8083/api/v1';
 
 class ApiService {
   constructor(baseUrl) {
