@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Header.module.css';
+import { Link, NavLink } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -10,16 +11,16 @@ const Header = () => {
           <div className={styles.logo}>Умный бюджет</div>
           <ul className={styles.navList}>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Главная</span>
+              <NavLink  to="/"  className={styles.navLink}>Главная</NavLink>
             </li>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Бюджет</span>
+              <NavLink  to="/categories" className={styles.navLink}>Категории</NavLink>
             </li>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Транзакции</span>
+              <NavLink  to="/transactions" className={styles.navLink}>Транзакции</NavLink>
             </li>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Цели</span>
+              <NavLink to="/create/budget" className={styles.navLink}>Создать бюджет</NavLink>
             </li>
           </ul>
           <div className={styles.userProfile}>

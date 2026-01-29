@@ -1,4 +1,271 @@
-/* BudgetCategories.module.css */
+/* Стили для виджета распределения бюджета */
+.budgetDistribution {
+  margin-top: 20px;
+}
+
+.distributionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.distributionTitle {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.distributionTotal {
+  color: #007AFF;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.distributionList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.distributionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.distributionInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.distributionIcon {
+  width: 32px;
+  height: 32px;
+  background: #F5F5F5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.distributionText {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.distributionName {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.distributionValue {
+  color: #007AFF;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.editLimitBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.editLimitBtn:hover {
+  background: #F5F5F5;
+}
+
+.distributionBar {
+  height: 4px;
+  background: #F5F5F5;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.distributionFill {
+  height: 100%;
+  background: #007AFF;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Стили для модального окна редактирования */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.modalTitle {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #8E8E93;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.modalClose:hover {
+  background: #F5F5F5;
+}
+
+.modalContent {
+  padding: 20px;
+}
+
+.editCategoryInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.editCategoryIcon {
+  width: 40px;
+  height: 40px;
+  background: #F5F5F5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.editCategoryName {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.editLimitInput {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editLimitLabel {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.limitInput {
+  padding: 12px;
+  border: 1px solid #E5E5EA;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333333;
+  transition: border-color 0.2s;
+}
+
+.limitInput:focus {
+  outline: none;
+  border-color: #007AFF;
+}
+
+.inputHint {
+  color: #8E8E93;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  border-top: 1px solid #F0F0F0;
+}
+
+.modalCancel {
+  flex: 1;
+  padding: 12px;
+  background: #F5F5F5;
+  border: none;
+  border-radius: 8px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modalCancel:hover {
+  background: #E5E5EA;
+}
+
+.modalSave {
+  flex: 1;
+  padding: 12px;
+  background: #007AFF;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modalSave:hover {
+  background: #0056CC;
+}
+
+/* Обновляем сетку для размещения виджетов */
+.contentGrid {
+  display: grid;
+      grid-template-columns: 70%;
+
+  gap: 20px;
+}
+
+
+
+/* Остальные существующие стили остаются без изменений */
 .container {
   min-height: 100vh;
   background: white;
@@ -100,14 +367,8 @@
   justify-content: center;
   justify-self: center;
   padding: 20px;
-  margin-left: 650px;
+  margin-left: 700px;
   margin-right: 200px;
-}
-
-.contentGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
 }
 
 .sectionTitle {
@@ -125,9 +386,10 @@
 }
 
 .selectedCategories {
+  height: 210px;
   background: white;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border: 1px solid #F0F0F0;
+  border-radius: 16px;
   padding: 20px;
 }
 
@@ -176,8 +438,8 @@
 
 .budgetChart {
   background: white;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border: 1px solid #F0F0F0;
+  border-radius: 16px;
   padding: 20px;
 }
 
@@ -188,11 +450,20 @@
   margin-bottom: 20px;
 }
 
+.chartTitle {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
 .chartNavBtn {
   background: none;
   border: none;
   cursor: pointer;
   padding: 5px;
+  color: #007AFF;
+  font-size: 18px;
 }
 
 .chartContainer {
@@ -211,7 +482,7 @@
 .chartOuter {
   width: 100%;
   height: 100%;
-  background: #D9D9D9;
+  background: #F5F5F5;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -273,57 +544,12 @@
 .categoriesGrid,
 .statisticsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 49% 49%;
+
   gap: 20px;
 }
 
-/* Адаптивность */
-@media (min-width: 768px) {
-  .contentGrid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 
-      "selected chart"
-      "categories categories"
-      "statistics statistics";
-  }
-  
-  .selectedCategories {
-    grid-area: selected;
-  }
-  
-  .budgetChart {
-    grid-area: chart;
-  }
-  
-  .categoriesSection {
-    grid-area: categories;
-  }
-  
-  .statisticsSection {
-    grid-area: statistics;
-  }
-  
-  .chartContainer {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-@media (min-width: 1024px) {
-  .contentGrid {
-    grid-template-columns: 2fr 1fr;
-    grid-template-areas: 
-      "selected chart"
-      "categories chart"
-      "statistics statistics";
-  }
-  
-  .categoriesGrid,
-  .statisticsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
+/* Остальные медиазапросы остаются без изменений */
 @media (max-width: 480px) {
   .headerContent {
     flex-direction: column;
@@ -342,6 +568,8 @@
   
   .main {
     padding: 10px;
+    width: auto;
+    margin: 0;
   }
   
   .categoriesGrid,
@@ -350,6 +578,10 @@
   }
   
   .chartContainer {
+    flex-direction: column;
+  }
+  
+  .modalActions {
     flex-direction: column;
   }
 }

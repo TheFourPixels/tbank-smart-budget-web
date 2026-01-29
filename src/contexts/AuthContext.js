@@ -16,8 +16,8 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('userEmail') || 'Пользователь';
-    const hasBudget = localStorage.getItem('hasBudget') === 'true';
+    const userEmail = localStorage.getItem('userEmail2') || 'Пользователь';
+    const hasBudget = localStorage.getItem('hasBudget2') === 'true';
     
     setUserData({ 
       email: userEmail, 
@@ -26,24 +26,24 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    localStorage.setItem('userEmail', email);
+    localStorage.setItem('userEmail2', email);
     setIsAuthenticated(true);
     setUserData({ 
       email, 
-      hasBudget: localStorage.getItem('hasBudget') === 'true' 
+      hasBudget: localStorage.getItem('hasBudget2') === 'true' 
     });
     
     return { success: true };
   };
 
   const logout = () => {
-    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userEmail2');
     setUserData(null);
     setIsAuthenticated(false);
   };
 
   const updateBudgetStatus = (hasBudget) => {
-    localStorage.setItem('hasBudget', hasBudget.toString());
+    localStorage.setItem('hasBudget2', hasBudget.toString());
     setUserData(prev => prev ? { ...prev, hasBudget } : null);
   };
 
