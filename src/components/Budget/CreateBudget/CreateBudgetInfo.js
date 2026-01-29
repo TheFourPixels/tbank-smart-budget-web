@@ -8,8 +8,8 @@ const CreateBudgetInfo = () => {
   const navigate = useNavigate();
 
   const handleCreateBudget = () => {
-    localStorage.setItem('hasBudget', true);
-    console.log(localStorage.getItem('hasBudget'));
+    localStorage.setItem('hasBudget2', true);
+    console.log(localStorage.getItem('hasBudget2'));
     navigate('/create/budget', { replace: true });
   };
 
