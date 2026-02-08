@@ -2,7 +2,7 @@
 import { transactionApiService } from './ApiService';
 
 export const transactionService = {
-  // Получить список транзакций с пагинацией и фильтрацией
+
   getTransactions: async (params = {}) => {
     try {
       const {
@@ -55,7 +55,6 @@ export const transactionService = {
     }
   },
 
-  // Получить транзакцию по ID
   getTransactionById: async (id) => {
     try {
       const transaction = await transactionApiService.request(`/transactions/${id}`, { method: 'GET' });
@@ -79,7 +78,6 @@ export const transactionService = {
     }
   },
 
-  // Изменить категорию транзакции
   updateTransactionCategory: async (transactionId, categoryId) => {
     try {
       const response = await transactionApiService.request(
@@ -109,7 +107,6 @@ export const transactionService = {
     }
   },
 
-  // Запустить синхронизацию транзакций
   syncTransactions: async (year, month) => {
     try {
       const queryParams = new URLSearchParams();
@@ -124,7 +121,6 @@ export const transactionService = {
     }
   },
 
-  // Получить общую сумму по категории
   getCategoryTotal: async (categoryId) => {
     try {
       const endpoint = `/transactions/categories/${categoryId}/total`;

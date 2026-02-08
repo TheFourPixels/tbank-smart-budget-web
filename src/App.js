@@ -12,6 +12,7 @@ import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategor
 import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
 import TransactionsScreen from './components/Transactions/TransactiondScreen';
 import TransactionsPage from './components/Transactions/TransactionsPage';
+import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -49,7 +50,7 @@ function App() {
             path="/create" 
             element={
               <ProtectedRoute>
-                <CreateBudgetInfo />
+                <BudgetApp/>
               </ProtectedRoute>
             } 
           />

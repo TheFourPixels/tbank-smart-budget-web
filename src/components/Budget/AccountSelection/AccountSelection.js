@@ -87,7 +87,6 @@ function AccountSelection () {
             </div>
             <div className={styles.changeCard}>
               <div className={styles.changeCardContent}>
-                <div className={styles.changeIcon}>+</div>
                 <div className={styles.changeText}>Изменить счет</div>
               </div>
             </div>

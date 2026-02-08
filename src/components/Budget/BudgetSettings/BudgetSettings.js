@@ -8,35 +8,32 @@ import { categoryService } from '../../../services/CategoryService.js';
 const BudgetSettings = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [allCategories, setAllCategories] = useState({}); // Кэш всех категорий: {id: name}
+  const [allCategories, setAllCategories] = useState({});
   const navigate = useNavigate();
 
-  // Маппинг иконок для категорий
   const categoryIcons = {
-    1: "🛒", // Маркетплейсы
-    2: "🍎", // Продукты
-    3: "🚗", // Транспорт
-    4: "🏠", // Жилье
-    5: "💡", // Коммунальные услуги
-    6: "📱", // Связь и интернет
-    7: "👕", // Одежда
-    8: "💊", // Здоровье
-    9: "🎬", // Развлечения
-    10: "🎓", // Образование
-    11: "✈️", // Путешествия
-    12: "🎁", // Подарки
-    13: "🐶", // Домашние животные
-    14: "🏋️", // Спорт
-    15: "💳", // Кредиты
+    1: "🛒", 
+    2: "🍎",
+    3: "🚗", 
+    4: "🏠", 
+    5: "💡",
+    6: "📱", 
+    7: "👕", 
+    8: "💊",
+    9: "🎬",
+    10: "🎓", 
+    11: "✈️", 
+    12: "🎁",
+    13: "🐶", 
+    14: "🏋️",
+    15: "💳", 
   };
 
-  // Загрузка всех категорий для маппинга ID -> название
   const loadAllCategories = async () => {
     try {
       const response = await categoryService.getCategories();
       console.log('Все категории:', response);
       
-      // Преобразуем массив в объект для быстрого поиска по ID
       const categoriesMap = {};
       if (response.content && Array.isArray(response.content)) {
         response.content.forEach(cat => {
@@ -57,7 +54,6 @@ const BudgetSettings = () => {
       try {
         setLoading(true);
         
-        // Загружаем все категории для маппинга названий
         const categoriesMap = await loadAllCategories();
         
         const savedYear = localStorage.getItem('budgetYear');
@@ -76,7 +72,6 @@ const BudgetSettings = () => {
         const categoriesWithLimits = categoryStats
           .filter(cat => cat && cat.limit > 0)
           .map(cat => {
-            // Получаем название категории из маппинга или используем ID как запасной вариант
             const categoryName = allCategories[cat.id] || categoriesMap[cat.id] || `Категория ${cat.id}`;
             
             return {
@@ -92,8 +87,8 @@ const BudgetSettings = () => {
               rawAvailable: cat.available || 0
             };
           })
-          .sort((a, b) => b.progress - a.progress) // Сортируем по прогрессу (больший прогресс сначала)
-          .slice(0, 2); // Показываем до 4 категорий
+          .sort((a, b) => b.progress - a.progress) 
+          .slice(0, 2);
         
         console.log('Обработанные категории:', categoriesWithLimits);
         setCategories(categoriesWithLimits);
@@ -101,7 +96,6 @@ const BudgetSettings = () => {
       } catch (error) {
         console.error('Ошибка загрузки статистики категорий:', error);
         
-        // Используем заглушку с названиями из categoryIcons
         const defaultCategories = [
           {
             id: 1,
@@ -166,7 +160,6 @@ const BudgetSettings = () => {
     navigate('/budget/categories');
   };
 
-  // Функция для расчета общего прогресса по всем категориям
   const calculateOverallProgress = () => {
     if (categories.length === 0) return 0;
     
@@ -202,13 +195,7 @@ const BudgetSettings = () => {
       
       {categories.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyStateIcon}>
-            <svg width="64" height="64" viewBox="0 0 48 48" fill="none" stroke="currentColor">
-              <circle cx="24" cy="24" r="22" strokeWidth="2"/>
-              <path d="M16 24H32" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M24 16V32" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </div>
+          
           <div className={styles.emptyStateText}>
             <h4 className={styles.emptyStateTitle}>Категории не настроены</h4>
             <p className={styles.emptyStateDescription}>
