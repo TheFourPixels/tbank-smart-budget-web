@@ -140,7 +140,7 @@ const CreateBudgetForm = () => {
       const totalIncome = parseFloat(budgetLimit);
       
       // Формируем лимиты для выбранных категорий
-      // Согласно Postman коллекции, API ожидает 'PERCENT' или 'SUM' в верхнем регистре
+      // Согласно Postman коллекции, API ожидает 'PERCENT' или 'ABSOLUTE' в верхнем регистре
       const limits = selectedCategories.map(categoryId => {
         const limitValue = parseFloat(categoryLimits[categoryId]) || 0;
         
@@ -148,9 +148,9 @@ const CreateBudgetForm = () => {
         const percentage = (limitValue / totalIncome) * 100;
         
         return {
-          category_id: categoryId,
-          limit_value: limitValue, // Используем процент
-          limit_type: 'SUM' // Указываем тип как 'PERCENT'
+          categoryId,
+          limitValue: percentage, // Используем процент
+          limitType: 'PERCENT' // Указываем тип как 'PERCENT'
         };
       });
 

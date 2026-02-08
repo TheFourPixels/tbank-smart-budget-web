@@ -1,5 +1,5 @@
-const BUDGET_API_URL = 'http://158.160.143.253/api/budget';
-const TRANSACTION_API_URL = 'http://158.160.143.253/api/transaction';
+const BUDGET_API_URL = 'http://158.160.206.124:8081/api/v1';
+const TRANSACTION_API_URL = 'http://158.160.206.124:8083/api/v1';
 
 class ApiService {
   constructor(baseUrl) {
@@ -8,6 +8,7 @@ class ApiService {
 
   async request(endpoint, options = {}) {
     const url = `${this.baseUrl}${endpoint}`;
+    console.log(url);
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -19,6 +20,7 @@ class ApiService {
 
     try {
       const response = await fetch(url, config);
+      console.error(response);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({

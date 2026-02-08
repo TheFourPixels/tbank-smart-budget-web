@@ -116,6 +116,7 @@ const CategoriesPage = () => {
             limit_type: limitInfo.limit_type || 'ABSOLUTE'
           };
         }
+        
         return category;
       });
     });
@@ -151,6 +152,7 @@ const CategoriesPage = () => {
   const handleCategoryClick = async (categoryId) => {
     const category = categories.find(c => c.id === categoryId);
     
+    // Если категория уже в бюджете, ничего не делаем
     if (category && category.isInBudget) {
       console.log('Категория уже добавлена в бюджет');
       return;
@@ -163,9 +165,9 @@ const CategoriesPage = () => {
       // Подготавливаем данные для обновления бюджета
       console.log(categoryId)
       const newLimit = {
-        category_id: categoryId,
+        categoryId: categoryId,
         limit_value: 0, // Начальный лимит 0, пользователь сможет изменить позже
-        limit_type: "SUM" // Можно сделать настройку типа лимита
+        limit_type: "PERCENT" // Можно сделать настройку типа лимита
       };
 
       // Получаем текущие лимиты из бюджета или создаем пустой массив
@@ -173,6 +175,7 @@ const CategoriesPage = () => {
       
       // Добавляем новый лимит к существующим
       const updatedLimits = [...currentLimits, newLimit];
+      console.log(updatedLimits)
 
       // Данные для обновления бюджета
       const budgetData = {
@@ -182,8 +185,6 @@ const CategoriesPage = () => {
         limits: updatedLimits
       };
 
-      console.log(budgetData)
-
       // Отправляем запрос на создание/обновление бюджета
       const response = await budgetService.createOrUpdateBudget(budgetData);
       
@@ -191,7 +192,7 @@ const CategoriesPage = () => {
       setCurrentBudget(response);
       setBudgetLimits(response.limits || []);
       
-      
+      // Обновляем информацию о категории
       setCategories(prevCategories => 
         prevCategories.map(cat => 
           cat.id === categoryId 
@@ -199,7 +200,7 @@ const CategoriesPage = () => {
                 ...cat, 
                 isInBudget: true, 
                 limit: 0,
-                limit_type: 'SUM'
+                limit_type: 'PERCENT'
               } 
             : cat
         )

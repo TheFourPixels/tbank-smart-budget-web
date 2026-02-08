@@ -3,7 +3,6 @@ import CategoryCard from '../CategoryCard/CategoryCard';
 import { useNavigate } from 'react-router-dom';
 import styles from './BudgetSettings.module.css';
 import { budgetService } from '../../../services/BudgetService.js';
-import { categoryService } from '../../../services/CategoryService.js';
 
 const BudgetSettings = () => {
   const [categories, setCategories] = useState([]);
@@ -64,11 +63,9 @@ const BudgetSettings = () => {
         const year = savedYear ? parseInt(savedYear) : currentYear;
         const month = savedMonth ? parseInt(savedMonth) : currentMonth;
         
-        // Загружаем статистику по категориям
         const categoryStats = await budgetService.getCategoryStats(year, month);
-        console.log('Статистика категорий:', categoryStats);
+        console.log('Category stats:', categoryStats);
         
-        // Обрабатываем категории с лимитами
         const categoriesWithLimits = categoryStats
           .filter(cat => cat && cat.limit > 0)
           .map(cat => {
@@ -76,21 +73,18 @@ const BudgetSettings = () => {
             
             return {
               id: cat.id,
-              title: categoryName,
-              spent: cat.spent ? `${Math.round(cat.spent).toLocaleString('ru-RU')} ₽` : "0 ₽",
-              limit: cat.limit ? `${Math.round(cat.limit).toLocaleString('ru-RU')} ₽` : "0 ₽",
-              available: cat.available ? `${Math.round(cat.available).toLocaleString('ru-RU')} ₽` : "0 ₽",
-              icon: categoryIcons[cat.id] || "📁",
-              progress: cat.progress || 0,
-              rawSpent: cat.spent || 0,
-              rawLimit: cat.limit || 0,
-              rawAvailable: cat.available || 0
+              title: mapping.title,
+              spent: cat.spent ? `${Math.round(cat.spent).toLocaleString('ru-RU')} Р` : "0 Р",
+              limit: cat.limit ? `${Math.round(cat.limit).toLocaleString('ru-RU')} Р` : "0 Р",
+              available: cat.available ? `${Math.round(cat.available).toLocaleString('ru-RU')} Р` : "0 Р",
+              icon: mapping.icon,
+              progress: cat.progress || 0
             };
           })
           .sort((a, b) => b.progress - a.progress) 
           .slice(0, 2);
         
-        console.log('Обработанные категории:', categoriesWithLimits);
+        console.log('Processed categories:', categoriesWithLimits);
         setCategories(categoriesWithLimits);
         
       } catch (error) {
@@ -100,54 +94,22 @@ const BudgetSettings = () => {
           {
             id: 1,
             title: "Маркетплейсы",
-            spent: "12 300 ₽",
-            limit: "15 400 ₽",
-            available: "2 567 ₽",
+            spent: "12 300 Р",
+            limit: "15 400 Р",
+            available: "2 567 Р",
             icon: "🛒",
-            progress: 70,
-            rawSpent: 12300,
-            rawLimit: 15400,
-            rawAvailable: 2567
+            progress: 70
           },
           {
             id: 2,
             title: "Продукты",
-            spent: "8 500 ₽",
-            limit: "10 000 ₽",
-            available: "1 500 ₽",
+            spent: "8 500 Р",
+            limit: "10 000 Р",
+            available: "1 500 Р",
             icon: "🍎",
-            progress: 85,
-            rawSpent: 8500,
-            rawLimit: 10000,
-            rawAvailable: 1500
-          },
-          {
-            id: 3,
-            title: "Транспорт",
-            spent: "4 200 ₽",
-            limit: "6 000 ₽",
-            available: "1 800 ₽",
-            icon: "🚗",
-            progress: 50,
-            rawSpent: 4200,
-            rawLimit: 6000,
-            rawAvailable: 1800
-          },
-          {
-            id: 4,
-            title: "Развлечения",
-            spent: "3 700 ₽",
-            limit: "5 000 ₽",
-            available: "1 300 ₽",
-            icon: "🎬",
-            progress: 65,
-            rawSpent: 3700,
-            rawLimit: 5000,
-            rawAvailable: 1300
+            progress: 85
           }
-        ];
-        
-        setCategories(defaultCategories);
+        ]);
       } finally {
         setLoading(false);
       }
@@ -180,16 +142,12 @@ const BudgetSettings = () => {
     );
   }
 
-  const overallProgress = calculateOverallProgress();
-
   return (
     <section className={styles.settingsSection}>
       <div className={styles.sectionHeader}>
-        <div className={styles.headerLeft}>
-          
-        </div>
+        <h3 className={styles.categoriesTitle}>Категории</h3>
         <button onClick={handleClick} className={styles.viewAllButton}>
-          {categories.length === 0 ? 'Настроить категории' : 'Все категории'}
+          {categories.length === 0 ? 'Настроить категории' : 'Посмотреть все'}
         </button>
       </div>
       
