@@ -10,7 +10,6 @@ const CategoryCard = ({ category }) => {
         </div>
         <div className={styles.categoryInfo}>
           <h4 className={styles.categoryTitle}>{category.title}</h4>
-          <button className={styles.editButton}>Редактировать</button>
         </div>
       </div>
       

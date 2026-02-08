@@ -5,7 +5,6 @@ const AccountSelection = () => {
   return (
     <section className={styles.accountSection}>
       <div className={styles.sectionHeader}>
-        <h3 className={styles.categoriesTitle}>Настройки бюджета</h3>
       </div>
       <div className={styles.accountCard}>
         {/* Секция срока вклада (без заголовка) */}

@@ -1,0 +1,76 @@
+.card {
+  background: #f6f7f8;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.periodSelector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.periodSelector::-webkit-scrollbar {
+  display: none;
+}
+
+.periodButton {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.periodButton:hover {
+  border-color: #000;
+}
+
+.periodButton.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.incomeValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.expenseValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.balanceValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}

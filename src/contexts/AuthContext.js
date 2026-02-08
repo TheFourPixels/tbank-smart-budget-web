@@ -1,56 +1,50 @@
-// contexts/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const userEmail = localStorage.getItem('userEmail');
-    const hasBudget = localStorage.getItem('hasBudget');
-
+    const userEmail = localStorage.getItem('userEmail') || 'Пользователь';
+    const hasBudget = localStorage.getItem('hasBudget') === 'true';
     
-    if (token && userEmail) {
-      setIsAuthenticated(true);
-      setUserData({ email: userEmail , hasBudget: hasBudget});
-    }
-    setIsLoading(false);
+    setUserData({ 
+      email: userEmail, 
+      hasBudget 
+    });
   }, []);
 
   const login = async (email, password) => {
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const success = email && password.length >= 1;
-      
-      if (success) {
-        const token = 'fake-jwt-token-' + Date.now();
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userEmail', email);
-        setIsAuthenticated(true);
-        setUserData({ email: email , hasBudget: false });
-        return { success: true };
-      } else {
-        return { success: false, error: 'Неверные учетные данные' };
-      }
-    } catch (error) {
-      return { success: false, error: 'Ошибка сети' };
-    }
+    localStorage.setItem('userEmail', email);
+    setIsAuthenticated(true);
+    setUserData({ 
+      email, 
+      hasBudget: localStorage.getItem('hasBudget') === 'true' 
+    });
+    
+    return { success: true };
   };
 
   const logout = () => {
-    localStorage.removeItem('authToken');
     localStorage.removeItem('userEmail');
-    setIsAuthenticated(false);
     setUserData(null);
+    setIsAuthenticated(false);
+  };
+
+  const updateBudgetStatus = (hasBudget) => {
+    localStorage.setItem('hasBudget', hasBudget.toString());
+    setUserData(prev => prev ? { ...prev, hasBudget } : null);
   };
 
   const value = {
@@ -58,6 +52,7 @@ export function AuthProvider({ children }) {
     userData,
     login,
     logout,
+    updateBudgetStatus,
     isLoading
   };
 

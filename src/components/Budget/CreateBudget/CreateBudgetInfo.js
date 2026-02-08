@@ -10,7 +10,7 @@ const CreateBudgetInfo = () => {
   const handleCreateBudget = () => {
     localStorage.setItem('hasBudget', true);
     console.log(localStorage.getItem('hasBudget'));
-    navigate('/', { replace: true });
+    navigate('/create/budget', { replace: true });
   };
 
   const budgetFeatures = [

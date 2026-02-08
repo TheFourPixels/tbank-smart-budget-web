@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -10,6 +9,8 @@ import './App.css';
 import CreateCategoryPage from './components/CreateCategory/CreateCategoryPage';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
 import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategories';
+import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
+import TransactionsScreen from './components/Transactions/TransactiondScreen';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -51,6 +52,14 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/create/budget" 
+            element={
+              <ProtectedRoute>
+                <CreateBudgetForm />
+              </ProtectedRoute>
+            } 
+          />
 <Route 
             path="/budget/categories" 
             element={
@@ -66,6 +75,15 @@ function App() {
             element={
                 <BudgetRoute>
                   <CategoriesPage />
+                </BudgetRoute>
+            } 
+          />
+
+          <Route 
+            path="/transactions" 
+            element={
+                <BudgetRoute>
+                  <TransactionsScreen />
                 </BudgetRoute>
             } 
           />
