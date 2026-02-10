@@ -28,7 +28,7 @@
   background: #FFFFFF;
   border-radius: 24px;
   padding: 40px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.4s ease-out;
 }
 
@@ -219,7 +219,7 @@
 .form-input:focus {
   outline: none;
   border-color: #FFDD2D;
-  box-shadow: 0 0 0 3px rgba(255, 221, 45, 0.15);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .form-input::placeholder {
@@ -281,7 +281,7 @@
 .form-select:focus {
   outline: none;
   border-color: #FFDD2D;
-  box-shadow: 0 0 0 3px rgba(255, 221, 45, 0.15);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-icon {
@@ -370,7 +370,7 @@
 
 .auto-distribute-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 221, 45, 0.25);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .auto-distribute-btn:disabled {
@@ -416,7 +416,7 @@
 .search-input:focus {
   outline: none;
   border-color: #FFDD2D;
-  box-shadow: 0 0 0 3px rgba(255, 221, 45, 0.15);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-input::placeholder {
@@ -533,7 +533,7 @@
 .category-card:hover {
   border-color: #FFDD2D;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 221, 45, 0.12);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .category-card.selected {
@@ -641,7 +641,7 @@
 .limit-input:focus {
   outline: none;
   border-color: #FFDD2D;
-  box-shadow: 0 0 0 3px rgba(255, 221, 45, 0.15);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .limit-currency {
@@ -715,7 +715,7 @@
 
 .submit-button:hover:not(:disabled):not(.loading) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(255, 221, 45, 0.25);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .submit-button:active:not(:disabled):not(.loading) {

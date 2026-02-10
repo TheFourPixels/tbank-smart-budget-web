@@ -47,7 +47,7 @@
   justify-content: center;
   padding: 40px 24px;
   text-align: center;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #EAEAEA 0%, #EAEAEA 100%);
   border-radius: 16px;
   border: 2px dashed #e2e8f0;
   transition: all 0.3s ease;
@@ -55,54 +55,6 @@
   margin: 8px 0;
 }
 
-.emptyState:hover {
-  border-color: #cbd5e1;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
-}
-
-/* Иконка для пустого состояния */
-.emptyStateIcon {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.emptyStateIcon::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
-  opacity: 0.08;
-  border-radius: 50%;
-}
-
-.emptyStateIcon svg {
-  width: 48px;
-  height: 48px;
-  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.1));
-}
-
-.emptyStateIcon svg circle {
-  stroke: #6366f1;
-  stroke-width: 2;
-  fill: none;
-}
-
-.emptyStateIcon svg path {
-  stroke: #6366f1;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Текст пустого состояния */
 .emptyStateText {
   margin-bottom: 24px;
 }
@@ -124,71 +76,29 @@
 
 /* Кнопка добавления категорий */
 .addCategoriesButton {
-  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  background: #FFDD2D;
   border: none;
-  padding: 12px 28px;
+  padding: 15px 35px;
   border-radius: 10px;
   font-size: 15px;
   font-weight: 600;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
   overflow: hidden;
-}
-
-.addCategoriesButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.addCategoriesButton:hover::before {
-  left: 100%;
-}
-
-.addCategoriesButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
-}
-
-.addCategoriesButton:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-/* Иконка плюса в кнопке */
-.addCategoriesButton::after {
-  content: '+';
-  font-size: 20px;
+  color: var(--black, rgba(51, 51, 51, 1));
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 19px;
+  letter-spacing: 0px;
+  text-align: center;
 }
 
-/* Индикатор подсказки */
-.emptyStateHint {
-  margin-top: 16px;
-  font-size: 13px;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
-.emptyStateHint::before {
-  content: '💡';
-  font-size: 14px;
-}
 
 /* Загрузка */
 .loadingContainer {
