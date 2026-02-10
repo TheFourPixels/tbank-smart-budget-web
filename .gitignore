@@ -1,6 +1,2 @@
 node_modules/
-build/build/
-<<<<<<< HEAD
-node_modules/
-=======
->>>>>>> 295b99be20870427c155de41d9bf3dfd10c354b0
+build/
