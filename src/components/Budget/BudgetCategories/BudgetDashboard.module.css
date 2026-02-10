@@ -21,9 +21,9 @@
   --border-radius-lg: 16px;
   --border-radius-xl: 24px;
   
-  --shadow-element: 0px 4px 10px rgba(0, 0, 0, 0.08);
-  --shadow-card: 0px 6px 20px rgba(0, 0, 0, 0.12);
-  --shadow-section: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-element: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
+  --shadow-section: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
   
   --transition: all 0.3s ease;
 }
@@ -51,7 +51,7 @@ body {
 .dashboard-header {
   background: var(--color-gray);
   padding: 0 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -346,7 +346,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .chart-amount {

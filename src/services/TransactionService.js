@@ -1,5 +1,10 @@
 import { budgetApiService } from './ApiService';
 
+<<<<<<< HEAD
+export const transactionService = {
+
+  getTransactions: async (params = {}) => {
+=======
 class TransactionService {
   /**
    * Получение списка транзакций
@@ -8,6 +13,7 @@ class TransactionService {
    * @param {number} limit - лимит на страницу
    */
   async getTransactions({ startDate, endDate, categoryId, type } = {}, page = 0, limit = 20) {
+>>>>>>> parent of 41f6dff5 (версия защиты)
     try {
       const params = new URLSearchParams({
         page: page.toString(),
@@ -27,11 +33,15 @@ class TransactionService {
     }
   }
 
+<<<<<<< HEAD
+  getTransactionById: async (id) => {
+=======
   /**
    * Получение статистики по транзакциям
    * @param {string} period - период (day, week, month, year)
    */
   async getStats(period = 'month') {
+>>>>>>> parent of 41f6dff5 (версия защиты)
     try {
       const response = await budgetApiService.get(`/transactions/stats?period=${period}`);
       return response.data;
@@ -41,6 +51,68 @@ class TransactionService {
     }
   }
 
+<<<<<<< HEAD
+  updateTransactionCategory: async (transactionId, categoryId) => {
+    try {
+      const response = await transactionApiService.request(
+        `/transactions/${transactionId}/category`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ categoryId })
+        }
+      );
+      
+      return {
+        id: response.id,
+        amount: response.amount,
+        type: response.type,
+        isIncome: response.isIncome,
+        date: response.transactionDate,
+        description: response.description,
+        merchant: response.merchantName,
+        categoryId: response.category?.id || 999,
+        category: response.category,
+        externalId: response.externalId,
+        mcc: response.mcc
+      };
+    } catch (error) {
+      console.error('Error updating transaction category:', error);
+      throw error;
+    }
+  },
+
+  syncTransactions: async (year, month) => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (year) queryParams.append('year', year);
+      if (month) queryParams.append('month', month);
+
+      const endpoint = `/transactions/sync${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      return await transactionApiService.request(endpoint, { method: 'POST' });
+    } catch (error) {
+      console.error('Error syncing transactions:', error);
+      throw error;
+    }
+  },
+
+  getCategoryTotal: async (categoryId) => {
+    try {
+      const endpoint = `/transactions/categories/${categoryId}/total`;
+      return await transactionApiService.request(endpoint, { method: 'GET' });
+    } catch (error) {
+      console.error('Error fetching category total:', error);
+      throw error;
+    }
+  },
+
+  createTransaction: async (transactionData) => {
+    try {
+      console.log(transactionData)
+      return await transactionApiService.request('/transactions', {
+        method: 'POST',
+        body: JSON.stringify(transactionData)
+      });
+=======
   /**
    * Создание новой транзакции
    */
@@ -48,6 +120,7 @@ class TransactionService {
     try {
       const response = await budgetApiService.post('/transactions', transactionData);
       return response.data;
+>>>>>>> parent of 41f6dff5 (версия защиты)
     } catch (error) {
       console.error('Error creating transaction:', error);
       throw error;

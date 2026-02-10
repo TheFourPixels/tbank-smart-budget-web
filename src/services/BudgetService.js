@@ -1,9 +1,6 @@
 import { budgetApiService } from './ApiService.js';
 
 class BudgetService {
-  /**
-   * Создание или обновление бюджета на период
-   */
   async createOrUpdateBudget(budgetData) {
     const apiData = {
       year: budgetData.year,
@@ -22,9 +19,6 @@ class BudgetService {
     });
   }
 
-  /**
-   * Получение бюджета на период
-   */
   async getBudget(year, month) {
     try {
       const data = await budgetApiService.request(`/budgets/${year}/${month}`);
@@ -38,6 +32,12 @@ class BudgetService {
         })) || []
       };
     } catch (error) {
+<<<<<<< HEAD
+      if (error.status === 404) {
+        return null; 
+      }
+=======
+>>>>>>> parent of 41f6dff5 (версия защиты)
       console.error('Ошибка получения бюджета:', error);
       throw error;
     }

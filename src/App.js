@@ -11,6 +11,11 @@ import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo'
 import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategories';
 import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
 import TransactionsScreen from './components/Transactions/TransactiondScreen';
+<<<<<<< HEAD
+import TransactionsPage from './components/Transactions/TransactionsPage';
+import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
+=======
+>>>>>>> parent of 41f6dff5 (версия защиты)
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -48,7 +53,7 @@ function App() {
             path="/create" 
             element={
               <ProtectedRoute>
-                <CreateBudgetInfo />
+                <BudgetApp/>
               </ProtectedRoute>
             } 
           />

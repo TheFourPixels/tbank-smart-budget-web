@@ -21,7 +21,7 @@
 .accountCard {
   background: var(--color-white);
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
   padding: 25px;
   width: 100%;
   height: fit-content;
@@ -43,28 +43,28 @@
 
 .durationButton {
   padding: 10px 15px;
-  border: 2px solid var(--color-gray-dark);
   border-radius: var(--border-radius-md);
-  background: var(--color-white);
+  background: var(--color-gray-dark);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-black);
   cursor: pointer;
   transition: all 0.3s ease;
-  flex: 1;
   min-width: 70px;
   text-align: center;
+  border: none;
 }
 
 .durationButton.active {
   background: var(--color-accent);
-  border-color: var(--color-accent);
   color: var(--color-black);
 }
 
 .durationButton:hover:not(.active) {
   background: var(--color-gray-dark);
-  border-color: var(--color-gray-medium);
+}
+
+.durationButton:hover{
+  opacity: 0.8;
 }
 
 /* Секция суммы вклада */
@@ -80,10 +80,6 @@
   margin-bottom: 10px;
   border: 2px solid transparent;
   transition: border-color 0.3s ease;
-}
-
-.amountCard:hover {
-  border-color: var(--color-primary);
 }
 
 .amountValue {
@@ -115,7 +111,7 @@
   background: #000000;
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
   min-height: 120px;
   display: flex;
   flex-direction: column;
@@ -183,10 +179,9 @@
 
 /* Стиль карты "Изменить счет" */
 .changeCard {
-  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
+  background: var(--color-gray-dark);
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   min-height: 120px;
   display: flex;
   align-items: center;
@@ -197,9 +192,7 @@
 }
 
 .changeCard:hover {
-  border-color: var(--color-primary);
-  background: linear-gradient(135deg, #f0f8ff 0%, #e0f0ff 100%);
-  transform: translateY(-2px);
+  background: var(--color-gray-super-light);
 }
 
 .changeCardContent {
