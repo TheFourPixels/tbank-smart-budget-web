@@ -138,19 +138,14 @@ const CreateBudgetForm = () => {
 
     try {
       const totalIncome = parseFloat(budgetLimit);
-      
-      // Формируем лимиты для выбранных категорий
-      // Согласно Postman коллекции, API ожидает 'PERCENT' или 'ABSOLUTE' в верхнем регистре
       const limits = selectedCategories.map(categoryId => {
-        const limitValue = parseFloat(categoryLimits[categoryId]) || 0;
-        
-        // Рассчитываем процент от общего дохода для лимита
-        const percentage = (limitValue / totalIncome) * 100;
+      const limitValue = parseFloat(categoryLimits[categoryId]) || 0;
+      const percentage = (limitValue / totalIncome) * 100;
         
         return {
           categoryId,
-          limitValue: percentage, // Используем процент
-          limitType: 'PERCENT' // Указываем тип как 'PERCENT'
+          limitValue: percentage,
+          limitType: 'PERCENT'
         };
       });
 
@@ -164,8 +159,6 @@ const CreateBudgetForm = () => {
       console.log('Отправка данных бюджета:', budgetData);
 
       const response = await budgetService.createOrUpdateBudget(budgetData);
-      
-      // Сохраняем данные для отображения
       localStorage.setItem('hasBudget', 'true');
       localStorage.setItem('budgetName', budgetName);
       localStorage.setItem('budgetLimit', budgetLimit);
