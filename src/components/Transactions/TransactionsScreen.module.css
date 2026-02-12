@@ -10,7 +10,6 @@
   position: relative;
 }
 
-/* Заголовок страницы */
 .pageHeader {
   display: flex;
   justify-content: space-between;
@@ -91,7 +90,6 @@
   color: #000;
 }
 
-/* Плавающая кнопка */
 .fab {
   position: fixed;
   bottom: 24px;
@@ -145,7 +143,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Адаптивность */
 @media (max-width: 640px) {
   .container {
     padding: 16px 12px 80px;
@@ -175,7 +172,6 @@
   }
 }
 
-/* Анимация появления */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -191,7 +187,6 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Пустое состояние */
 .emptyState {
   text-align: center;
   padding: 60px 20px;

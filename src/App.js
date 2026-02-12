@@ -11,11 +11,8 @@ import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo'
 import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategories';
 import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
 import TransactionsScreen from './components/Transactions/TransactiondScreen';
-<<<<<<< HEAD
-import TransactionsPage from './components/Transactions/TransactionsPage';
 import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
-=======
->>>>>>> parent of 41f6dff5 (версия защиты)
+
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -25,13 +22,11 @@ function ProtectedRoute({ children }) {
 function PublicRoute({ children }) {
   const { isAuthenticated } = useAuth();
   return !isAuthenticated ? children : children;
-  //<Navigate to="/" replace />;
 }
 
 function BudgetRoute({ children }) {
   const hasBudget = localStorage.getItem('hasBudget');
   return hasBudget ? children : <Navigate to="/create"/>;
-  //<Navigate to="/" replace />;
 }
 
 function App() {
@@ -39,7 +34,6 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Главный экран - защищенный */}
           <Route 
             path="/" 
             element={
@@ -48,7 +42,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          {/* Создание бюджета */}
           <Route 
             path="/create" 
             element={
@@ -102,7 +95,6 @@ function App() {
             } 
           />
           
-          {/* Страница ввода email - только для неавторизованных */}
           <Route 
             path="/login" 
             element={
@@ -112,7 +104,6 @@ function App() {
             } 
           />
           
-          {/* Страница ввода пароля - только для неавторизованных */}
           <Route 
             path="/login/password" 
             element={
@@ -122,7 +113,6 @@ function App() {
             } 
           />
           
-          {/* Редирект для всего остального*/}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

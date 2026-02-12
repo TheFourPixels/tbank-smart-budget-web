@@ -120,7 +120,6 @@ const TransactionsScreen = () => {
           </button>
         </div>
 
-        {/* Статистика */}
         {stats && (
           <StatsCard
             income={stats.income}
@@ -131,13 +130,11 @@ const TransactionsScreen = () => {
           />
         )}
 
-        {/* Фильтры */}
         <DateFilter
           onFilterChange={setFilters}
           selectedPeriod={selectedPeriod}
         />
 
-        {/* Список транзакций */}
         <div className={styles.transactionsList}>
           {groupTransactionsByDate().map((group, index) => (
             <div key={index} className={styles.dateGroup}>
@@ -162,7 +159,6 @@ const TransactionsScreen = () => {
           ))}
         </div>
 
-        {/* Плавающая кнопка */}
         <button 
           className={styles.fab}
           onClick={() => console.log('Добавить транзакцию')}

@@ -16,7 +16,7 @@ const BudgetCategories = () => {
 
   const navigate = useNavigate();
 
-  // Загрузка данных при монтировании компонента
+
   useEffect(() => {
     loadData();
   }, []);
@@ -30,7 +30,7 @@ const BudgetCategories = () => {
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
       
-      // Загружаем данные параллельно для лучшей производительности
+
       const [summaryData, categoriesData, statsData] = await Promise.all([
         budgetService.getBudgetSummary(currentYear, currentMonth),
         categoryService.getCategories(),
@@ -39,7 +39,7 @@ const BudgetCategories = () => {
       
       setBudgetSummary(summaryData);
       
-      // Преобразуем данные категорий для отображения
+
       const categoriesList = categoriesData.content || [];
       let formattedCategories = categoriesList.map(category => ({
         id: category.id,
@@ -52,7 +52,7 @@ const BudgetCategories = () => {
       
       setCategories(formattedCategories);
       
-      // Выбранные категории - первые 2 из списка
+
       setSelectedCategories(formattedCategories.slice(0, 2).map(cat => ({
         id: cat.id,
         icon: cat.icon,
@@ -63,14 +63,14 @@ const BudgetCategories = () => {
       console.error('Ошибка загрузки данных:', err);
       setError('Не удалось загрузить данные. Пожалуйста, попробуйте позже.');
       
-      // Используем тестовые данные при ошибке
+
       setDefaultData();
     } finally {
       setLoading(false);
     }
   };
 
-  // Функция для получения иконки по названию категории
+
   const getCategoryIcon = (categoryName) => {
     const iconMap = {
       'Транспорт': '🚗',
@@ -88,17 +88,17 @@ const BudgetCategories = () => {
       'Музыкальные инструменты': '🎸',
     };
     
-    // Ищем подходящую иконку
+
     for (const [key, icon] of Object.entries(iconMap)) {
       if (categoryName && categoryName.toLowerCase().includes(key.toLowerCase())) {
         return icon;
       }
     }
     
-    return '📁'; // Значок по умолчанию
+    return '📁';
   };
 
-  // Функция для получения статистики категории
+
   const getCategoryStatsData = (categoryId, statsData) => {
     const stat = statsData.find(s => s.id === categoryId);
     if (stat) {
@@ -110,7 +110,7 @@ const BudgetCategories = () => {
       };
     }
     
-    // Дефолтные значения, если статистики нет
+
     return {
       progress: 0,
       spent: '0 Р',
@@ -119,12 +119,12 @@ const BudgetCategories = () => {
     };
   };
 
-  // Форматирование валюты
+
   const formatCurrency = (amount) => {
     return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
-  // Установка дефолтных данных при ошибке
+
   const setDefaultData = () => {
     setBudgetSummary({
       title: 'Бюджет на текущий месяц',
@@ -174,10 +174,9 @@ const BudgetCategories = () => {
   };
 
   const handleEditCategory = (categoryId) => {
-    // Логика редактирования категории
+
     console.log('Редактировать категорию:', categoryId);
-    // Можно добавить навигацию на страницу редактирования
-    // navigate(`/categories/edit/${categoryId}`);
+
   };
 
   const handleClick = () => { 
@@ -185,10 +184,10 @@ const BudgetCategories = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); // Возврат на предыдущую страницу
+    navigate(-1);
   };
 
-  // Общая сумма трат для диаграммы
+
   const totalSpent = categories.reduce((sum, category) => {
     const spentValue = parseInt(category.spent.replace(/\D/g, '')) || 0;
     return sum + spentValue;
@@ -260,7 +259,6 @@ const BudgetCategories = () => {
         <h1 className={styles.title}>Категории</h1>
         
         <div className={styles.contentGrid}>
-          {/* Выбранные категории */}
           <section className={styles.selectedCategories}>
             <h2 className={styles.sectionTitle}>Выбранные категории</h2>
             <div className={styles.categoryIcons}>
@@ -277,7 +275,6 @@ const BudgetCategories = () => {
             </button>
           </section>
 
-          {/* Statistics Section */}
           <section className={styles.statisticsSection}>
             <h2 className={styles.sectionTitle}>Статистика по категориям</h2>
             <div className={styles.statisticsGrid}>

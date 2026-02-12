@@ -59,17 +59,7 @@ const CreateCategoryPage = () => {
                 required
               />
             </div>
-        {/* 
-            <div className="form-group">
-              <input
-                type="number"
-                name="limit"
-                className="input-field input-field--half"
-                placeholder="Лимит расходов"
-                required
-              />
-            </div>
-        */} 
+      
             <div className="form-actions">
               <button type="submit" className="create-button">
                 Создать

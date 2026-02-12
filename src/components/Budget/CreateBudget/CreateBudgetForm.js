@@ -15,8 +15,7 @@ const CreateBudgetForm = () => {
   
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  
-  // Состояния для категорий
+
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [categoryLimits, setCategoryLimits] = useState({});
@@ -67,7 +66,6 @@ const CreateBudgetForm = () => {
       return false;
     }
 
-    // Проверяем сумму лимитов по категориям
     const totalLimits = Object.values(categoryLimits).reduce((sum, limit) => sum + (parseFloat(limit) || 0), 0);
     if (totalLimits > totalIncome) {
       setError(`Сумма лимитов по категориям (${totalLimits.toLocaleString('ru-RU')} ₽) превышает общий доход`);
@@ -80,13 +78,12 @@ const CreateBudgetForm = () => {
   const handleCategoryToggle = (categoryId) => {
     setSelectedCategories(prev => {
       if (prev.includes(categoryId)) {
-        // Удаляем категорию и ее лимит
         const newCategoryLimits = { ...categoryLimits };
         delete newCategoryLimits[categoryId];
         setCategoryLimits(newCategoryLimits);
         return prev.filter(id => id !== categoryId);
       } else {
-        // Добавляем категорию с нулевым лимитом
+
         setCategoryLimits(prev => ({
           ...prev,
           [categoryId]: ''
@@ -229,7 +226,6 @@ const CreateBudgetForm = () => {
               onSubmit={handleSubmit} 
               className="create-budget-form"
             >
-              {/* Основная информация */}
               <div className="form-section">
                 <div className="section-header">
                   <h2 className="section-title">Основная информация</h2>
@@ -316,7 +312,6 @@ const CreateBudgetForm = () => {
                 </div>
               </div>
 
-              {/* Распределение по категориям */}
               <div className="form-section">
                 <div className="section-header">
                   <h2 className="section-title">Распределение по категориям</h2>
@@ -387,7 +382,6 @@ const CreateBudgetForm = () => {
                   </div>
                 </div>
 
-                {/* Список категорий */}
                 <div className="categories-container">
                   {categoriesLoading ? (
                     <div className="loading-state">
@@ -478,7 +472,6 @@ const CreateBudgetForm = () => {
                 </div>
               </div>
 
-              {/* Кнопка создания */}
               <div className="form-actions">
                 <button 
                   type="submit" 

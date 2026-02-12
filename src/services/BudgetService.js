@@ -32,20 +32,13 @@ class BudgetService {
         })) || []
       };
     } catch (error) {
-<<<<<<< HEAD
-      if (error.status === 404) {
-        return null; 
-      }
-=======
->>>>>>> parent of 41f6dff5 (версия защиты)
+
       console.error('Ошибка получения бюджета:', error);
       throw error;
     }
   }
 
-  /**
-   * Получение сводки бюджета для карточки
-   */
+
   async getBudgetSummary(year, month) {
     try {
       const budget = await this.getBudget(year, month);
@@ -54,7 +47,6 @@ class BudgetService {
         return this.getDefaultBudgetSummary(year, month);
       }
 
-      // Вычисляем общий лимит расходов
       const totalLimit = budget.limits?.reduce((sum, limit) => {
         let limitValue = 0;
         if (limit.limit_type === 'PERCENT') {
@@ -83,9 +75,6 @@ class BudgetService {
     }
   }
 
-  /**
-   * Получение статистики по категориям
-   */
   async getCategoryStats(year, month) {
     try {
       const budget = await this.getBudget(year, month);
@@ -125,15 +114,8 @@ class BudgetService {
     }
   }
 
-  /**
-   * Получение трат по категориям (зыаглушка - реализуйте в зависимости от вашего API)
-   */
   async getCategorySpending(year, month) {
     try {
-      // Замените на реальный API вызов
-      // Пример: return await budgetApiService.request(`/budgets/${year}/${month}/spending`);
-      
-      // Заглушка с тестовыми данными
       return [
         { categoryId: 1, spent: 12300, categoryName: "Маркетплейсы" },
         { categoryId: 2, spent: 8500, categoryName: "Продукты" },
@@ -145,9 +127,7 @@ class BudgetService {
     }
   }
 
-  /**
-   * Дефолтная сводка бюджета
-   */
+
   getDefaultBudgetSummary(year, month) {
     const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
                        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -166,18 +146,13 @@ class BudgetService {
     };
   }
 
-  /**
-   * Удаление бюджета на период
-   */
+
   async deleteBudget(year, month) {
     return await budgetApiService.request(`/budgets/${year}/${month}`, {
       method: 'DELETE',
     });
   }
 
-  /**
-   * Создание простого бюджета с процентным распределением
-   */
   async createSimpleBudget(year, month, totalIncome, categories) {
     const limits = categories.map(category => ({
       categoryId: category.categoryId,
@@ -202,9 +177,7 @@ class BudgetService {
     });
   }
 
-  /**
-   * Получение текущего бюджета (текущий месяц и год)
-   */
+
   async getCurrentBudget() {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;

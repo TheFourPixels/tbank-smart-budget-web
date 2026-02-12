@@ -7,7 +7,6 @@ const AccountSelection = () => {
       <div className={styles.sectionHeader}>
       </div>
       <div className={styles.accountCard}>
-        {/* Секция срока вклада (без заголовка) */}
         <div className={styles.durationSection}>
           <div className={styles.durationOptions}>
             <button className={`${styles.durationButton} ${styles.active}`}>2 мес</button>
@@ -18,7 +17,6 @@ const AccountSelection = () => {
           </div>
         </div>
         
-        {/* Секция суммы вклада (без заголовка) */}
         <div className={styles.amountSection}>
           <div className={styles.amountCard}>
             <span className={styles.amountValue}>13 900 Р</span>
@@ -26,7 +24,6 @@ const AccountSelection = () => {
           <p className={styles.amountNote}>Мы берем 13 900 отсюда</p>
         </div>
         
-        {/* Секция выбора счета */}
         <div className={styles.accountsSection}>
           <div className={styles.accountsGrid}>
             <div className={styles.bankCard}>

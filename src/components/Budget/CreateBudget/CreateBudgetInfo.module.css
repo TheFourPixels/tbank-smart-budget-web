@@ -100,7 +100,6 @@
   transform: translateY(0);
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .mainContent {
     padding: 20px 15px;

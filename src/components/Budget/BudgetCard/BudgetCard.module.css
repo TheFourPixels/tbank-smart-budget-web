@@ -199,7 +199,6 @@
   }
 }
 
-/* Эффект при наведении */
 @media (hover: hover) {
   .budgetCard:hover .budgetGradient {
     animation-duration: 4s;

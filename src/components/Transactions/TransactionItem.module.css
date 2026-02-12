@@ -104,7 +104,6 @@
   display: inline-block;
 }
 
-/* Анимация появления */
 @keyframes slideIn {
   from {
     opacity: 0;

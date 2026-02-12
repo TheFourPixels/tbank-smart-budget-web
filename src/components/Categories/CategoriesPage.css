@@ -243,7 +243,6 @@
   font-weight: 300;
 }
 
-/* Анимация появления элементов */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -259,7 +258,6 @@
   animation: fadeIn 0.3s ease forwards;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .categories-main {
     padding: 20px 15px;
@@ -543,7 +541,6 @@
   }
 }
 
-/* Сводка по бюджету */
 .budget-summary {
   margin-top: 16px;
   padding: 12px;
@@ -573,7 +570,6 @@
   font-size: 13px;
 }
 
-/* Сообщения об ошибках */
 .error-message {
   margin: 16px;
   padding: 12px 16px;
