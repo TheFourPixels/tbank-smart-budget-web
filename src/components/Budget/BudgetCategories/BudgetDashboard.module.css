@@ -1,4 +1,4 @@
-/* BudgetDashboard.css */
+
 :root {
   --color-white: #FFFFFF;
   --color-gray-light: #F5F5F5;
@@ -47,7 +47,6 @@ body {
   flex-direction: column;
 }
 
-/* Header Styles */
 .dashboard-header {
   background: var(--color-gray);
   padding: 0 20px;
@@ -129,7 +128,7 @@ body {
   justify-content: center;
 }
 
-/* Main Content */
+
 .dashboard-main {
   flex: 1;
   padding: 30px 20px;
@@ -241,7 +240,6 @@ body {
   gap: 30px;
 }
 
-/* Selected Categories */
 .selected-categories-section {
   background: var(--color-white);
   border-radius: var(--border-radius-lg);
@@ -303,7 +301,6 @@ body {
   background: var(--color-yellow);
 }
 
-/* Budget Chart */
 .budget-chart-section {
   background: var(--color-white);
   border-radius: var(--border-radius-lg);
@@ -396,7 +393,6 @@ body {
   justify-content: center;
 }
 
-/* Categories Statistics */
 .categories-statistics {
   background: var(--color-white);
   border-radius: var(--border-radius-lg);
@@ -432,7 +428,6 @@ body {
   gap: 20px;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .content-row {
     grid-template-columns: 1fr;

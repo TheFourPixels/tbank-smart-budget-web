@@ -1,148 +1,56 @@
 import { budgetApiService } from './ApiService';
 
-<<<<<<< HEAD
 export const transactionService = {
-
-  getTransactions: async (params = {}) => {
-=======
-class TransactionService {
-  /**
-   * Получение списка транзакций
-   * @param {Object} filters - фильтры (дата, категория, тип)
-   * @param {number} page - номер страницы
-   * @param {number} limit - лимит на страницу
-   */
-  async getTransactions({ startDate, endDate, categoryId, type } = {}, page = 0, limit = 20) {
->>>>>>> parent of 41f6dff5 (версия защиты)
+  async getTransactions({
+    page = 0,
+    size = 20,
+    startDate,
+    endDate,
+    categoryId,
+    type,
+  } = {}) {
     try {
-      const params = new URLSearchParams({
+      const queryParams = new URLSearchParams({
         page: page.toString(),
-        size: limit.toString()
+        size: size.toString(),
       });
 
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      if (categoryId) params.append('categoryId', categoryId);
-      if (type) params.append('type', type);
+      if (startDate) queryParams.append('startDate', startDate);
+      if (endDate) queryParams.append('endDate', endDate);
+      if (categoryId) queryParams.append('categoryId', categoryId);
+      if (type) queryParams.append('type', type);
 
-      const response = await budgetApiService.get(`/transactions?${params}`);
+      const response = await budgetApiService.get(`/transactions?${queryParams}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching transactions:', error);
       return this.getMockTransactions();
     }
-  }
+  },
 
-<<<<<<< HEAD
-  getTransactionById: async (id) => {
-=======
-  /**
-   * Получение статистики по транзакциям
-   * @param {string} period - период (day, week, month, year)
-   */
-  async getStats(period = 'month') {
->>>>>>> parent of 41f6dff5 (версия защиты)
+  async getTransactionById(id) {
     try {
-      const response = await budgetApiService.get(`/transactions/stats?period=${period}`);
+      const response = await budgetApiService.get(`/transactions/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching stats:', error);
-      return this.getMockStats();
-    }
-  }
-
-<<<<<<< HEAD
-  updateTransactionCategory: async (transactionId, categoryId) => {
-    try {
-      const response = await transactionApiService.request(
-        `/transactions/${transactionId}/category`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify({ categoryId })
-        }
-      );
-      
-      return {
-        id: response.id,
-        amount: response.amount,
-        type: response.type,
-        isIncome: response.isIncome,
-        date: response.transactionDate,
-        description: response.description,
-        merchant: response.merchantName,
-        categoryId: response.category?.id || 999,
-        category: response.category,
-        externalId: response.externalId,
-        mcc: response.mcc
-      };
-    } catch (error) {
-      console.error('Error updating transaction category:', error);
+      console.error('Error fetching transaction by id:', error);
       throw error;
     }
   },
 
-  syncTransactions: async (year, month) => {
-    try {
-      const queryParams = new URLSearchParams();
-      if (year) queryParams.append('year', year);
-      if (month) queryParams.append('month', month);
-
-      const endpoint = `/transactions/sync${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-      return await transactionApiService.request(endpoint, { method: 'POST' });
-    } catch (error) {
-      console.error('Error syncing transactions:', error);
-      throw error;
-    }
-  },
-
-  getCategoryTotal: async (categoryId) => {
-    try {
-      const endpoint = `/transactions/categories/${categoryId}/total`;
-      return await transactionApiService.request(endpoint, { method: 'GET' });
-    } catch (error) {
-      console.error('Error fetching category total:', error);
-      throw error;
-    }
-  },
-
-  createTransaction: async (transactionData) => {
-    try {
-      console.log(transactionData)
-      return await transactionApiService.request('/transactions', {
-        method: 'POST',
-        body: JSON.stringify(transactionData)
-      });
-=======
-  /**
-   * Создание новой транзакции
-   */
-  async createTransaction(transactionData) {
-    try {
-      const response = await budgetApiService.post('/transactions', transactionData);
-      return response.data;
->>>>>>> parent of 41f6dff5 (версия защиты)
-    } catch (error) {
-      console.error('Error creating transaction:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Обновление категории транзакции
-   */
   async updateTransactionCategory(transactionId, categoryId) {
     try {
-      const response = await budgetApiService.patch(`/transactions/${transactionId}/category`, { categoryId });
+      const response = await budgetApiService.patch(
+        `/transactions/${transactionId}/category`,
+        { categoryId }
+      );
       return response.data;
     } catch (error) {
       console.error('Error updating transaction category:', error);
       throw error;
     }
-  }
+  },
 
-  /**
-   * Удаление транзакции
-   */
   async deleteTransaction(transactionId) {
     try {
       await budgetApiService.delete(`/transactions/${transactionId}`);
@@ -150,11 +58,48 @@ class TransactionService {
       console.error('Error deleting transaction:', error);
       throw error;
     }
-  }
+  },
 
-  /**
-   * Получение категорий для транзакций
-   */
+  async syncTransactions(year, month) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (year) queryParams.append('year', year);
+      if (month) queryParams.append('month', month);
+      const endpoint = `/transactions/sync${
+        queryParams.toString() ? `?${queryParams.toString()}` : ''
+      }`;
+      await budgetApiService.post(endpoint);
+    } catch (error) {
+      console.error('Error syncing transactions:', error);
+      throw error;
+    }
+  },
+
+  async getCategoryTotal(categoryId) {
+    try {
+      const response = await budgetApiService.get(
+        `/transactions/categories/${categoryId}/total`
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching category total:', error);
+      throw error;
+    }
+  },
+
+  async createTransaction(transactionData) {
+    try {
+      const response = await budgetApiService.post(
+        '/transactions',
+        transactionData
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+      throw error;
+    }
+  },
+
   async getCategories() {
     try {
       const response = await budgetApiService.get('/categories');
@@ -163,9 +108,8 @@ class TransactionService {
       console.error('Error fetching categories:', error);
       return this.getMockCategories();
     }
-  }
+  },
 
-  // Моковые данные для демонстрации (без иконок)
   getMockTransactions() {
     return {
       content: [
@@ -176,7 +120,7 @@ class TransactionService {
           amount: -1250,
           currency: 'RUB',
           category: { id: 1, name: 'Еда', color: '#FF6B6B' },
-          type: 'EXPENSE'
+          type: 'EXPENSE',
         },
         {
           id: 2,
@@ -185,7 +129,7 @@ class TransactionService {
           amount: 85000,
           currency: 'RUB',
           category: { id: 2, name: 'Доход', color: '#4CAF50' },
-          type: 'INCOME'
+          type: 'INCOME',
         },
         {
           id: 3,
@@ -194,7 +138,7 @@ class TransactionService {
           amount: -3500,
           currency: 'RUB',
           category: { id: 3, name: 'Транспорт', color: '#2196F3' },
-          type: 'EXPENSE'
+          type: 'EXPENSE',
         },
         {
           id: 4,
@@ -203,7 +147,7 @@ class TransactionService {
           amount: -4500,
           currency: 'RUB',
           category: { id: 4, name: 'Покупки', color: '#9C27B0' },
-          type: 'EXPENSE'
+          type: 'EXPENSE',
         },
         {
           id: 5,
@@ -212,22 +156,21 @@ class TransactionService {
           amount: -750,
           currency: 'RUB',
           category: { id: 5, name: 'Связь', color: '#FF9800' },
-          type: 'EXPENSE'
-        }
+          type: 'EXPENSE',
+        },
       ],
       pageable: {
         pageNumber: 0,
         pageSize: 20,
         totalPages: 1,
-        totalElements: 5
-      }
+        totalElements: 5,
+      },
     };
-  }
+  },
 
   getMockStats() {
     const today = new Date();
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-    
     return {
       period: 'month',
       startDate: monthStart.toISOString(),
@@ -238,10 +181,10 @@ class TransactionService {
       categories: [
         { id: 1, name: 'Еда', amount: 1250, percentage: 13.5 },
         { id: 3, name: 'Транспорт', amount: 3500, percentage: 37.8 },
-        { id: 4, name: 'Покупки', amount: 4500, percentage: 48.6 }
-      ]
+        { id: 4, name: 'Покупки', amount: 4500, percentage: 48.6 },
+      ],
     };
-  }
+  },
 
   getMockCategories() {
     return [
@@ -252,9 +195,7 @@ class TransactionService {
       { id: 5, name: 'Связь', color: '#FF9800' },
       { id: 6, name: 'Развлечения', color: '#E91E63' },
       { id: 7, name: 'Здоровье', color: '#00BCD4' },
-      { id: 8, name: 'Образование', color: '#8BC34A' }
+      { id: 8, name: 'Образование', color: '#8BC34A' },
     ];
-  }
-}
-
-export const transactionService = new TransactionService();
+  },
+};

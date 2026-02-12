@@ -30,7 +30,6 @@
   margin-top: 40px;
 }
 
-/* Секция срока вклада */
 .durationSection {
   margin-bottom: 25px;
 }
@@ -67,7 +66,6 @@
   opacity: 0.8;
 }
 
-/* Секция суммы вклада */
 .amountSection {
   margin-bottom: 25px;
 }
@@ -106,7 +104,6 @@
 }
 
 
-/* Стиль черной банковской карты */
 .bankCard {
   background: #000000;
   border-radius: 12px;
@@ -177,7 +174,6 @@
   font-weight: 500;
 }
 
-/* Стиль карты "Изменить счет" */
 .changeCard {
   background: var(--color-gray-dark);
   border-radius: 12px;
@@ -222,7 +218,6 @@
   text-align: center;
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
   .accountCard {
     position: static;

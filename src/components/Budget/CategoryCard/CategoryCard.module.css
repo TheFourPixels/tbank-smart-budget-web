@@ -128,7 +128,6 @@
   color: var(--color-black);
 }
 
-/* Responsive */
 @media (max-width: 968px) {
   .categoryCard {
     min-height: 240px;

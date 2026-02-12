@@ -18,7 +18,6 @@ const TransactionItem = ({ transaction, onCategoryChange }) => {
     });
   };
 
-  // Генерация инициалов из названия категории
   const getCategoryInitials = (categoryName) => {
     if (!categoryName) return '?';
     

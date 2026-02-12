@@ -17,7 +17,7 @@ const BudgetCard = () => {
         setLoading(true);
         setError(null);
         
-        // Получаем период из localStorage или используем текущий
+
         const savedYear = localStorage.getItem('budgetYear');
         const savedMonth = localStorage.getItem('budgetMonth');
         const currentYear = new Date().getFullYear();
@@ -26,7 +26,7 @@ const BudgetCard = () => {
         const year = savedYear ? parseInt(savedYear) : currentYear;
         const month = savedMonth ? parseInt(savedMonth) : currentMonth;
         
-        // Загружаем данные бюджета
+
         const data = await budgetService.getBudgetSummary(year, month);
         console.log(data);
         setBudgetData(data);
@@ -35,7 +35,6 @@ const BudgetCard = () => {
         console.error('Ошибка загрузки данных бюджета:', error);
         setError('Не удалось загрузить данные бюджета. Проверьте подключение к интернету.');
         
-        // Загружаем из localStorage как fallback
         const savedData = {
           title: localStorage.getItem('budgetName') || 'Мой бюджет',
           balance: parseFloat(localStorage.getItem('budgetLimit') || 0),
