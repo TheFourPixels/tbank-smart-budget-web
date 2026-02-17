@@ -1,0 +1,53 @@
+.item {
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid #f0f0f0;
+  width: 250px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--category-blue) !important;
+}
+
+.name {
+  font-size: 14px;
+  color: var(--black);
+  flex-grow: 1;
+  font-weight: 500;
+  width: 80px;
+}
+
+.amountWrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.amount {
+  background-color: var(--input-bg);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--black);
+  width: 70px;
+  text-align: right;
+  font-family: inherit;
+  cursor: text;
+}
+
+.amount:focus {
+  outline: none;
+  background-color: #d0d0d0;
+}
