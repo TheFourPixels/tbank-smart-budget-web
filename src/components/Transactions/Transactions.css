@@ -277,6 +277,12 @@ input {
   color: #333333;
 }
 
+.search-icon{
+  color: #969ca4;
+  position:static;
+  margin-top: 1rem;
+}
+
 .transactions__amount--positive {
   color: #34c759;
 }

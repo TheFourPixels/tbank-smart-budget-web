@@ -2,6 +2,9 @@ import React from 'react';
 import './Transactions.css';
 import Header from '../Budget/Header/Header';
 import Transaction from './Transaction';
+import { FaSearch } from 'react-icons/fa';
+import { FaChevronDown } from "react-icons/fa";
+
 
 const Trasanctions = () => {
 
@@ -55,22 +58,14 @@ const Trasanctions = () => {
             <h1 className="operations__title">Операции</h1>
 
             <div className="operations__search search">
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/2335_588.svg`}
-                alt="Search"
-                className="search__icon"
-              />
+              <FaSearch className="search-icon" />
               <input type="text" placeholder="Поиск" className="search__input" />
             </div>
 
             <div className="operations__filter filter">
               <button className="filter__button">
                 <span className="filter__text">Февраль</span>
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/2335_603.svg`}
-                  alt="Dropdown"
-                  className="filter__icon"
-                />
+                <FaChevronDown/>
               </button>
             </div>
 

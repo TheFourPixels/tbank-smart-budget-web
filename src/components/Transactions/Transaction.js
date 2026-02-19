@@ -8,11 +8,9 @@ const Transaction = ({ title, subtitle, amount, type, icon }) => {
   return (
     <div className="transaction">
       <div className="transaction__left">
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/${icon}.svg`}
-          alt={title}
-          className="transaction__icon"
-        />
+        <div className='transaction__icon'>
+          {title.charAt(0).toUpperCase()}
+        </div>
         <div className="transaction__info">
           <div className="transaction__title">{title}</div>
           <div className="transaction__subtitle">{subtitle}</div>
