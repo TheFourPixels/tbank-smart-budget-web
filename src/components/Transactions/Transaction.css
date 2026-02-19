@@ -1,0 +1,98 @@
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.transaction__left {
+  display: flex;
+  align-items: center;
+  gap: 1.1875rem;
+}
+
+.transaction__icon {
+  width: 2.8125rem;
+  height: 2.8125rem;
+  object-fit: cover;
+}
+
+.transaction__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.transaction__title {
+  font-size: 1.4375rem;
+  font-weight: 500;
+  color: #333333;
+  line-height: 1.2;
+}
+
+.transaction__subtitle {
+  font-size: 1.4375rem;
+  color: #969ca4;
+  line-height: 1.2;
+}
+
+.transaction__amount {
+  font-size: 1.4375rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.transaction__amount--negative {
+  color: #333333;
+}
+
+.transaction__amount--positive {
+  color: #34c759;
+}
+
+/* Адаптивность */
+@media (max-width: 64rem) {
+  .transaction__title,
+  .transaction__subtitle,
+  .transaction__amount {
+    font-size: 1.25rem;
+  }
+  
+  .transaction__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (max-width: 37.5rem) {
+  .transaction {
+    margin-bottom: 1rem;
+  }
+  
+  .transaction__left {
+    gap: 0.75rem;
+  }
+  
+  .transaction__title,
+  .transaction__subtitle,
+  .transaction__amount {
+    font-size: 1rem;
+  }
+
+  .transaction__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .transaction {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .transaction__amount {
+    margin-left: auto;
+  }
+}

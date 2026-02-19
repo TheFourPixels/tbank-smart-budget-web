@@ -13,6 +13,7 @@ import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm'
 import TransactionsScreen from './components/Transactions/TransactiondScreen';
 import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
 import Categories from './components/Categories/Categories';
+import Trasanctions from './components/Transactions/Transactions';
 
 
 function ProtectedRoute({ children }) {
@@ -81,9 +82,7 @@ function App() {
           <Route 
             path="/transactions" 
             element={
-                <BudgetRoute>
-                  <TransactionsScreen />
-                </BudgetRoute>
+                  <Trasanctions/>
             } 
           />
 
