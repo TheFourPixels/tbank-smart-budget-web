@@ -17,7 +17,8 @@ import Trasanctions from './components/Transactions/Transactions';
 
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = localStorage.getItem('authToken');
+  console.log(isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 

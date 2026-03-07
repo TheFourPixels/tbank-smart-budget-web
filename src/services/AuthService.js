@@ -1,3 +1,5 @@
+const AUTH_API_URL = 'http://localhost:8089/api/v1';
+
 class ApiService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -45,7 +47,21 @@ class ApiService {
       throw error;
     }
   }
+
+  async login(email, password) {
+    return this.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
+  }
+
+  async getProfile(token) {
+    return this.request('/profile', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  }
 }
 
-export const budgetApiService = new ApiService('http://localhost:8081/api/v1');
-export const transactionApiService = new ApiService('http://localhost:8083/api/v1');
+export const authApiService = new ApiService(AUTH_API_URL);

@@ -1,64 +1,72 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { authApiService } from '../services/AuthService';
+import { budgetApiService, transactionApiService } from '../services/ApiService';
 
 const AuthContext = createContext();
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); 
-  const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('authToken'));
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const userEmail = localStorage.getItem('userEmail') || 'Пользователь';
-    const hasBudget = localStorage.getItem('hasBudget') === 'true';
-    
-    setUserData({ 
-      email: userEmail, 
-      hasBudget 
-    });
-  }, []);
+  const setAuthHeader = (token) => {
+    if (token) {
+      budgetApiService.setAuthToken(token);
+      transactionApiService.setAuthToken(token);
+    }
+  };
 
   const login = async (email, password) => {
-    localStorage.setItem('userEmail', email);
-    setIsAuthenticated(true);
-    setUserData({ 
-      email, 
-      hasBudget: localStorage.getItem('hasBudget') === 'true' 
-    });
-    
-    return { success: true };
+    try {
+      const data = await authApiService.login(email, password);
+      const receivedToken = data.token;
+
+      if (receivedToken) {
+        localStorage.setItem('authToken', receivedToken);
+        console.log('Токен: ' + receivedToken);
+        setToken(receivedToken);
+        setAuthHeader(receivedToken);
+
+        const profile = await authApiService.getProfile(receivedToken);
+        setUser(profile);
+        return { success: true };
+      }
+    } catch (error) {
+      return { success: false, error: error.message || 'Ошибка входа' };
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem('userEmail');
-    setUserData(null);
-    setIsAuthenticated(false);
+    localStorage.removeItem('authToken');
+    setToken(null);
+    setUser(null);
+    setAuthHeader(null);
   };
 
-  const updateBudgetStatus = (hasBudget) => {
-    localStorage.setItem('hasBudget', hasBudget.toString());
-    setUserData(prev => prev ? { ...prev, hasBudget } : null);
-  };
+  useEffect(() => {
+    const initAuth = async () => {
+      const savedToken = localStorage.getItem('authToken');
+      if (savedToken) {
+        setToken(savedToken);
+        setAuthHeader(savedToken);
+        try {
+          const profile = await authApiService.getProfile(savedToken);
+          setUser(profile);
+        } catch (error) {
+          logout();
+        }
+      }
+      setLoading(false);
+    };
 
-  const value = {
-    isAuthenticated,
-    userData,
-    login,
-    logout,
-    updateBudgetStatus,
-    isLoading
-  };
+    initAuth();
+  }, []);
 
   return (
-    <AuthContext.Provider value={value}>
-      {children}
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
-}
+};
