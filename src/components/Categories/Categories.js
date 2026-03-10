@@ -1,13 +1,13 @@
-
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Budget/Header/Header';
 import { categoryService } from '../../services/CategoryService';
 import { budgetService } from '../../services/BudgetService';
-import './CategoriesPage.css';
-import CategoriesGrid from './CategoriesGrid';
+import './Categories.css';
+import CategoryCard from './CategoryCard';
+import CreateCategory from './CreateCategory';
 
-const CategoriesPage = () => {
+const Categories = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [categories, setCategories] = useState([]);
@@ -20,6 +20,8 @@ const CategoriesPage = () => {
   const [budgetLimits, setBudgetLimits] = useState([]);
   const [addingToBudget, setAddingToBudget] = useState({});
   
+  const inputRefs = useRef({});
+  
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -28,10 +30,6 @@ const CategoriesPage = () => {
     loadCurrentBudget();
     loadCategories();
   }, []);
-
-  const handleBack = () => {
-    navigate(-1);
-  };
 
   const loadCategories = async () => {
     setLoading(true);
@@ -43,10 +41,12 @@ const CategoriesPage = () => {
       const formattedCategories = categoriesData.map(category => ({
         id: category.id,
         name: category.name,
+        color: '#428bf9',
         twoLines: category.name && category.name.length > 15,
         isInBudget: false,
         limit: 0,
-        limit_type: 'ABSOLUTE'
+        limit_type: 'ABSOLUTE',
+        amount: 0,
       }));
       
       setCategories(formattedCategories);
@@ -98,7 +98,8 @@ const CategoriesPage = () => {
             ...category,
             isInBudget: true,
             limit: limitInfo.limit_value || 0,
-            limit_type: limitInfo.limit_type || 'ABSOLUTE'
+            limit_type: limitInfo.limit_type || 'ABSOLUTE',
+            amount: limitInfo.limit_value || 0,
           };
         }
         return category;
@@ -108,23 +109,19 @@ const CategoriesPage = () => {
 
   const getDefaultCategories = () => {
     return [
-      { id: 1, name: "Транспорт", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 2, name: "Музыкальные инструменты", twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 3, name: "Продукты", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 4, name: "Рестораны", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 5, name: "Развлечения", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 6, name: "Одежда", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 7, name: "Здоровье", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 8, name: "Образование", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 9, name: "Путешествия", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 10, name: "Коммунальные услуги", twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 11, name: "Техника", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 12, name: "Подарки", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
+      { id: 1, name: "Транспорт", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 2, name: "Музыкальные инструменты", color: '#428bf9', twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 3, name: "Продукты", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 4, name: "Рестораны", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 5, name: "Развлечения", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 6, name: "Одежда", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 7, name: "Здоровье", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 8, name: "Образование", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 9, name: "Путешествия", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 10, name: "Коммунальные услуги", color: '#428bf9', twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 11, name: "Техника", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
+      { id: 12, name: "Подарки", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
     ];
-  };
-
-  const handleNavigateToCreateCategory = () => {
-    navigate('/categories/create');
   };
 
   const handleCategoryClick = async (categoryId) => {
@@ -166,7 +163,8 @@ const CategoriesPage = () => {
                 ...cat, 
                 isInBudget: true, 
                 limit: 0,
-                limit_type: 'PERCENT'
+                limit_type: 'PERCENT',
+                amount: 0
               } 
             : cat
         )
@@ -206,7 +204,7 @@ const CategoriesPage = () => {
       setCategories(prevCategories => 
         prevCategories.map(cat => 
           cat.id === categoryId 
-            ? { ...cat, limit: limitValue }
+            ? { ...cat, limit: limitValue, amount: limitValue }
             : cat
         )
       );
@@ -223,15 +221,6 @@ const CategoriesPage = () => {
     }
     return `${limit.toLocaleString('ru-RU')} ₽`;
   };
-
-  const parseLimitFromString = (str) => {
-    const num = str.replace(/[^\d]/g, '');
-    return parseInt(num, 10) || 0;
-  };
-
-  const budgetCategories = useMemo(() => {
-    return categories.filter(c => c.isInBudget);
-  }, [categories]);
 
   const availableCategories = useMemo(() => {
     return categories.filter(c => 
@@ -254,42 +243,29 @@ const CategoriesPage = () => {
     return 12300;
   };
 
+  const handleCreateCategory = async (categoryData) => {
+    try {
+      setLoading(true);
+      await categoryService.createCategory({
+        name: categoryData.name,
+      });
+      await loadCategories();
+    } catch (err) {
+      console.error('Ошибка создания категории:', err);
+      setError('Не удалось создать категорию');
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="page">
       <Header />
-      
       <main className="main">
         <div className="container main__container">
-          <h2 className="main__title">Категории вашего бюджета</h2>
-          <section className="categories-section">
-            <div className="categories-card">
-              <div className="categories-card__content">
-                <span className="categories-card__label">Выбранные категории</span>
-                <div className="categories-icons">
-                  {budgetCategories.length === 0 ? (
-                    <span className="categories-empty">Нет выбранных категорий</span>
-                  ) : (
-                    budgetCategories.map(cat => (
-                      <div key={cat.id} className="icon" title={cat.name}>
-                        <div className="icon__placeholder">
-                          {cat.name.charAt(0).toUpperCase()}
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-                <button 
-                  className="button button--primary categories-card__button"
-                  onClick={handleNavigateToCreateCategory}
-                >
-                  <span>Добавить категорию</span>
-                </button>
-              </div>
-            </div>
-          </section >
+          <h2 className="main__title">Категории</h2>
           <section className="available-section">
-            <h2 className="stat-title">Статистика по категориям</h2>
-            
             <div className="search">
               <div className="search__content">
                 <svg className="search__icon" width="18" height="19" viewBox="0 0 18 19" fill="none">
@@ -311,21 +287,21 @@ const CategoriesPage = () => {
                   </button>
                 )}
               </div>
-            
             </div>
 
-          <CategoriesGrid></CategoriesGrid>
+            <div className="categories-grid">
+              {getDefaultCategories().map(category => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onAmountChange={(id, amount) => handleLimitChange(id, amount.toString())}
+                  onCategoryClick={handleCategoryClick}
+                  setInputRef={(el) => (inputRefs.current[category.id] = el)}
+                />
+              ))}
+            </div>
 
-            {/*(loading || budgetLoading) && (
-              <div className="loading">
-                <div className="loading__spinner"></div>
-                <p>Загрузка...</p>
-              </div>
-            )*/}
-
-            
-
-      
+            <CreateCategory onCreateCategory={handleCreateCategory} />
           </section>
         </div>
       </main>
@@ -333,4 +309,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage;
+export default Categories;

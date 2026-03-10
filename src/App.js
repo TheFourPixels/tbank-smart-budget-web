@@ -12,10 +12,13 @@ import BudgetCategories from './components/Budget/BudgetCategories/BudgetCategor
 import CreateBudgetForm from './components/Budget/CreateBudget/CreateBudgetForm';
 import TransactionsScreen from './components/Transactions/TransactiondScreen';
 import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
+import Categories from './components/Categories/Categories';
+import Trasanctions from './components/Transactions/Transactions';
 
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = localStorage.getItem('authToken');
+  console.log(isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
@@ -80,9 +83,7 @@ function App() {
           <Route 
             path="/transactions" 
             element={
-                <BudgetRoute>
-                  <TransactionsScreen />
-                </BudgetRoute>
+                  <Trasanctions/>
             } 
           />
 
@@ -90,7 +91,7 @@ function App() {
             path="/categories/create" 
             element={
                 <BudgetRoute>
-                  <CreateCategoryPage />
+                  <Categories />
                 </BudgetRoute>
             } 
           />

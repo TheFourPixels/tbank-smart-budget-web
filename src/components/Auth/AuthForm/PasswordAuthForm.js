@@ -26,9 +26,8 @@ const PasswordAuthForm = () => {
     
     if (result.success) {
       localStorage.removeItem('tempEmail');
-      navigate('/', { replace: true });
+      navigate('/bugdet/', { replace: true });
     } else {
-      console.error('Ошибка авторизации:', result.error);
       alert(result.error || 'Ошибка авторизации');
     }
     
@@ -38,10 +37,6 @@ const PasswordAuthForm = () => {
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
-  const handleBack = () => {
-    navigate('/login');
-  };
 
   return (
     <div className="auth-container">
@@ -76,13 +71,13 @@ const PasswordAuthForm = () => {
             </div>
             <div className="input-underline"></div>
           </div>
-            <button 
-              type="submit" 
-              className={`submit-button ${isLoading ? 'loading' : ''}`}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Вход...' : 'Войти'}
-            </button>
+          <button 
+            type="submit" 
+            className={`submit-button ${isLoading ? 'loading' : ''}`}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Вход...' : 'Войти'}
+          </button>
         </form>
       </div>
     </div>

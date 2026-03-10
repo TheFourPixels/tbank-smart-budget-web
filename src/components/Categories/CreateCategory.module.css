@@ -1,0 +1,150 @@
+:root {
+  --primary-yellow: #FFDD2D;
+  --black: #333333;
+  --gray-medium: rgba(0, 0, 0, 0.5);
+  --white: #FFFFFF;
+  --input-bg: #D9D9D9;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --shadow-heavy: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  width: 100%;
+  max-width: 823px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  width: calc(100%);
+  height: 80%;
+  top: -10px;
+  background: var(--overlay-bg);
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+.form {
+  width: 100%;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-heavy);
+  padding: clamp(30px, 5vw, 43px) clamp(20px, 5vw, 113px);
+}
+
+.title {
+  font-size: clamp(18px, 2vw, 20px);
+  font-weight: 500;
+  color: var(--black);
+  margin-bottom: clamp(25px, 4vw, 39px);
+  text-align: center;
+}
+
+.fields {
+  margin-bottom: clamp(30px, 5vw, 45px);
+}
+
+.field {
+  margin-bottom: 25px;
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--gray-medium);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  height: 65px;
+  background: var(--input-bg);
+  border-radius: 10px;
+  border: none;
+  padding: 0 21px;
+  font-size: 15px;
+  color: var(--black);
+  font-family: inherit;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.limitField {
+  width: 100%;
+  min-height: 69px;
+  border-radius: 5px;
+  border: 0.5px solid rgba(0, 0, 0, 0.41);
+  background: var(--white);
+  padding: 8px 21px;
+  display: flex;
+  align-items: center;
+}
+
+.limitInput {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  font-size: clamp(18px, 2vw, 20px);
+  font-weight: 500;
+  color: var(--black);
+  font-family: inherit;
+}
+
+.limitInput::placeholder {
+  color: var(--gray-medium);
+  opacity: 1;
+}
+
+.submit {
+  text-align: center;
+}
+
+.button {
+  background-color: var(--primary-yellow);
+  border: none;
+  border-radius: 16px;
+  padding: 16px 48px;
+  min-width: 120px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--black);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .form {
+    padding: 25px;
+  }
+  .overlay {
+    left: 5px;
+    right: 5px;
+    width: calc(100% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .form {
+    padding: 20px;
+  }
+  .overlay {
+    display: none;
+  }
+  .button {
+    width: 100%;
+  }
+}

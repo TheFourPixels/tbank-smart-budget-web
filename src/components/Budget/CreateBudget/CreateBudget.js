@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CreateBudget.css';
 import Header from '../Header/Header';
+import CategoryCard from '../../Categories/CategoryCard';
 
 const BudgetApp = () => {
   const [budgetAmount, setBudgetAmount] = useState('150000');
@@ -21,6 +22,21 @@ const BudgetApp = () => {
   ]);
   
   const inputRefs = useRef({});
+  
+  const months = [
+    { value: '01', label: 'Январь' },
+    { value: '02', label: 'Февраль' },
+    { value: '03', label: 'Март' },
+    { value: '04', label: 'Апрель' },
+    { value: '05', label: 'Май' },
+    { value: '06', label: 'Июнь' },
+    { value: '07', label: 'Июль' },
+    { value: '08', label: 'Август' },
+    { value: '09', label: 'Сентябрь' },
+    { value: '10', label: 'Октябрь' },
+    { value: '11', label: 'Ноябрь' },
+    { value: '12', label: 'Декабрь' },
+  ];
   
   const handleNextStep = () => {
     if (activeStep === 1 && month && year && budgetAmount) {
@@ -163,13 +179,18 @@ const BudgetApp = () => {
                   
                   <div className="period-fields-vertical">
                     <div className="period-field-wrapper">
-                      <input 
-                        type="text" 
-                        className="period-input" 
-                        placeholder="Месяц"
+                      <select
+                        className="period-input"
                         value={month}
                         onChange={(e) => setMonth(e.target.value)}
-                      />
+                      >
+                        <option value="" disabled>Месяц</option>
+                        {months.map((m) => (
+                          <option key={m.value} value={m.value}>
+                            {m.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="period-field-wrapper">
                       <input 
@@ -216,49 +237,23 @@ const BudgetApp = () => {
                 
                 <h2 className="form-title">Выберите категории бюджета</h2>
                 
-                  <div className="search-input-wrapper">
-                    <input
-                      type="text"
-                      placeholder="Название категории"
-                      className="search-input"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-
+                  <input
+                    type="text"
+                    placeholder="Название категории"
+                    className="search-input"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                 
                 <div className="categories-grid">
-                  {filteredCategories.map((category) => (
-                    <div 
-                      key={category.id} 
-                      className="category-item"
-                      onClick={() => handleCategoryClick(category.id)}
-                    >
-                      <div 
-                        className="category-icon" 
-                        style={{ backgroundColor: category.color }}
-                      ></div>
-                      <span className="category-name">{category.name}</span>
-                      <div className="category-amount-wrapper">
-                        <input
-                          ref={el => inputRefs.current[category.id] = el}
-                          type="text"
-                          className="category-amount"
-                          value={formatCategoryAmount(category.amount)}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/[^\d]/g, '');
-                            handleCategoryAmountChange(category.id, value);
-                          }}
-                          onBlur={(e) => {
-                            if (!e.target.value.match(/\d/)) {
-                              handleCategoryAmountChange(category.id, 0);
-                            }
-                          }}
-                          onClick={(e) => e.stopPropagation()}
-                          placeholder="0"
-                        />
-                      </div>
-                    </div>
+                  {filteredCategories.slice(0, 6).map((category) => (
+                    <CategoryCard
+      key={category.id}
+      category={category}
+      onAmountChange={handleCategoryAmountChange}
+      onCategoryClick={handleCategoryClick}
+      setInputRef={(el) => (inputRefs.current[category.id] = el)}
+    />
                   ))}
                 </div>
                 
