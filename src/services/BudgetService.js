@@ -20,24 +20,17 @@ class BudgetService {
   }
 
   async getBudget(year, month) {
-    try {
-      const data = await budgetApiService.request(`/budgets/${year}/${month}`);
-      return {
-        ...data,
-        total_income: data.totalIncome,
-        limits: data.limits?.map(limit => ({
-          category_id: limit.categoryId,
-          limit_value: limit.limitValue,
-          limit_type: limit.limitType
-        })) || []
-      };
-    } catch (error) {
-
-      console.error('Ошибка получения бюджета:', error);
-      throw error;
-    }
+    const data = await budgetApiService.request(`/budgets/${year}/${month}`);
+    return {
+      ...data,
+      total_income: data.totalIncome,
+      limits: data.limits?.map(limit => ({
+        category_id: limit.categoryId,
+        limit_value: limit.limitValue,
+        limit_type: limit.limitType
+      })) || []
+    };
   }
-
 
   async getBudgetSummary(year, month) {
     try {
@@ -48,12 +41,9 @@ class BudgetService {
       }
 
       const totalLimit = budget.limits?.reduce((sum, limit) => {
-        let limitValue = 0;
-        if (limit.limit_type === 'PERCENT') {
-          limitValue = (budget.total_income * limit.limit_value) / 100;
-        } else {
-          limitValue = limit.limit_value;
-        }
+        const limitValue = limit.limit_type === 'PERCENT' 
+          ? (budget.total_income * limit.limit_value) / 100
+          : limit.limit_value;
         return sum + limitValue;
       }, 0) || 0;
 
@@ -83,15 +73,12 @@ class BudgetService {
         return [];
       }
 
-      const spendingData = await this.getCategorySpending(year, month) || [];
+      const spendingData = await this.getCategorySpending(year, month);
 
-      const categories = budget.limits.map(limit => {
-        let limitValue = 0;
-        if (limit.limit_type === 'PERCENT') {
-          limitValue = (budget.total_income * limit.limit_value) / 100;
-        } else {
-          limitValue = limit.limit_value;
-        }
+      return budget.limits.map(limit => {
+        const limitValue = limit.limit_type === 'PERCENT' 
+          ? (budget.total_income * limit.limit_value) / 100
+          : limit.limit_value;
 
         const categorySpending = spendingData.find(s => s.categoryId === limit.category_id);
         const spent = categorySpending?.spent || 0;
@@ -106,8 +93,6 @@ class BudgetService {
           progress: Math.round(progress)
         };
       });
-
-      return categories;
     } catch (error) {
       console.error('Ошибка получения статистики категорий:', error);
       return [];
@@ -116,17 +101,13 @@ class BudgetService {
 
   async getCategorySpending(year, month) {
     try {
-      return [
-        { categoryId: 1, spent: 12300, categoryName: "Маркетплейсы" },
-        { categoryId: 2, spent: 8500, categoryName: "Продукты" },
-        { categoryId: 3, spent: 5300, categoryName: "Транспорт" }
-      ];
+      const response = await budgetApiService.request(`/budgets/${year}/${month}/dashboard`);
+      return response.categorySpending || [];
     } catch (error) {
       console.error('Ошибка получения трат по категориям:', error);
       return [];
     }
   }
-
 
   getDefaultBudgetSummary(year, month) {
     const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
@@ -145,7 +126,6 @@ class BudgetService {
       freeMoney: Math.max(savedBalance - savedExpenseLimit, 0)
     };
   }
-
 
   async deleteBudget(year, month) {
     return await budgetApiService.request(`/budgets/${year}/${month}`, {
@@ -170,13 +150,12 @@ class BudgetService {
     return await this.createOrUpdateBudget(budgetData);
   }
 
-    async addCategoryToBudget(data) {
+  async addCategoryToBudget(data) {
     return await budgetApiService.request('/budget/categories', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
-
 
   async getCurrentBudget() {
     const currentYear = new Date().getFullYear();

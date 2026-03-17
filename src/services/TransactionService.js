@@ -1,4 +1,4 @@
-import { budgetApiService } from './ApiService';
+import { transactionApiService } from './ApiService';
 
 export const transactionService = {
   async getTransactions({
@@ -20,42 +20,45 @@ export const transactionService = {
       if (categoryId) queryParams.append('categoryId', categoryId);
       if (type) queryParams.append('type', type);
 
-      const response = await budgetApiService.get(`/transactions?${queryParams}`);
-      return response.data;
+      const response = await transactionApiService.request(`/transactions?${queryParams}`);
+      return response;
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.error('Ошибка получения транзакций:', error);
       return this.getMockTransactions();
     }
   },
 
   async getTransactionById(id) {
     try {
-      const response = await budgetApiService.get(`/transactions/${id}`);
-      return response.data;
+      return await transactionApiService.request(`/transactions/${id}`);
     } catch (error) {
-      console.error('Error fetching transaction by id:', error);
+      console.error('Ошибка получения транзакции по ID:', error);
       throw error;
     }
   },
 
   async updateTransactionCategory(transactionId, categoryId) {
     try {
-      const response = await budgetApiService.patch(
+      return await transactionApiService.request(
         `/transactions/${transactionId}/category`,
-        { categoryId }
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ categoryId })
+        }
       );
-      return response.data;
     } catch (error) {
-      console.error('Error updating transaction category:', error);
+      console.error('Ошибка обновления категории транзакции:', error);
       throw error;
     }
   },
 
   async deleteTransaction(transactionId) {
     try {
-      await budgetApiService.delete(`/transactions/${transactionId}`);
+      await transactionApiService.request(`/transactions/${transactionId}`, {
+        method: 'DELETE'
+      });
     } catch (error) {
-      console.error('Error deleting transaction:', error);
+      console.error('Ошибка удаления транзакции:', error);
       throw error;
     }
   },
@@ -63,49 +66,50 @@ export const transactionService = {
   async syncTransactions(year, month) {
     try {
       const queryParams = new URLSearchParams();
-      if (year) queryParams.append('year', year);
-      if (month) queryParams.append('month', month);
-      const endpoint = `/transactions/sync${
-        queryParams.toString() ? `?${queryParams.toString()}` : ''
-      }`;
-      await budgetApiService.post(endpoint);
+      if (year) queryParams.append('year', year.toString());
+      if (month) queryParams.append('month', month.toString());
+      
+      await transactionApiService.request(
+        `/transactions/sync?${queryParams.toString()}`,
+        { method: 'POST' }
+      );
     } catch (error) {
-      console.error('Error syncing transactions:', error);
+      console.error('Ошибка синхронизации транзакций:', error);
       throw error;
     }
   },
 
   async getCategoryTotal(categoryId) {
     try {
-      const response = await budgetApiService.get(
+      return await transactionApiService.request(
         `/transactions/categories/${categoryId}/total`
       );
-      return response.data;
     } catch (error) {
-      console.error('Error fetching category total:', error);
+      console.error('Ошибка получения суммы по категории:', error);
       throw error;
     }
   },
 
   async createTransaction(transactionData) {
     try {
-      const response = await budgetApiService.post(
+      return await transactionApiService.request(
         '/transactions',
-        transactionData
+        {
+          method: 'POST',
+          body: JSON.stringify(transactionData)
+        }
       );
-      return response.data;
     } catch (error) {
-      console.error('Error creating transaction:', error);
+      console.error('Ошибка создания транзакции:', error);
       throw error;
     }
   },
 
   async getCategories() {
     try {
-      const response = await budgetApiService.get('/categories');
-      return response.data;
+      return await transactionApiService.request('/categories');
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Ошибка получения категорий:', error);
       return this.getMockCategories();
     }
   },

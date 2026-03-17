@@ -1,7 +1,6 @@
 import { budgetApiService } from './ApiService.js';
 
 class CategoryService {
-
   async createCategory(categoryData) {
     return await budgetApiService.request('/categories', {
       method: 'POST',
@@ -11,8 +10,12 @@ class CategoryService {
 
   async getCategories(params = {}) {
     const queryParams = new URLSearchParams();
-    if (params.page) queryParams.append('page', params.page);
-    if (params.size) queryParams.append('size', params.size);
+    
+    Object.keys(params).forEach(key => {
+      if (params[key] !== undefined) {
+        queryParams.append(key, params[key].toString());
+      }
+    });
     
     const queryString = queryParams.toString();
     const url = queryString ? `/categories?${queryString}` : '/categories';
