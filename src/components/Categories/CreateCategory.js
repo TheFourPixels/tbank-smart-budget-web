@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styles from './CreateCategory.module.css';
 
-const CreateCategory = ({ onCreateCategory }) => {
+const CreateCategory = ({ onCreateCategory, onAddToBudget }) => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryLimit, setCategoryLimit] = useState('');
+  const [addToBudget, setAddToBudget] = useState(false);
 
   const formatNumber = (value) => {
     if (!value) return '';
@@ -15,23 +16,35 @@ const CreateCategory = ({ onCreateCategory }) => {
     setCategoryLimit(rawValue);
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!categoryName.trim()) {
       alert('Введите название категории');
       return;
     }
-    if (!categoryLimit) {
-      alert('Введите лимит категории');
-      return;
+    
+    const limitValue = parseInt(categoryLimit, 10) || 0;
+
+    try {
+      const newCategory = await onCreateCategory({
+        name: categoryName.trim(),
+      });
+
+      if (addToBudget && newCategory && newCategory.id) {
+        await onAddToBudget({
+          categoryId: newCategory.id,
+          limitValue: limitValue,
+          limitType: 'SUM'
+        });
+      }
+
+      setCategoryName('');
+      setCategoryLimit('');
+      setAddToBudget(false);
+      
+    } catch (error) {
+      console.error('Ошибка при создании категории:', error);
+      alert('Не удалось создать категорию');
     }
-
-    onCreateCategory({
-      name: categoryName.trim(),
-      limit: parseInt(categoryLimit, 10),
-    });
-
-    setCategoryName('');
-    setCategoryLimit('');
   };
 
   return (
@@ -67,6 +80,18 @@ const CreateCategory = ({ onCreateCategory }) => {
                   placeholder="0"
                 />
               </div>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  checked={addToBudget}
+                  onChange={(e) => setAddToBudget(e.target.checked)}
+                />
+                <span className={styles.checkboxText}>Добавить в текущий бюджет</span>
+              </label>
             </div>
           </div>
 

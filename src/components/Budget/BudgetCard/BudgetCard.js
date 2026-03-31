@@ -16,7 +16,6 @@ const BudgetCard = () => {
       try {
         setLoading(true);
         setError(null);
-        
 
         const savedYear = localStorage.getItem('budgetYear');
         const savedMonth = localStorage.getItem('budgetMonth');
@@ -25,10 +24,8 @@ const BudgetCard = () => {
         
         const year = savedYear ? parseInt(savedYear) : currentYear;
         const month = savedMonth ? parseInt(savedMonth) : currentMonth;
-        
 
         const data = await budgetService.getBudgetSummary(year, month);
-        console.log(data);
         setBudgetData(data);
         
       } catch (error) {

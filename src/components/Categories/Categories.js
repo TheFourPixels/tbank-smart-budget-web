@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Budget/Header/Header';
 import { categoryService } from '../../services/CategoryService';
@@ -20,8 +20,6 @@ const Categories = () => {
   const [budgetLimits, setBudgetLimits] = useState([]);
   const [addingToBudget, setAddingToBudget] = useState({});
   
-  const inputRefs = useRef({});
-  
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -31,34 +29,46 @@ const Categories = () => {
     loadCategories();
   }, []);
 
-  const loadCategories = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await categoryService.getCategories();
-      const categoriesData = response.content || [];
+const loadCategories = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    let allCategories = [];
+    let page = 0;
+    let totalPages = 1;
+    
+    while (page < totalPages) {
+      const response = await categoryService.getCategories({
+        page: page,
+        size: 10
+      });
       
-      const formattedCategories = categoriesData.map(category => ({
-        id: category.id,
-        name: category.name,
-        color: '#428bf9',
-        twoLines: category.name && category.name.length > 15,
-        isInBudget: false,
-        limit: 0,
-        limit_type: 'ABSOLUTE',
-        amount: 0,
-      }));
+      const categories = response.content || [];
+      allCategories = [...allCategories, ...categories];
       
-      setCategories(formattedCategories);
-    } catch (err) {
-      console.error('Ошибка загрузки категорий:', err);
-      setError('Не удалось загрузить категории. Пожалуйста, попробуйте позже.');
-      const defaultCategories = getDefaultCategories();
-      setCategories(defaultCategories);
-    } finally {
-      setLoading(false);
+      totalPages = response.totalPages;
+      page++;
     }
-  };
+    
+    const formattedCategories = allCategories.map(category => ({
+      id: category.id,
+      name: category.name,
+      color: '#428bf9',
+      twoLines: category.name && category.name.length > 15,
+      isInBudget: false,
+      limit: 0,
+      limit_type: 'SUM',
+      amount: 0,
+    }));
+    
+    setCategories(formattedCategories);
+  } catch (err) {
+    console.error('Ошибка загрузки категорий:', err);
+    setError('Не удалось загрузить категории. Пожалуйста, попробуйте позже.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const loadCurrentBudget = async () => {
     setBudgetLoading(true);
@@ -79,8 +89,7 @@ const Categories = () => {
       console.error('Ошибка загрузки бюджета:', err);
       setBudgetError('Не удалось загрузить информацию о бюджете');
       
-      if (err.response && err.response.status === 404) {
-        console.log('Бюджет на текущий период не найден');
+      if (err.status === 404) {
         setCurrentBudget(null);
         setBudgetLimits([]);
       }
@@ -92,14 +101,14 @@ const Categories = () => {
   const updateCategoriesWithBudgetInfo = (limits) => {
     setCategories(prevCategories => {
       return prevCategories.map(category => {
-        const limitInfo = limits.find(limit => limit.category_id === category.id);
+        const limitInfo = limits.find(limit => limit.categoryId === category.id);
         if (limitInfo) {
           return {
             ...category,
             isInBudget: true,
-            limit: limitInfo.limit_value || 0,
-            limit_type: limitInfo.limit_type || 'ABSOLUTE',
-            amount: limitInfo.limit_value || 0,
+            limit: limitInfo.limitValue || 0,
+            limit_type: limitInfo.limitType || 'SUM',
+            amount: limitInfo.limitValue || 0,
           };
         }
         return category;
@@ -107,28 +116,10 @@ const Categories = () => {
     });
   };
 
-  const getDefaultCategories = () => {
-    return [
-      { id: 1, name: "Транспорт", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 2, name: "Музыкальные инструменты", color: '#428bf9', twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 3, name: "Продукты", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 4, name: "Рестораны", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 5, name: "Развлечения", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 6, name: "Одежда", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 7, name: "Здоровье", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 8, name: "Образование", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 9, name: "Путешествия", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 10, name: "Коммунальные услуги", color: '#428bf9', twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 11, name: "Техника", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-      { id: 12, name: "Подарки", color: '#428bf9', twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE', amount: 0 },
-    ];
-  };
-
   const handleCategoryClick = async (categoryId) => {
     const category = categories.find(c => c.id === categoryId);
     
     if (category && category.isInBudget) {
-      console.log('Категория уже добавлена в бюджет');
       return;
     }
 
@@ -137,8 +128,8 @@ const Categories = () => {
     try {
       const newLimit = {
         categoryId: categoryId,
-        limit_value: 0,
-        limit_type: "PERCENT"
+        limitValue: 0,
+        limitType: "SUM"
       };
 
       const currentLimits = budgetLimits || [];
@@ -163,7 +154,7 @@ const Categories = () => {
                 ...cat, 
                 isInBudget: true, 
                 limit: 0,
-                limit_type: 'PERCENT',
+                limit_type: 'SUM',
                 amount: 0
               } 
             : cat
@@ -183,8 +174,8 @@ const Categories = () => {
     const limitValue = parseInt(rawValue, 10) || 0;
 
     const updatedLimits = budgetLimits.map(limit => 
-      limit.category_id === categoryId 
-        ? { ...limit, limit_value: limitValue }
+      limit.categoryId === categoryId 
+        ? { ...limit, limitValue: limitValue }
         : limit
     );
 
@@ -215,34 +206,6 @@ const Categories = () => {
     }
   };
 
-  const formatLimit = (limit, limit_type) => {
-    if (limit_type === 'PERCENT') {
-      return `${limit}%`;
-    }
-    return `${limit.toLocaleString('ru-RU')} ₽`;
-  };
-
-  const availableCategories = useMemo(() => {
-    return categories.filter(c => 
-      !c.isInBudget && 
-      c.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, categories]);
-
-  const getCategoryLimit = (categoryId) => {
-    const limit = budgetLimits.find(l => l.category_id === categoryId);
-    return limit ? limit.limit_value : 0;
-  };
-
-  const getCategoryLimitType = (categoryId) => {
-    const limit = budgetLimits.find(l => l.category_id === categoryId);
-    return limit ? limit.limit_type : 'ABSOLUTE';
-  };
-
-  const getSpentAmount = (categoryId) => {
-    return 12300;
-  };
-
   const handleCreateCategory = async (categoryData) => {
     try {
       setLoading(true);
@@ -258,6 +221,68 @@ const Categories = () => {
       setLoading(false);
     }
   };
+
+  const handleCreateAndAddToBudget = async (budgetData) => {
+  try {
+    setLoading(true);
+    
+    const newCategory = await categoryService.createCategory({
+      name: budgetData.name,
+    });
+    
+    if (budgetData.limitValue > 0) {
+      const newLimit = {
+        categoryId: newCategory.id,
+        limitValue: budgetData.limitValue,
+        limitType: budgetData.limitType
+      };
+
+      const currentLimits = budgetLimits || [];
+      const updatedLimits = [...currentLimits, newLimit];
+
+      const budgetDataToSend = {
+        year: currentYear,
+        month: currentMonth,
+        totalIncome: currentBudget ? currentBudget.totalIncome : 0,
+        limits: updatedLimits
+      };
+
+      const response = await budgetService.createOrUpdateBudget(budgetDataToSend);
+      
+      setCurrentBudget(response);
+      setBudgetLimits(response.limits || []);
+      
+      setCategories(prevCategories => 
+        prevCategories.map(cat => 
+          cat.id === newCategory.id 
+            ? { 
+                ...cat, 
+                isInBudget: true, 
+                limit: budgetData.limitValue,
+                limit_type: budgetData.limitType,
+                amount: budgetData.limitValue
+              } 
+            : cat
+        )
+      );
+    }
+    
+    await loadCategories();
+    
+  } catch (err) {
+    console.error('Ошибка создания категории и добавления в бюджет:', err);
+    setError('Не удалось создать категорию или добавить в бюджет');
+    setTimeout(() => setError(null), 3000);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+  const filteredCategories = categories.filter(c => 
+    c.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="page">
@@ -290,19 +315,21 @@ const Categories = () => {
             </div>
 
             <div className="categories-grid">
-              {getDefaultCategories().map(category => (
+              {filteredCategories.map(category => (
                 <CategoryCard
                   key={category.id}
                   category={category}
                   onAmountChange={(id, amount) => handleLimitChange(id, amount.toString())}
                   onCategoryClick={handleCategoryClick}
-                  setInputRef={(el) => (inputRefs.current[category.id] = el)}
+                  addingToBudget={addingToBudget[category.id]}
                 />
               ))}
             </div>
 
-            <CreateCategory onCreateCategory={handleCreateCategory} />
-          </section>
+<CreateCategory 
+  onCreateCategory={handleCreateCategory} 
+  onAddToBudget={handleCreateAndAddToBudget}
+/>          </section>
         </div>
       </main>
     </div>

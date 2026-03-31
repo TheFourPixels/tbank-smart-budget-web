@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Budget/Header/Header';
@@ -46,7 +45,7 @@ const CategoriesPage = () => {
         twoLines: category.name && category.name.length > 15,
         isInBudget: false,
         limit: 0,
-        limit_type: 'ABSOLUTE'
+        limit_type: 'SUM'
       }));
       
       setCategories(formattedCategories);
@@ -98,7 +97,7 @@ const CategoriesPage = () => {
             ...category,
             isInBudget: true,
             limit: limitInfo.limit_value || 0,
-            limit_type: limitInfo.limit_type || 'ABSOLUTE'
+            limit_type: limitInfo.limit_type || 'SUM'
           };
         }
         return category;
@@ -108,18 +107,18 @@ const CategoriesPage = () => {
 
   const getDefaultCategories = () => {
     return [
-      { id: 1, name: "Транспорт", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 2, name: "Музыкальные инструменты", twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 3, name: "Продукты", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 4, name: "Рестораны", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 5, name: "Развлечения", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 6, name: "Одежда", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 7, name: "Здоровье", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 8, name: "Образование", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 9, name: "Путешествия", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 10, name: "Коммунальные услуги", twoLines: true, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 11, name: "Техника", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
-      { id: 12, name: "Подарки", twoLines: false, isInBudget: false, limit: 0, limit_type: 'ABSOLUTE' },
+      { id: 1, name: "Транспорт", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 2, name: "Музыкальные инструменты", twoLines: true, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 3, name: "Продукты", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 4, name: "Рестораны", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 5, name: "Развлечения", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 6, name: "Одежда", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 7, name: "Здоровье", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 8, name: "Образование", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 9, name: "Путешествия", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 10, name: "Коммунальные услуги", twoLines: true, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 11, name: "Техника", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
+      { id: 12, name: "Подарки", twoLines: false, isInBudget: false, limit: 0, limit_type: 'SUM' },
     ];
   };
 
@@ -141,7 +140,7 @@ const CategoriesPage = () => {
       const newLimit = {
         categoryId: categoryId,
         limit_value: 0,
-        limit_type: "PERCENT"
+        limit_type: "SUM"
       };
 
       const currentLimits = budgetLimits || [];
@@ -166,7 +165,7 @@ const CategoriesPage = () => {
                 ...cat, 
                 isInBudget: true, 
                 limit: 0,
-                limit_type: 'PERCENT'
+                limit_type: 'SUM'
               } 
             : cat
         )
@@ -247,7 +246,7 @@ const CategoriesPage = () => {
 
   const getCategoryLimitType = (categoryId) => {
     const limit = budgetLimits.find(l => l.category_id === categoryId);
-    return limit ? limit.limit_type : 'ABSOLUTE';
+    return limit ? limit.limit_type : 'SUM';
   };
 
   const getSpentAmount = (categoryId) => {
@@ -314,18 +313,11 @@ const CategoriesPage = () => {
             
             </div>
 
-          <CategoriesGrid></CategoriesGrid>
+          <CategoriesGrid 
+  categories={categories} 
+  searchQuery={searchQuery}
+/>
 
-            {/*(loading || budgetLoading) && (
-              <div className="loading">
-                <div className="loading__spinner"></div>
-                <p>Загрузка...</p>
-              </div>
-            )*/}
-
-            
-
-      
           </section>
         </div>
       </main>

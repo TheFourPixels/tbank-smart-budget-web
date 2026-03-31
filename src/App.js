@@ -29,7 +29,7 @@ function PublicRoute({ children }) {
 
 function BudgetRoute({ children }) {
   const hasBudget = localStorage.getItem('hasBudget');
-  return hasBudget ? children : <Navigate to="/create"/>;
+  return hasBudget ? children : <Navigate to="/create" replace />;
 }
 
 function App() {
