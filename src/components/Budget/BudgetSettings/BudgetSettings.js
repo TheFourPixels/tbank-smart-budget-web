@@ -56,28 +56,7 @@ const BudgetSettings = () => {
         console.error('Ошибка загрузки статистики категорий:', error);
 
         const defaultCategories = [
-          {
-            id: 1,
-            title: 'Маркетплейсы',
-            spent: '12 300 Р',
-            limit: '15 400 Р',
-            available: '2 567 Р',
-            rawSpent: 12300,
-            rawLimit: 15400,
-            rawAvailable: 2567,
-            progress: 70,
-          },
-          {
-            id: 2,
-            title: 'Продукты',
-            spent: '8 500 Р',
-            limit: '10 000 Р',
-            available: '1 500 Р',
-            rawSpent: 8500,
-            rawLimit: 10000,
-            rawAvailable: 1500,
-            progress: 85,
-          },
+          
         ];
         setCategories(defaultCategories);
       } finally {
@@ -95,7 +74,7 @@ const BudgetSettings = () => {
   };
 
   const handleClick = () => {
-    navigate('/budget/categories');
+    navigate('/categories');
   };
 
   if (loading) {

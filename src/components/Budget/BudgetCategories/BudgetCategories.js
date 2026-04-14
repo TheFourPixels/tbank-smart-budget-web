@@ -53,22 +53,7 @@ const BudgetCategories = () => {
       setError('Не удалось загрузить данные. Пожалуйста, попробуйте позже.');
 
       const defaultCategories = [
-        {
-          id: 1,
-          title: 'Продукты',
-          progress: 80,
-          spent: '12 300 Р',
-          limit: '15 400 Р',
-          available: '2 567 Р'
-        },
-        {
-          id: 2,
-          title: 'Маркетплейсы',
-          progress: 60,
-          spent: '12 300 Р',
-          limit: '15 400 Р',
-          available: '2 567 Р'
-        }
+        
       ];
       
       setCategories(defaultCategories);
