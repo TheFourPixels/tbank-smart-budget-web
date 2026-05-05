@@ -2,24 +2,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import './CreateBudget.css';
 import Header from '../Header/Header';
 import CategoryCard from '../../Categories/CategoryCard';
+import { budgetService } from '../../../services/BudgetService.js';
+import { categoryService } from '../../../services/CategoryService.js';
+import { useNavigate } from 'react-router-dom';
 
 const BudgetApp = () => {
+  const navigate = useNavigate();
   const [budgetAmount, setBudgetAmount] = useState('150000');
   const [activeStep, setActiveStep] = useState(1);
   const [isScrolled, setIsScrolled] = useState(false);
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [categories, setCategories] = useState([
-    { id: 1, name: 'Транспорт', amount: 0, color: '#428bf9' },
-    { id: 2, name: 'Продукты', amount: 0, color: '#428bf9' },
-    { id: 3, name: 'Развлечения', amount: 0, color: '#428bf9' },
-    { id: 4, name: 'Жилье', amount: 0, color: '#428bf9' },
-    { id: 5, name: 'Здоровье', amount: 0, color: '#428bf9' },
-    { id: 6, name: 'Одежда', amount: 0, color: '#428bf9' },
-    { id: 7, name: 'Образование', amount: 0, color: '#428bf9' },
-    { id: 8, name: 'Рестораны', amount: 0, color: '#428bf9' },
-  ]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   
   const inputRefs = useRef({});
   
@@ -38,23 +35,100 @@ const BudgetApp = () => {
     { value: '12', label: 'Декабрь' },
   ];
   
+  useEffect(() => {
+    loadCategories();
+    setYear(new Date().getFullYear().toString());
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const response = await categoryService.getCategories();
+      const categoriesList = response.content || [];
+      const formattedCategories = categoriesList.map(category => ({
+        id: category.id,
+        name: category.name,
+        amount: 0,
+        color: '#428bf9'
+      }));
+      setCategories(formattedCategories);
+    } catch (err) {
+      console.error('Ошибка загрузки категорий:', err);
+      
+      const defaultCategories = [
+        { id: 1, name: 'Транспорт', amount: 0, color: '#428bf9' },
+        { id: 2, name: 'Продукты', amount: 0, color: '#428bf9' },
+        { id: 3, name: 'Развлечения', amount: 0, color: '#428bf9' },
+        { id: 4, name: 'Жилье', amount: 0, color: '#428bf9' },
+        { id: 5, name: 'Здоровье', amount: 0, color: '#428bf9' },
+        { id: 6, name: 'Одежда', amount: 0, color: '#428bf9' },
+        { id: 7, name: 'Образование', amount: 0, color: '#428bf9' },
+        { id: 8, name: 'Рестораны', amount: 0, color: '#428bf9' },
+      ];
+      setCategories(defaultCategories);
+    }
+  };
+
   const handleNextStep = () => {
     if (activeStep === 1 && month && year && budgetAmount) {
       setActiveStep(2);
-      console.log('Переход к шагу 2: Категории');
     } else {
-      alert('Пожалуйста, заполните все поля');
+      setTimeout(() => setError(''), 3000);
     }
   };
   
-  const handleCreateBudget = () => {
-    console.log('Бюджет создан:', {
-      budgetAmount,
-      month,
-      year,
-      categories
-    });
-    alert('Бюджет успешно создан!');
+  const handleCreateBudget = async () => {
+    if (!month || !year || !budgetAmount) {
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const totalIncome = parseFloat(budgetAmount);
+      const selectedCategories = categories.filter(cat => cat.amount > 0);
+      
+      if (selectedCategories.length === 0) {
+        setLoading(false);
+        setTimeout(() => setError(''), 3000);
+        return;
+      }
+
+      const limits = selectedCategories.map(category => ({
+        categoryId: category.id,
+        limitValue: category.amount,
+        limitType: 'SUM'
+      }));
+
+      const budgetData = {
+        year: parseInt(year),
+        month: parseInt(month),
+        totalIncome: totalIncome,
+        limits: limits
+      };
+
+      await budgetService.createOrUpdateBudget(budgetData);
+      
+      localStorage.setItem('hasBudget', 'true');
+      localStorage.setItem('budgetName', `Бюджет на ${getMonthName(month)} ${year}`);
+      localStorage.setItem('budgetLimit', budgetAmount);
+      localStorage.setItem('budgetYear', year);
+      localStorage.setItem('budgetMonth', month);
+      
+      navigate('/dashboard');
+      
+    } catch (err) {
+      console.error('Ошибка создания бюджета:', err);
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const getMonthName = (monthValue) => {
+    const month = months.find(m => m.value === monthValue);
+    return month ? month.label : '';
   };
   
   const handleCategoryAmountChange = (id, amount) => {
@@ -72,11 +146,6 @@ const BudgetApp = () => {
   };
   
   const formatBudgetAmount = (value) => {
-    return new Intl.NumberFormat('ru-RU').format(value);
-  };
-  
-  const formatCategoryAmount = (value) => {
-    if (value === 0) return '';
     return new Intl.NumberFormat('ru-RU').format(value);
   };
   
@@ -125,6 +194,12 @@ const BudgetApp = () => {
       <Header />
       
       <main className="main-content">
+        {error && (
+          <div className="error-banner">
+            <p>{error}</p>
+          </div>
+        )}
+        
         <h1 className="page-title text-center">
           Создайте свой первый умный бюджет
         </h1>
@@ -209,6 +284,7 @@ const BudgetApp = () => {
                     className="btn-primary" 
                     type="button"
                     onClick={handleNextStep}
+                    disabled={loading}
                   >
                     Далее
                   </button>
@@ -237,23 +313,23 @@ const BudgetApp = () => {
                 
                 <h2 className="form-title">Выберите категории бюджета</h2>
                 
-                  <input
-                    type="text"
-                    placeholder="Название категории"
-                    className="search-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                <input
+                  type="text"
+                  placeholder="Название категории"
+                  className="search-input"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
                 
                 <div className="categories-grid">
                   {filteredCategories.slice(0, 6).map((category) => (
                     <CategoryCard
-      key={category.id}
-      category={category}
-      onAmountChange={handleCategoryAmountChange}
-      onCategoryClick={handleCategoryClick}
-      setInputRef={(el) => (inputRefs.current[category.id] = el)}
-    />
+                      key={category.id}
+                      category={category}
+                      onAmountChange={handleCategoryAmountChange}
+                      onCategoryClick={handleCategoryClick}
+                      setInputRef={(el) => (inputRefs.current[category.id] = el)}
+                    />
                   ))}
                 </div>
                 
@@ -262,8 +338,9 @@ const BudgetApp = () => {
                     className="btn-primary" 
                     type="button"
                     onClick={handleCreateBudget}
+                    disabled={loading}
                   >
-                    Создать бюджет
+                    {loading ? 'Создание...' : 'Создать бюджет'}
                   </button>
                 </div>
               </div>

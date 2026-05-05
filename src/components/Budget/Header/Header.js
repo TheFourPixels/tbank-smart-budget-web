@@ -1,7 +1,16 @@
 import React from 'react';
 import styles from './Header.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+
   return (
     <header className={styles.header}>
       <div className={styles.headerBackground}></div>
@@ -10,13 +19,13 @@ const Header = () => {
           <div className={styles.logo}>Умный бюджет</div>
           <ul className={styles.navList}>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Главная</span>
+              <span onClick={() => handleNavigation('/budget')} className={styles.navLink}>Бюджет</span>
             </li>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Бюджет</span>
+              <span onClick={() => handleNavigation('/categories')} className={styles.navLink}>Категории</span>
             </li>
             <li className={styles.navItem}>
-              <span className={styles.navLink}>Транзакции</span>
+              <span onClick={() => handleNavigation('/transactions')} className={styles.navLink}>Транзакции</span>
             </li>
             <li className={styles.navItem}>
               <span className={styles.navLink}>Цели</span>

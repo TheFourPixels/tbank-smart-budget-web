@@ -83,7 +83,6 @@ const CreateBudgetForm = () => {
         setCategoryLimits(newCategoryLimits);
         return prev.filter(id => id !== categoryId);
       } else {
-
         setCategoryLimits(prev => ({
           ...prev,
           [categoryId]: ''
@@ -135,46 +134,43 @@ const CreateBudgetForm = () => {
 
     try {
       const totalIncome = parseFloat(budgetLimit);
+      
       const limits = selectedCategories.map(categoryId => {
-      const limitValue = parseFloat(categoryLimits[categoryId]) || 0;
-      const percentage = (limitValue / totalIncome) * 100;
-        
+        const limitValue = parseFloat(categoryLimits[categoryId]) || 0;
         return {
-          categoryId,
-          limitValue: percentage,
-          limitType: 'PERCENT'
+          categoryId: categoryId,
+          limitValue: limitValue,
+          limitType: 'SUM'
         };
       });
 
       const budgetData = {
-        year,
-        month,
-        totalIncome,
-        limits
+        year: parseInt(year),
+        month: parseInt(month),
+        totalIncome: totalIncome,
+        limits: limits
       };
 
-      console.log('Отправка данных бюджета:', budgetData);
-
       const response = await budgetService.createOrUpdateBudget(budgetData);
+      
       localStorage.setItem('hasBudget', 'true');
       localStorage.setItem('budgetName', budgetName);
       localStorage.setItem('budgetLimit', budgetLimit);
       localStorage.setItem('budgetYear', year.toString());
       localStorage.setItem('budgetMonth', month.toString());
-      localStorage.setItem('budgetId', response.id?.toString() || '');
       
       navigate('/dashboard');
       
     } catch (error) {
       console.error('Ошибка при создании бюджета:', error);
 
-      if (error.code === 400) {
+      if (error.status === 400) {
         setServerError('Ошибка валидации: ' + (error.message || 'Проверьте введенные данные'));
-      } else if (error.code === 401) {
+      } else if (error.status === 401) {
         setServerError('Ошибка авторизации');
-      } else if (error.code === 404) {
+      } else if (error.status === 404) {
         setServerError('Сервер не найден');
-      } else if (error.code === 500) {
+      } else if (error.status === 500) {
         setServerError('Ошибка сервера. Попробуйте позже');
       } else if (error.message) {
         setServerError(error.message);
@@ -355,7 +351,6 @@ const CreateBudgetForm = () => {
                   )}
                 </div>
 
-                {/* Поиск категорий */}
                 <div className="search-container">
                   <div className="search-input-wrapper">
                     <svg className="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -423,9 +418,6 @@ const CreateBudgetForm = () => {
                                 </div>
                                 <div className="category-info">
                                   <h4 className="category-name">{category.name}</h4>
-                                  {category.description && (
-                                    <p className="category-description">{category.description}</p>
-                                  )}
                                 </div>
                               </div>
                               {isSelected && (

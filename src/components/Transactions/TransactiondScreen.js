@@ -20,12 +20,18 @@ const TransactionsScreen = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [transactionsData, statsData] = await Promise.all([
-        transactionService.getTransactions(filters),
-        transactionService.getStats(selectedPeriod)
-      ]);
+      
+      const transactionsData = await transactionService.getTransactions({
+        ...filters,
+        page: 0,
+        size: 50
+      });
+      
       setTransactions(transactionsData.content || []);
-      setStats(statsData);
+      
+      const mockStats = transactionService.getMockStats();
+      setStats(mockStats);
+      
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -63,10 +69,11 @@ const TransactionsScreen = () => {
     const groups = {};
     
     transactions.forEach(transaction => {
-      const date = new Date(transaction.date).toDateString();
+      const dateKey = transaction.transactionTime || transaction.date;
+      const date = new Date(dateKey).toDateString();
       if (!groups[date]) {
         groups[date] = {
-          date: transaction.date,
+          date: dateKey,
           total: 0,
           items: []
         };
@@ -104,7 +111,6 @@ const TransactionsScreen = () => {
       <Header />
       
       <div className={styles.container}>
-        {/* Заголовок страницы */}
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Транзакции</h1>
           <button 
@@ -151,7 +157,10 @@ const TransactionsScreen = () => {
                   transaction={transaction}
                   onCategoryChange={(categoryId) => {
                     transactionService.updateTransactionCategory(transaction.id, categoryId)
-                      .then(loadData);
+                      .then(loadData)
+                      .catch(error => {
+                        console.error('Ошибка обновления категории:', error);
+                      });
                   }}
                 />
               ))}

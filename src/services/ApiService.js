@@ -47,5 +47,5 @@ class ApiService {
   }
 }
 
-export const budgetApiService = new ApiService('http://localhost:8081/api/v1');
-export const transactionApiService = new ApiService('http://localhost:8083/api/v1');
+export const budgetApiService = new ApiService('http://localhost:8080/api/v1');
+export const transactionApiService = new ApiService('http://localhost:8080/api/v1');
