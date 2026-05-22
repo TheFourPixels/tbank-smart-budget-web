@@ -26,6 +26,8 @@ const CategoriesPage = () => {
   useEffect(() => {
     loadCurrentBudget();
     loadCategories();
+        loadCurrentBudget();
+
   }, []);
 
   const handleBack = () => {
@@ -250,7 +252,7 @@ const CategoriesPage = () => {
   };
 
   const getSpentAmount = (categoryId) => {
-    return 12300;
+    return 0;
   };
 
   return (

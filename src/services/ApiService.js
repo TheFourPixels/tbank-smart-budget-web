@@ -49,3 +49,8 @@ class ApiService {
 
 export const budgetApiService = new ApiService('http://localhost:8080/api/v1');
 export const transactionApiService = new ApiService('http://localhost:8080/api/v1');
+export const authApiService = new ApiService('http://localhost:8080/api/v1/auth');
+export const goalApiService = new ApiService('http://localhost:8080/api/v1');
+export const dashboardApiService = new ApiService('http://localhost:8080/api/v1/dashboard');
+
+export { ApiService };

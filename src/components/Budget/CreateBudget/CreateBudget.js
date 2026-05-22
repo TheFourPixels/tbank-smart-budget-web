@@ -116,7 +116,7 @@ const BudgetApp = () => {
       localStorage.setItem('budgetYear', year);
       localStorage.setItem('budgetMonth', month);
       
-      navigate('/dashboard');
+      navigate('/budget');
       
     } catch (err) {
       console.error('Ошибка создания бюджета:', err);
@@ -321,7 +321,7 @@ const BudgetApp = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 
-                <div className="categories-grid">
+                <div className="categories-grid2">
                   {filteredCategories.slice(0, 6).map((category) => (
                     <CategoryCard
                       key={category.id}

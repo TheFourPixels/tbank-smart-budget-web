@@ -1,9 +1,10 @@
-import { ApiService } from './ApiService.js';
+import { dashboardApiService } from './ApiService';
 
 class DashboardService {
   constructor() {
-    this.apiService = new ApiService('http://dashboard-service:8088');
+    this.apiService = dashboardApiService;
   }
+
 
   setAuthToken(token) {
     this.apiService.setAuthToken(token);
@@ -11,7 +12,7 @@ class DashboardService {
 
   async getDashboardData(year, month) {
     try {
-      const data = await this.apiService.request(`/api/v1/dashboard/${year}/${month}`);
+      const data = await this.apiService.request(`/${year}/${month}`);
       return this.transformDashboardData(data);
     } catch (error) {
       console.error('Ошибка получения данных дашборда:', error);

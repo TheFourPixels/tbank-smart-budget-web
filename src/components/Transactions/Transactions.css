@@ -264,6 +264,47 @@ input {
   margin-right: 10px;
   display: inline-block;
 }
+/* Переключатель типа операции */
+.add-card__type-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.type-btn--expense {
+  color: #e74c3c;
+}
+
+.type-btn--expense.active {
+  background: #e74c3c;
+  color: #fff;
+  border-color: #e74c3c;
+}
+
+.type-btn--income {
+  color: #27ae60;
+}
+
+.type-btn--income.active {
+  background: #27ae60;
+  color: #fff;
+  border-color: #27ae60;
+}
+
+.type-btn:hover {
+  opacity: 0.9;
+}
 
 .add-card__input-wrapper {
   margin-bottom: 15px;

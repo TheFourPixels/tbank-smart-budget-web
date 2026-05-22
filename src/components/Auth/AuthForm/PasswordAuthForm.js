@@ -26,7 +26,7 @@ const PasswordAuthForm = () => {
     
     if (result.success) {
       localStorage.removeItem('tempEmail');
-      navigate('/bugdet/', { replace: true });
+      navigate('/create', { replace: true });
     } else {
       alert(result.error || 'Ошибка авторизации');
     }

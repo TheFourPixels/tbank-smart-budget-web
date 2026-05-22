@@ -2,7 +2,7 @@
   font-family: 'Inter', sans-serif;
   background-color: #f8f8f8;
   margin: 0;
-  padding: 0;
+  padding: 0 0 80px 0;   /* добавлен нижний отступ */
   color: #333;
   -webkit-font-smoothing: antialiased;
 }
@@ -49,6 +49,7 @@ p.section-desc {
   display: flex;
   gap: 25px;
   margin-bottom: 50px;
+  justify-content: center; 
 }
 
 @media (max-width: 1060px) {
@@ -681,6 +682,30 @@ p.section-desc {
 .item-date {
   font-size: 12px;
   color: #969ca4;
+}
+
+.donut-visualization {
+  width: 100%;
+  max-width: 200px;   /* задайте желаемый размер */
+  margin: 0 auto;
+}
+.donut-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-plot-area {
+  position: relative;
+  height: 200px; /* фиксированная высота графика */
+}
+.plot-relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.bar-group {
+  height: 100%;
 }
 
 .no-goals {

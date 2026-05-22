@@ -3,9 +3,10 @@ import AreaChart from './charts/AreaChart';
 import BarChart from './charts/BarChart';
 
 const PlanVsFactWidget = ({ dashboardData, budget, currentDate }) => {
+  // Добавляем проверки на существование данных
   if (!dashboardData || !budget) return null;
 
-  const { financialSummary } = dashboardData;
+  const financialSummary = dashboardData.financialSummary || {};
   const planAmount = budget.total_income || 0;
   const factAmount = financialSummary.totalSpent || 0;
   const difference = factAmount - planAmount;
@@ -15,8 +16,8 @@ const PlanVsFactWidget = ({ dashboardData, budget, currentDate }) => {
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
   ];
-  const monthName = monthNames[currentDate.getMonth()];
-  const year = currentDate.getFullYear();
+  const monthName = monthNames[currentDate?.getMonth()] || '';
+  const year = currentDate?.getFullYear() || '';
 
   return (
     <>
@@ -29,11 +30,11 @@ const PlanVsFactWidget = ({ dashboardData, budget, currentDate }) => {
         <div className="pvf-summary-col">
           <div className="summary-box plan-box">
             <span className="box-label">План</span>
-            <span className="box-value">{planAmount.toLocaleString()} Р</span>
+            <span className="box-value">{Math.round(planAmount).toLocaleString()} Р</span>
           </div>
           <div className="summary-box fact-box">
             <span className="box-label">Факт</span>
-            <span className="box-value">{factAmount.toLocaleString()} Р</span>
+            <span className="box-value">{Math.round(factAmount).toLocaleString()} Р</span>
           </div>
         </div>
 
@@ -44,8 +45,8 @@ const PlanVsFactWidget = ({ dashboardData, budget, currentDate }) => {
           </div>
           <div className="chart-body-flex">
             <div className="y-axis">
-              <span>120</span><span>105</span><span>90</span><span>75</span>
-              <span>60</span><span>45</span><span>30</span><span>15</span>
+              <span>120k</span><span>105k</span><span>90k</span><span>75k</span>
+              <span>60k</span><span>45k</span><span>30k</span><span>15k</span>
             </div>
             <div className="chart-plot-area">
               <AreaChart 
@@ -64,7 +65,10 @@ const PlanVsFactWidget = ({ dashboardData, budget, currentDate }) => {
         <div className="chart-card bar-chart">
           <div className="chart-body-flex bar-body">
             <div className="y-axis">
-              <span>150</span><span>100</span><span>50</span><span>0</span>
+              <span>{Math.round(Math.max(planAmount, factAmount) / 1000)}k</span>
+              <span>{Math.round(Math.max(planAmount, factAmount) * 0.75 / 1000)}k</span>
+              <span>{Math.round(Math.max(planAmount, factAmount) * 0.5 / 1000)}k</span>
+              <span>0</span>
             </div>
             <div className="chart-plot-area">
               <BarChart 

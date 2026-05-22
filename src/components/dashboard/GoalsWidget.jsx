@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GoalsWidget = ({ goalsData, currentDate }) => {
-  const { completed, active } = goalsData;
+  const { completed = [], active = [] } = goalsData || {};
   const totalGoals = completed.length + active.length;
   const progressPercent = totalGoals > 0 ? Math.round((completed.length / totalGoals) * 100) : 0;
 
@@ -9,8 +9,8 @@ const GoalsWidget = ({ goalsData, currentDate }) => {
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
   ];
-  const monthName = monthNames[currentDate.getMonth()];
-  const year = currentDate.getFullYear();
+  const monthName = monthNames[currentDate?.getMonth()] || '';
+  const year = currentDate?.getFullYear() || '';
 
   return (
     <>
@@ -55,12 +55,12 @@ const GoalsWidget = ({ goalsData, currentDate }) => {
           </div>
           <div className="list-body">
             {completed.slice(0, 5).map((goal, index) => (
-              <div key={goal.id} className="list-item">
+              <div key={goal.id || index} className="list-item">
                 <div className="item-icon achieved-icon">{index + 1}</div>
                 <div className="item-text">
-                  <span className="item-title">{goal.name}</span>
+                  <span className="item-title">{goal.name || 'Без названия'}</span>
                   <span className="item-date">
-                    {goal.deadline ? new Date(goal.deadline).toLocaleDateString() : 'Дата не указана'}
+                    {goal.deadline ? new Date(goal.deadline).toLocaleDateString('ru-RU') : 'Дата не указана'}
                   </span>
                 </div>
               </div>
@@ -78,12 +78,12 @@ const GoalsWidget = ({ goalsData, currentDate }) => {
           </div>
           <div className="list-body">
             {active.slice(0, 5).map((goal, index) => (
-              <div key={goal.id} className="list-item">
+              <div key={goal.id || index} className="list-item">
                 <div className="item-icon inprog-icon">{index + 1}</div>
                 <div className="item-text">
-                  <span className="item-title">{goal.name}</span>
+                  <span className="item-title">{goal.name || 'Без названия'}</span>
                   <span className="item-date">
-                    {goal.deadline ? new Date(goal.deadline).toLocaleDateString() : 'Дата не указана'}
+                    {goal.deadline ? new Date(goal.deadline).toLocaleDateString('ru-RU') : 'Дата не указана'}
                   </span>
                 </div>
               </div>

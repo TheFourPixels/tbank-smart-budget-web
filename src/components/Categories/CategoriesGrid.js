@@ -17,7 +17,7 @@ const CategoriesGrid = ({ categories = [], onLimitChange, searchQuery = '' }) =>
     [localSearchQuery, searchQuery, budgetCategories]
   );
 
-  const getSpentAmount = () => 12300;
+  const getSpentAmount = () => 0;
   const formatCurrency = (amount) => `${amount.toLocaleString('ru-RU')} ₽`;
 
   return (

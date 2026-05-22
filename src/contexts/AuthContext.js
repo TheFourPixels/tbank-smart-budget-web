@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { authApiService } from '../services/AuthService';
-import { budgetApiService, transactionApiService } from '../services/ApiService';
+import { budgetApiService, transactionApiService, goalApiService, dashboardApiService} from '../services/ApiService';
 
 const AuthContext = createContext();
 
@@ -15,6 +15,9 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       budgetApiService.setAuthToken(token);
       transactionApiService.setAuthToken(token);
+      goalApiService.setAuthToken(token);
+      dashboardApiService.setAuthToken(token);
+
     }
   };
 

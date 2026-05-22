@@ -1,8 +1,8 @@
-import { ApiService } from './ApiService.js';
+import { goalApiService } from './ApiService';
 
 class GoalService {
   constructor() {
-    this.apiService = new ApiService('http://goal-service:8087');
+    this.apiService = goalApiService;
   }
 
   setAuthToken(token) {
@@ -10,56 +10,80 @@ class GoalService {
   }
 
   async createGoal(goalData) {
-    return await this.apiService.request('/api/v1/goals', {
+    // Swagger: POST /api/v1/goals
+    return this.apiService.request('/goals', {
       method: 'POST',
-      body: JSON.stringify(goalData)
+      body: JSON.stringify({
+        name: goalData.name,
+        targetAmount: goalData.targetAmount,
+        deadline: goalData.deadline
+        // currentAmount не нужен при создании
+      }),
     });
   }
 
   async getGoal(id) {
-    return await this.apiService.request(`/api/v1/goals/${id}`);
+    // Swagger: GET /api/v1/goals/{id}
+    return this.apiService.request(`/goals/${id}`);
   }
 
   async updateGoal(id, goalData) {
-    return await this.apiService.request(`/api/v1/goals/${id}`, {
+    // Swagger: PUT /api/v1/goals/{id}
+    return this.apiService.request(`/goals/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(goalData)
+      body: JSON.stringify({
+        name: goalData.name,
+        targetAmount: goalData.targetAmount,
+        deadline: goalData.deadline
+      }),
     });
   }
 
   async deleteGoal(id) {
-    return await this.apiService.request(`/api/v1/goals/${id}`, {
-      method: 'DELETE'
+    // Swagger: DELETE /api/v1/goals/{id}
+    return this.apiService.request(`/goals/${id}`, {
+      method: 'DELETE',
     });
   }
 
   async contributeToGoal(id, amount) {
-    return await this.apiService.request(`/api/v1/goals/${id}/contribute`, {
+    // Swagger: POST /api/v1/goals/{id}/contribute
+    return this.apiService.request(`/goals/${id}/contribute`, {
       method: 'POST',
-      body: JSON.stringify({ amount })
+      body: JSON.stringify({ amount }),
     });
   }
 
   async listCompleted(year, month) {
-    const queryParams = new URLSearchParams({ year, month });
-    return await this.apiService.request(`/api/v1/goals/completed?${queryParams}`);
+    // Swagger: GET /api/v1/goals/completed?year=&month=
+    const queryParams = new URLSearchParams({ 
+      year: year.toString(), 
+      month: month.toString() 
+    });
+    return this.apiService.request(`/goals/completed?${queryParams}`);
   }
 
   async listActive(year, month) {
-    const queryParams = new URLSearchParams({ year, month });
-    return await this.apiService.request(`/api/v1/goals/active?${queryParams}`);
+    // Swagger: GET /api/v1/goals/active?year=&month=
+    const queryParams = new URLSearchParams({ 
+      year: year.toString(), 
+      month: month.toString() 
+    });
+    return this.apiService.request(`/goals/active?${queryParams}`);
   }
 
   async getAllGoals() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
     try {
       const [completed, active] = await Promise.all([
-        this.listCompleted(new Date().getFullYear(), new Date().getMonth() + 1),
-        this.listActive(new Date().getFullYear(), new Date().getMonth() + 1)
+        this.listCompleted(year, month),
+        this.listActive(year, month),
       ]);
-      
       return {
         completed: completed || [],
-        active: active || []
+        active: active || [],
       };
     } catch (error) {
       console.error('Ошибка получения всех целей:', error);

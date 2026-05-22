@@ -301,7 +301,7 @@ select.period-input option {
   box-shadow: none;
 }
 
-.categories-grid {
+.categories-grid2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 20px;

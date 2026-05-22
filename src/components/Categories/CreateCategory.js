@@ -82,17 +82,7 @@ const CreateCategory = ({ onCreateCategory, onAddToBudget }) => {
               </div>
             </div>
 
-            <div className={styles.field}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  className={styles.checkbox}
-                  checked={addToBudget}
-                  onChange={(e) => setAddToBudget(e.target.checked)}
-                />
-                <span className={styles.checkboxText}>Добавить в текущий бюджет</span>
-              </label>
-            </div>
+        
           </div>
 
           <div className={styles.submit}>
