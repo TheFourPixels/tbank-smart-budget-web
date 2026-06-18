@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import EmailAuthForm from './components/Auth/AuthForm/EmailAuthForm';
 import PasswordAuthForm from './components/Auth/AuthForm/PasswordAuthForm';
+import RegisterForm from './components/Auth/AuthForm/RegisterForm';
 import CategoriesPage from './components/Categories/CategoriesPage';
 import Budget from './components/Budget/Budget';
+import DashboardPage from './components/dashboard/DashboardPage';
 import './App.css';
 import CreateCategoryPage from './components/CreateCategory/CreateCategoryPage';
 import CreateBudgetInfo from './components/Budget/CreateBudget/CreateBudgetInfo';
@@ -14,17 +16,16 @@ import TransactionsScreen from './components/Transactions/TransactiondScreen';
 import BudgetApp from './components/Budget/CreateBudget/CreateBudget';
 import Categories from './components/Categories/Categories';
 import Trasanctions from './components/Transactions/Transactions';
-
+import GoalsPage from './components/Goals/GoalsPage';
 
 function ProtectedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem('authToken');
-  console.log(isAuthenticated);
+  const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
 function PublicRoute({ children }) {
   const { isAuthenticated } = useAuth();
-  return !isAuthenticated ? children : children;
+  return !isAuthenticated ? children : <Navigate to="/" replace />;
 }
 
 function BudgetRoute({ children }) {
@@ -37,84 +38,114 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
+            element={<Navigate to="/budget" replace />}
+          />
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
-                <BudgetRoute><Budget/></BudgetRoute>
+                <DashboardPage />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/create" 
+          <Route
+            path="/create"
             element={
               <ProtectedRoute>
-                <BudgetApp/>
+                <BudgetApp />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/create/budget" 
+          <Route
+            path="/create/budget"
             element={
               <ProtectedRoute>
                 <CreateBudgetForm />
               </ProtectedRoute>
-            } 
+            }
           />
-<Route 
-            path="/budget/categories" 
+          <Route
+            path="/budget/categories"
             element={
-                              <BudgetRoute>
-
-                <BudgetCategories />
-                                </BudgetRoute>
-
-            } 
+              <ProtectedRoute>
+                <BudgetRoute>
+                  <BudgetCategories />
+                </BudgetRoute>
+              </ProtectedRoute>
+            }
           />
-          <Route 
-            path="/categories" 
+          <Route
+            path="/categories"
             element={
+              <ProtectedRoute>
                 <BudgetRoute>
                   <CategoriesPage />
                 </BudgetRoute>
-            } 
+              </ProtectedRoute>
+            }
           />
-
-          <Route 
-            path="/transactions" 
+          <Route
+            path="/transactions"
             element={
-                  <Trasanctions/>
-            } 
+              <ProtectedRoute>
+                <Trasanctions />
+              </ProtectedRoute>
+            }
           />
-
-          <Route 
-            path="/categories/create" 
+          <Route
+            path="/goals"
             element={
+              <ProtectedRoute>
+                <GoalsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/create"
+            element={
+              <ProtectedRoute>
                 <BudgetRoute>
                   <Categories />
                 </BudgetRoute>
-            } 
+              </ProtectedRoute>
+            }
           />
-          
-          <Route 
-            path="/login" 
+          <Route
+            path="/budget"
+            element={
+              <ProtectedRoute>
+                <BudgetRoute>
+                  <Budget />
+                </BudgetRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
             element={
               <PublicRoute>
                 <EmailAuthForm />
               </PublicRoute>
-            } 
+            }
           />
-          
-          <Route 
-            path="/login/password" 
+          <Route
+            path="/login/password"
             element={
               <PublicRoute>
                 <PasswordAuthForm />
               </PublicRoute>
-            } 
+            }
           />
-          
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterForm />
+              </PublicRoute>
+            }
+          />
         </Routes>
       </Router>
     </AuthProvider>

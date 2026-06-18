@@ -283,3 +283,34 @@
   outline: 2px solid var(--color-white);
   outline-offset: 2px;
 }
+
+.auth-switch {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-size-subtitle);
+  color: var(--color-grey);
+}
+
+.auth-switch-link {
+  color: var(--color-blue);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.auth-switch-link:hover {
+  text-decoration: underline;
+}
+
+.auth-error {
+  width: 100%;
+  max-width: 342px;
+  margin: -8px 0 0 0;
+  padding: 10px 14px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 10px;
+  color: #d32f2f;
+  font-size: 13px;
+  font-family: var(--font-family);
+  text-align: center;
+}

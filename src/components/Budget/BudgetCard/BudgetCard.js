@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { budgetService } from '../../../services/BudgetService.js';
 import styles from './BudgetCard.module.css';
 
@@ -10,6 +11,7 @@ const BudgetCard = () => {
   const [budgetData, setBudgetData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadBudgetData = async () => {
@@ -100,7 +102,7 @@ const BudgetCard = () => {
           <p>Создайте свой первый бюджет, чтобы начать отслеживать расходы</p>
           <button 
             className={styles.createButton}
-            onClick={() => window.location.href = '/budget/create'}
+            onClick={() => navigate('/create')}
           >
             Создать бюджет
           </button>
