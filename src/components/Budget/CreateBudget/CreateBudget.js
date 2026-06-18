@@ -86,7 +86,7 @@ const BudgetApp = () => {
     setError('');
 
     try {
-      const totalIncome = parseFloat(budgetAmount);
+      const totalIncome = parseFloat(budgetAmount.replace(/\s/g, ''));
       const selectedCategories = categories.filter(cat => cat.amount > 0);
       
       if (selectedCategories.length === 0) {
@@ -146,7 +146,14 @@ const BudgetApp = () => {
   };
   
   const formatBudgetAmount = (value) => {
-    return new Intl.NumberFormat('ru-RU').format(value);
+    return new Intl.NumberFormat('ru-RU').format(value.replace(/\s/g, ''));
+  };
+  
+  const handleBudgetAmountChange = (e) => {
+    const value = e.target.value.replace(/\s/g, '');
+    if (/^\d*$/.test(value)) {
+      setBudgetAmount(value);
+    }
   };
   
   useEffect(() => {
@@ -246,9 +253,13 @@ const BudgetApp = () => {
                   <div className="form-field">
                     <label className="field-label">Сумма бюджета</label>
                     <div className="field-input">
-                      <div className="input-value">
-                        {formatBudgetAmount(budgetAmount)}
-                      </div>
+                      <input
+                        type="text"
+                        className="input-value"
+                        value={formatBudgetAmount(budgetAmount)}
+                        onChange={handleBudgetAmountChange}
+                        placeholder="Введите сумму"
+                      />
                     </div>
                   </div>
                   

@@ -9,34 +9,40 @@ const PasswordAuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
-  
+  const [error, setError] = useState('');
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem('tempEmail') || 'lb2005lba@gmail.com';
+    const savedEmail = localStorage.getItem('tempEmail');
+    if (!savedEmail) {
+      navigate('/login', { replace: true });
+      return;
+    }
     setEmail(savedEmail);
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
 
     const result = await login(email, password);
-    
+
     if (result.success) {
       localStorage.removeItem('tempEmail');
       navigate('/create', { replace: true });
     } else {
-      alert(result.error || 'Ошибка авторизации');
+      setError(result.error || 'Ошибка авторизации');
     }
-    
+
     setIsLoading(false);
   };
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <div className="auth-container">
@@ -51,7 +57,7 @@ const PasswordAuthForm = () => {
           <div className="input-group">
             <div className={`input-wrapper ${isFocused ? 'input-focused' : ''}`}>
               <input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={handleFocus}
@@ -60,23 +66,36 @@ const PasswordAuthForm = () => {
                 placeholder="Введите ваш пароль"
                 required
                 disabled={isLoading}
+                autoFocus
               />
               <button
                 type="button"
                 className="password-toggle"
                 onClick={togglePasswordVisibility}
               >
-                {showPassword ? "Скрыть" : "Показать"}
+                {showPassword ? 'Скрыть' : 'Показать'}
               </button>
             </div>
             <div className="input-underline"></div>
           </div>
-          <button 
-            type="submit" 
+
+          {error && <p className="auth-error">{error}</p>}
+
+          <button
+            type="submit"
             className={`submit-button ${isLoading ? 'loading' : ''}`}
             disabled={isLoading}
           >
             {isLoading ? 'Вход...' : 'Войти'}
+          </button>
+
+          <button
+            type="button"
+            className="back-button"
+            onClick={() => navigate('/login')}
+            disabled={isLoading}
+          >
+            Назад
           </button>
         </form>
       </div>

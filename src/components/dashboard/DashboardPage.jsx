@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { useBudget } from '../../hooks/useBudget';
+import { budgetService } from '../../services/BudgetService';
 import { transactionService } from '../../services/TransactionService';
 import { goalService } from '../../services/goalService';
 import PlanVsFactWidget from './PlanVsFactWidget';
@@ -17,6 +18,30 @@ const DashboardPage = () => {
   const { dashboardData, loading: dashboardLoading, error: dashboardError, fetchDashboardData } = useDashboard();
   const { budget, loading: budgetLoading, error: budgetError, getCurrentBudget } = useBudget();
 
+  const loadAdditionalData = useCallback(async (year, month) => {
+    try {
+      // Загрузка данных по категориям (метод находится в BudgetService,
+      // а не в TransactionService — раньше вызов падал с ошибкой)
+      const spendingData = await budgetService.getCategorySpending(year, month);
+      setCategorySpending(spendingData || []);
+
+      // Загрузка данных по целям
+      const [completedGoals, activeGoals] = await Promise.all([
+        goalService.listCompleted(year, month),
+        goalService.listActive(year, month)
+      ]);
+
+      setGoalsData({
+        completed: completedGoals || [],
+        active: activeGoals || []
+      });
+    } catch (error) {
+      console.error('Ошибка загрузки дополнительных данных:', error);
+      setCategorySpending([]);
+      setGoalsData({ completed: [], active: [] });
+    }
+  }, []);
+
   useEffect(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
@@ -31,30 +56,7 @@ const DashboardPage = () => {
     fetchDashboardData(year, month);
     getCurrentBudget();
     loadAdditionalData(year, month);
-  }, [currentDate]);
-
-  const loadAdditionalData = async (year, month) => {
-    try {
-      // Загрузка данных по категориям
-      const spendingData = await transactionService.getCategorySpending(year, month);
-      setCategorySpending(spendingData || []);
-      
-      // Загрузка данных по целям
-      const [completedGoals, activeGoals] = await Promise.all([
-        goalService.listCompleted(year, month),
-        goalService.listActive(year, month)
-      ]);
-      
-      setGoalsData({
-        completed: completedGoals || [],
-        active: activeGoals || []
-      });
-    } catch (error) {
-      console.error('Ошибка загрузки дополнительных данных:', error);
-      setCategorySpending([]);
-      setGoalsData({ completed: [], active: [] });
-    }
-  };
+  }, [currentDate, fetchDashboardData, getCurrentBudget, loadAdditionalData]);
 
   const handleDateChange = (newDate) => {
     setCurrentDate(newDate);

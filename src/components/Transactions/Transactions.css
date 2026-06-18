@@ -10,6 +10,298 @@ body {
   color: #333333;
   box-sizing: border-box;
 }
+/* === КАЛЕНДАРЬ === */
+.operations__filter {
+  position: relative;
+}
+
+.filter__button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--card-background, #fff);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary, #333);
+}
+
+.filter__button:hover {
+  border-color: var(--primary-color, #f5f3ff);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.15);
+}
+
+.filter__button.active {
+  border-color: var(--primary-color, #f5f3ff);
+  background: rgba(108, 92, 231, 0.05);
+}
+
+.filter__chevron {
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+}
+
+.filter__chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Выпадающий календарь */
+.calendar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  background: var(--card-background, #fff);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  min-width: 300px;
+  animation: calendarFadeIn 0.2s ease;
+}
+
+@keyframes calendarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Шапка календаря */
+.calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.calendar__nav-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary, #666);
+  transition: all 0.2s ease;
+}
+
+.calendar__nav-btn:hover {
+  background: var(--hover-bg, #f5f5f5);
+  color: var(--primary-color, #f5f3ff);
+}
+
+.calendar__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.calendar__title:hover {
+  background: var(--hover-bg, #f5f5f5);
+}
+
+/* Дни недели */
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar__weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #999);
+  padding: 8px 0;
+}
+
+/* Дни месяца */
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #333);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__day.empty {
+  cursor: default;
+}
+
+.calendar__day:not(.empty):hover {
+  background: var(--hover-bg, #f5f5f5);
+}
+
+.calendar__day.today {
+  background: var(--primary-color, #f5f3ff);
+  color: #fff;
+  font-weight: 600;
+}
+
+.calendar__day.today:hover {
+  background: var(--primary-hover, #5b4cdb);
+}
+
+/* Кнопка "Текущий месяц" */
+.calendar__current-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-color, #f5f3ff);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__current-btn:hover {
+  background: rgba(108, 92, 231, 0.05);
+  border-color: var(--primary-color, #f5f3ff);
+}
+
+/* Вид выбора года */
+.calendar__years-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.calendar__year-btn {
+  padding: 12px 8px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__year-btn:hover {
+  border-color: var(--primary-color, #f5f3ff);
+  color: var(--primary-color, #f5f3ff);
+}
+
+.calendar__year-btn.active {
+  background: var(--primary-color, #f5f3ff);
+  border-color: var(--primary-color, #f5f3ff);
+  color: #fff;
+}
+
+/* Сетка месяцев */
+.calendar__months-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.calendar__month-btn {
+  padding: 10px 8px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: transparent;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__month-btn:hover {
+  border-color: var(--primary-color, #f5f3ff);
+  color: var(--primary-color, #f5f3ff);
+}
+
+.calendar__month-btn.active {
+  background: var(--primary-color, #f5f3ff);
+  border-color: var(--primary-color, #f5f3ff);
+  color: #fff;
+}
+
+/* Стили для заблокированного поля категории */
+.add-card__input.category-locked {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  color: #666;
+}
+
+.category-lock-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.add-card__input-wrapper.category-selector {
+  position: relative;
+}
+
+/* Тёмная тема */
+@media (prefers-color-scheme: dark) {
+  .calendar-dropdown {
+    --card-background: #2d2d2d;
+    --border-color: #404040;
+    --text-primary: #f5f5f5;
+    --text-secondary: #999;
+    --hover-bg: #3d3d3d;
+  }
+  
+  .filter__button {
+    background: var(--card-background);
+    color: var(--text-primary);
+  }
+  
+  .calendar__day {
+    color: var(--text-primary);
+  }
+  
+  .calendar__year-btn,
+  .calendar__month-btn {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+  }
+  
+  .add-card__input.category-locked {
+    background-color: #3d3d3d;
+    color: #999;
+  }
+}
 
 *,
 *::before,
@@ -476,4 +768,279 @@ input {
     width: 2.25rem;
     height: 2.25rem;
   }
+}
+
+/* === КАЛЕНДАРЬ (СВЕТЛАЯ ТЕМА) === */
+.operations__filter {
+  position: relative;
+}
+
+.filter__button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.filter__button:hover {
+  border-color: #f5f3ff;
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.15);
+}
+
+.filter__button.active {
+  border-color: #f5f3ff;
+  background: #f5f3ff;
+}
+
+.filter__text {
+  color: #1f2937;
+}
+
+.filter__chevron {
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.filter__chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Выпадающий календарь */
+.calendar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  min-width: 320px;
+  animation: calendarFadeIn 0.2s ease;
+}
+
+@keyframes calendarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Шапка календаря */
+.calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.calendar__nav-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.calendar__nav-btn:hover {
+  background: #f5f3ff;
+  color: #ffffff;
+}
+
+.calendar__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  background: transparent;
+  border: none;
+}
+
+.calendar__title:hover {
+  background: #f3f4f6;
+}
+
+/* Дни недели */
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar__weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  padding: 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Дни месяца */
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+}
+
+.calendar__day.empty {
+  cursor: default;
+}
+
+.calendar__day:not(.empty):hover {
+  background: #f3f4f6;
+}
+
+.calendar__day.today {
+  background: #f5f3ff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.calendar__day.today:hover {
+  background: #f5f3ff;
+}
+
+/* Кнопка "Текущий месяц" */
+.calendar__current-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f5f3ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__current-btn:hover {
+  background: #f5f3ff;
+  border-color: #f5f3ff;
+}
+
+/* Вид выбора года */
+.calendar__years-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.calendar__year-btn {
+  padding: 12px 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__year-btn:hover {
+  border-color: #f5f3ff;
+  color: #f5f3ff;
+  background: #f5f3ff;
+}
+
+.calendar__year-btn.active {
+  background: #f5f3ff;
+  border-color: #f5f3ff;
+  color: #ffffff;
+}
+
+/* Сетка месяцев */
+.calendar__months-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.calendar__month-btn {
+  padding: 10px 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar__month-btn:hover {
+  border-color: #f5f3ff;
+  color: #f5f3ff;
+  background: #f5f3ff;
+}
+
+.calendar__month-btn.active {
+  background: #f5f3ff;
+  border-color: #f5f3ff;
+  color: #ffffff;
+}
+
+/* Стили для заблокированного поля категории */
+.add-card__input.category-locked {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+.category-lock-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.add-card__input-wrapper.category-selector {
+  position: relative;
 }

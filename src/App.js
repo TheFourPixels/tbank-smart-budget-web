@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import EmailAuthForm from './components/Auth/AuthForm/EmailAuthForm';
 import PasswordAuthForm from './components/Auth/AuthForm/PasswordAuthForm';
+import RegisterForm from './components/Auth/AuthForm/RegisterForm';
 import CategoriesPage from './components/Categories/CategoriesPage';
 import Budget from './components/Budget/Budget';
 import DashboardPage from './components/dashboard/DashboardPage';
@@ -18,8 +19,7 @@ import Trasanctions from './components/Transactions/Transactions';
 import GoalsPage from './components/Goals/GoalsPage';
 
 function ProtectedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem('authToken');
-  console.log(isAuthenticated);
+  const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
@@ -38,104 +38,113 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route 
-            path="/" 
-            element={<Navigate to="/budget" replace />} 
+          <Route
+            path="/"
+            element={<Navigate to="/budget" replace />}
           />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/create" 
+          <Route
+            path="/create"
             element={
               <ProtectedRoute>
-                <BudgetApp/>
+                <BudgetApp />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/create/budget" 
+          <Route
+            path="/create/budget"
             element={
               <ProtectedRoute>
                 <CreateBudgetForm />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/budget/categories" 
+          <Route
+            path="/budget/categories"
             element={
               <ProtectedRoute>
                 <BudgetRoute>
                   <BudgetCategories />
                 </BudgetRoute>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/categories" 
+          <Route
+            path="/categories"
             element={
               <ProtectedRoute>
                 <BudgetRoute>
                   <CategoriesPage />
                 </BudgetRoute>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/transactions" 
+          <Route
+            path="/transactions"
             element={
               <ProtectedRoute>
-                <Trasanctions/>
+                <Trasanctions />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/goals" 
+          <Route
+            path="/goals"
             element={
               <ProtectedRoute>
-                <GoalsPage/>
+                <GoalsPage />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/categories/create" 
+          <Route
+            path="/categories/create"
             element={
               <ProtectedRoute>
                 <BudgetRoute>
                   <Categories />
                 </BudgetRoute>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/budget" 
+          <Route
+            path="/budget"
             element={
-              <BudgetRoute>
               <ProtectedRoute>
+                <BudgetRoute>
                   <Budget />
-              </ProtectedRoute></BudgetRoute>
-            } 
+                </BudgetRoute>
+              </ProtectedRoute>
+            }
           />
-          <Route 
-            path="/login" 
+          <Route
+            path="/login"
             element={
               <PublicRoute>
                 <EmailAuthForm />
               </PublicRoute>
-            } 
+            }
           />
-          <Route 
-            path="/login/password" 
+          <Route
+            path="/login/password"
             element={
               <PublicRoute>
                 <PasswordAuthForm />
               </PublicRoute>
-            } 
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterForm />
+              </PublicRoute>
+            }
           />
         </Routes>
       </Router>

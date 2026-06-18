@@ -47,10 +47,12 @@ class ApiService {
   }
 }
 
-export const budgetApiService = new ApiService('http://localhost:8080/api/v1');
-export const transactionApiService = new ApiService('http://localhost:8080/api/v1');
-export const authApiService = new ApiService('http://localhost:8080/api/v1/auth');
-export const goalApiService = new ApiService('http://localhost:8080/api/v1');
-export const dashboardApiService = new ApiService('http://localhost:8080/api/v1/dashboard');
+const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+export const budgetApiService = new ApiService(API_BASE_URL);
+export const transactionApiService = new ApiService(API_BASE_URL);
+export const authApiService = new ApiService(`${API_BASE_URL}/auth`);
+export const goalApiService = new ApiService(API_BASE_URL);
+export const dashboardApiService = new ApiService(`${API_BASE_URL}/dashboard`);
 
 export { ApiService };

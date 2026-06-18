@@ -28,9 +28,9 @@ const TransactionsScreen = () => {
       });
       
       setTransactions(transactionsData.content || []);
-      
-      const mockStats = transactionService.getMockStats();
-      setStats(mockStats);
+
+      const statsData = await transactionService.getStats();
+      setStats(statsData);
       
     } catch (error) {
       console.error('Error loading data:', error);
@@ -170,7 +170,9 @@ const TransactionsScreen = () => {
 
         <button 
           className={styles.fab}
-          onClick={() => console.log('Добавить транзакцию')}
+          onClick={() => {
+            // TODO: экран добавления транзакции пока не реализован
+          }}
           aria-label="Добавить транзакцию"
           title="Добавить транзакцию"
         >

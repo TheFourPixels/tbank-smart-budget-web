@@ -27,7 +27,7 @@ const GoalCard = ({ goal, onContribute, onDelete }) => {
 
   return (
     <div className="goal-card">
-      
+      <h3 className="goal-title">{goal.name || 'Без названия'}</h3>
 
       <div className="goal-money">
         <strong>{current.toLocaleString('ru-RU')} ₽</strong>

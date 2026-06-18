@@ -1,21 +1,46 @@
+:root {
+  --primary-yellow: #FFDD2D;
+  --black: #333333;
+  --white: #FFFFFF;
+  --input-bg: #EAEAEA;
+  --shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
+}
+
 .item {
   background-color: var(--white);
-  border-radius: 10px;
-  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  border: 1px solid #f0f0f0;
-  width: 250px;
+  gap: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+  position: relative;
+}
+
+.item:hover {
+  border-color: #e0e0e0;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.item.inBudget {
+  border-color: var(--primary-yellow);
+  cursor: default;
+}
+
+.item.loading {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   flex-shrink: 0;
-  background-color: var(--category-blue) !important;
+  background-color: #428bf9;
 }
 
 .name {
@@ -23,31 +48,82 @@
   color: var(--black);
   flex-grow: 1;
   font-weight: 500;
-  width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .amountWrapper {
   display: flex;
   align-items: center;
-  gap: 4px;
-  min-width: 100px;
 }
 
 .amount {
   background-color: var(--input-bg);
   border: none;
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--black);
-  width: 70px;
+  width: 90px;
   text-align: right;
   font-family: inherit;
   cursor: text;
+  transition: background-color 0.15s;
 }
 
 .amount:focus {
   outline: none;
-  background-color: #d0d0d0;
+  background-color: #d5d5d5;
+}
+
+.amount::placeholder {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.addHint {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #eaeaea;
+  border-top-color: var(--primary-yellow);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color 0.15s, background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.deleteBtn:hover {
+  color: #e54545;
+  background-color: #fee9e9;
 }

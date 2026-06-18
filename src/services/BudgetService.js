@@ -19,15 +19,17 @@ class BudgetService {
     });
   }
 
+  // БАГ #1 ИСПРАВЛЕН: убран маппинг в snake_case — теперь возвращаем
+  // camelCase (как отдаёт API), чтобы все компоненты работали единообразно.
   async getBudget(year, month) {
     const data = await budgetApiService.request(`/budgets/${year}/${month}`);
     return {
       ...data,
-      total_income: data.totalIncome,
+      totalIncome: data.totalIncome || 0,
       limits: data.limits?.map(limit => ({
-        category_id: limit.categoryId,
-        limit_value: limit.limitValue,
-        limit_type: limit.limitType
+        categoryId: limit.categoryId,
+        limitValue: limit.limitValue,
+        limitType: limit.limitType || 'SUM',
       })) || []
     };
   }
@@ -35,29 +37,29 @@ class BudgetService {
   async getBudgetSummary(year, month) {
     try {
       const budget = await this.getBudget(year, month);
-      
+
       if (!budget) {
         return this.getDefaultBudgetSummary(year, month);
       }
 
       const totalLimit = budget.limits?.reduce((sum, limit) => {
-        const limitValue = limit.limit_type === 'PERCENT' 
-          ? (budget.total_income * limit.limit_value) / 100
-          : limit.limit_value;
+        const limitValue = limit.limitType === 'PERCENT'
+          ? (budget.totalIncome * limit.limitValue) / 100
+          : limit.limitValue;
         return sum + limitValue;
       }, 0) || 0;
 
-      const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
+      const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
                          'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
       const monthName = monthNames[month - 1] || 'Текущий месяц';
 
       return {
         title: `Бюджет на ${monthName} ${year}`,
-        balance: budget.total_income || 0,
+        balance: budget.totalIncome || 0,
         period: `${monthName} ${year}`,
-        income: budget.total_income || 0,
+        income: budget.totalIncome || 0,
         expenseLimit: totalLimit,
-        freeMoney: Math.max((budget.total_income || 0) - totalLimit, 0)
+        freeMoney: Math.max((budget.totalIncome || 0) - totalLimit, 0)
       };
     } catch (error) {
       console.error('Ошибка получения сводки бюджета:', error);
@@ -68,7 +70,7 @@ class BudgetService {
   async getCategoryStats(year, month) {
     try {
       const budget = await this.getBudget(year, month);
-      
+
       if (!budget || !budget.limits || budget.limits.length === 0) {
         return [];
       }
@@ -76,20 +78,20 @@ class BudgetService {
       const spendingData = await this.getCategorySpending(year, month);
 
       return budget.limits.map(limit => {
-        const limitValue = limit.limit_type === 'PERCENT' 
-          ? (budget.total_income * limit.limit_value) / 100
-          : limit.limit_value;
+        const limitValue = limit.limitType === 'PERCENT'
+          ? (budget.totalIncome * limit.limitValue) / 100
+          : limit.limitValue;
 
-        const categorySpending = spendingData.find(s => s.categoryId === limit.category_id);
+        const categorySpending = spendingData.find(s => s.categoryId === limit.categoryId);
         const spent = categorySpending?.spent || 0;
         const available = Math.max(limitValue - spent, 0);
         const progress = limitValue > 0 ? Math.min((spent / limitValue) * 100, 100) : 0;
 
         return {
-          id: limit.category_id,
+          id: limit.categoryId,
           limit: limitValue,
-          spent: spent,
-          available: available,
+          spent,
+          available,
           progress: Math.round(progress)
         };
       });
@@ -102,28 +104,33 @@ class BudgetService {
   async getCategorySpending(year, month) {
     try {
       const response = await budgetApiService.request(`/budgets/${year}/${month}/dashboard`);
-      return response.categorySpending || [];
+      const rawList = response?.categorySpending || [];
+
+      return rawList.map(item => ({
+        categoryId: item.categoryId ?? item.id,
+        categoryName: item.categoryName ?? item.name ?? 'Без названия',
+        spent: item.spent || 0,
+        color: item.color,
+      }));
     } catch (error) {
       console.error('Ошибка получения трат по категориям:', error);
       return [];
     }
   }
 
+  // БАГ #7 ИСПРАВЛЕН: убраны несуществующие ключи localStorage
   getDefaultBudgetSummary(year, month) {
-    const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
+    const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
                        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     const monthName = monthNames[month - 1] || 'Текущий месяц';
-      
-    const savedBalance = parseFloat(localStorage.getItem('budgetLimit') || 0);
-    const savedExpenseLimit = parseFloat(localStorage.getItem('budgetExpenseLimit') || 0);
 
     return {
-      title: localStorage.getItem('budgetName') || 'Мой бюджет',
-      balance: savedBalance,
+      title: 'Мой бюджет',
+      balance: 0,
       period: `${monthName} ${year}`,
-      income: savedBalance,
-      expenseLimit: savedExpenseLimit,
-      freeMoney: Math.max(savedBalance - savedExpenseLimit, 0)
+      income: 0,
+      expenseLimit: 0,
+      freeMoney: 0
     };
   }
 
@@ -140,14 +147,7 @@ class BudgetService {
       limitType: 'PERCENT'
     }));
 
-    const budgetData = {
-      year,
-      month,
-      totalIncome,
-      limits
-    };
-
-    return await this.createOrUpdateBudget(budgetData);
+    return await this.createOrUpdateBudget({ year, month, totalIncome, limits });
   }
 
   async addCategoryToBudget(data) {
@@ -160,25 +160,7 @@ class BudgetService {
   async getCurrentBudget() {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
-    
-    try {
-      return await this.getBudget(currentYear, currentMonth);
-    } catch (error) {
-      console.error('Ошибка получения текущего бюджета:', error);
-      
-      const savedYear = localStorage.getItem('budgetYear');
-      const savedMonth = localStorage.getItem('budgetMonth');
-      
-      if (savedYear && savedMonth) {
-        try {
-          return await this.getBudget(parseInt(savedYear), parseInt(savedMonth));
-        } catch (secondError) {
-          console.error('Ошибка получения сохраненного бюджета:', secondError);
-        }
-      }
-      
-      throw error;
-    }
+    return await this.getBudget(currentYear, currentMonth);
   }
 }
 

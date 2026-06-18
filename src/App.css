@@ -11,6 +11,7 @@
   --color-background: rgba(248, 248, 248, 255);
   --color-accent: rgba(189, 240, 80, 1);
   --color-blue-light: rgba(66, 139, 249, 1);
+  --category-blue: rgba(66, 139, 249, 1);
   
   --shadow-card: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
   --shadow-element: 0px 6px 34px 0px rgba(0, 0, 0, 0.12);

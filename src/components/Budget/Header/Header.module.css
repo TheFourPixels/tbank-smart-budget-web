@@ -61,14 +61,12 @@
 
 .navLink:hover {
   color: var(--color-black);
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .userProfile {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(255, 255, 255, 0.3);
   padding: 8px 12px;
   border-radius: 20px;
   margin-left: auto;
@@ -84,6 +82,18 @@
 .userName {
   font-size: 15px;
   font-weight: 700;
+  color: var(--color-black);
+}
+
+.logoutLink {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.logoutLink:hover {
   color: var(--color-black);
 }
 
@@ -128,4 +138,56 @@
   .userProfile {
     padding: 6px 10px;
   }
+}
+.navLinkActive {
+  color: var(--color-black);
+  font-weight: 600;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.userMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+  padding: 8px;
+  min-width: 120px;
+  z-index: 100;
+}
+
+.userProfile {
+  position: relative;
+  cursor: pointer;
+}
+
+.userMenuBtn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 14px;
+  color: #e54545;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.userMenuBtn:hover {
+  background-color: #fee9e9;
 }

@@ -16,14 +16,6 @@ img {
   max-width: 100%;
 }
 
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 40px;
-  margin-left: 100px !important;
-}
-
 @media (max-width: 768px) {
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -505,4 +497,22 @@ img {
   .card__stat-value {
     min-width: 80px;
   }
+}
+.message--success {
+  background-color: #e8f5e9;
+}
+
+.categories-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: #969ca4;
+  font-size: 15px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
 }

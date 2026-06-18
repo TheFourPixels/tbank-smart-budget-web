@@ -90,7 +90,7 @@ const BudgetCategories = () => {
   };
 
   const handleEditCategory = (categoryId) => {
-    navigate(`/budget/categories/${categoryId}`);
+    navigate('/categories/create');
   };
 
   const handleClick = () => { 

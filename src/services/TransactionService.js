@@ -76,6 +76,30 @@ export const transactionService = {
     }
   },
 
+  async updateTransactionCategory(transactionId, categoryId) {
+    try {
+      return await transactionApiService.request(`/transactions/${transactionId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ categoryId }),
+      });
+    } catch (error) {
+      console.error('Ошибка обновления категории транзакции:', error);
+      throw error;
+    }
+  },
+
+  async getStats(params = {}) {
+    try {
+      const queryParams = new URLSearchParams(params).toString();
+      const url = queryParams ? `/transactions/stats?${queryParams}` : '/transactions/stats';
+      const response = await transactionApiService.request(url);
+      return response || this.getMockStats();
+    } catch (error) {
+      console.warn('Статистика не загружена с API, используем моки:', error.message);
+      return this.getMockStats();
+    }
+  },
+
   getMockTransactions() {
     return {
       content: [
@@ -102,5 +126,13 @@ export const transactionService = {
 
   getMockCategories() {
     return MOCK_CATEGORIES;
+  },
+
+  getMockStats() {
+    return {
+      income: 85000,
+      expense: 1250,
+      balance: 83750,
+    };
   },
 };

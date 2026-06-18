@@ -13,10 +13,149 @@
   padding: 50px;
   font-size: 18px;
 }
+/* Добавьте в DashboardPage.css */
+
+/* Общие стили для тултипов */
+.custom-tooltip {
+  pointer-events: none; /* Чтобы мышь не мешала */
+  transition: all 0.2s ease;
+}
+
+/* Стили для BarChart */
+.bar-container {
+  position: relative;
+}
+
+.bar-label {
+  font-size: 11px;
+  color: #666;
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* Анимация появления графиков */
+.bar, .area-chart-visualization path {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+  to { opacity: 1; transform: scaleY(1); }
+}
+
+/* Для AreaChart анимация чуть другая, через stroke-dasharray в JS или CSS */
+.area-chart-visualization path {
+  animation: drawLine 1.5s ease-out forwards;
+}
+
+@keyframes drawLine {
+  from { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+  to { stroke-dasharray: 1000; stroke-dashoffset: 0; }
+}
+
+/* Улучшение легенды DonutChart */
+.legend-items {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Скроллбар для легенды (опционально) */
+.legend-items::-webkit-scrollbar {
+  width: 4px;
+}
+.legend-items::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
 
 .dashboard-error {
   color: #d32f2f;
 }
+
+/* Красивый Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  min-height: 280px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.empty-state-icon {
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+}
+
+.empty-state-desc {
+  font-size: 13px;
+  color: #718096;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.empty-state-hint {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.hint-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cbd5e0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.hint-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.hint-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2);
+  }
+}
+
+/* Анимация появления (для общих блоков, не для графиков) */
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
 
 .container {
   max-width: 1066px;
@@ -686,26 +825,13 @@ p.section-desc {
 
 .donut-visualization {
   width: 100%;
-  max-width: 200px;   /* задайте желаемый размер */
+  max-width: 200px;
   margin: 0 auto;
 }
 .donut-chart {
   width: 100%;
   height: auto;
   display: block;
-}
-
-.chart-plot-area {
-  position: relative;
-  height: 200px; /* фиксированная высота графика */
-}
-.plot-relative {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.bar-group {
-  height: 100%;
 }
 
 .no-goals {

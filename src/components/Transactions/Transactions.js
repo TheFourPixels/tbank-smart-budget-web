@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Transactions.css';
 import Header from '../Budget/Header/Header';
 import Transaction from './Transaction';
 import { FaSearch } from 'react-icons/fa';
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { transactionService } from '../../services/TransactionService';
-import { transactionApiService } from '../../services/ApiService';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -14,10 +13,12 @@ const Transactions = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarView, setCalendarView] = useState('month'); // 'month' или 'year'
 
   // Поля формы
   const [amount, setAmount] = useState('');
-  const [transactionType, setTransactionType] = useState('EXPENSE'); // EXPENSE или INCOME
+  const [transactionType, setTransactionType] = useState('EXPENSE');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   
@@ -26,17 +27,32 @@ const Transactions = () => {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [categorySearch, setCategorySearch] = useState('');
 
+  const calendarRef = useRef(null);
+
   useEffect(() => {
     loadTransactions();
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
     loadCategories();
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      transactionApiService.setAuthToken(token);
-    }
   }, []);
+
+  // Закрытие календаря при клике вне
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setShowCalendar(false);
+        setCalendarView('month');
+      }
+    };
+
+    if (showCalendar) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCalendar]);
 
   const loadCategories = async () => {
     setCategoriesLoading(true);
@@ -63,7 +79,7 @@ const Transactions = () => {
       setError(null);
       
       const startDateMillis = new Date(selectedYear, selectedMonth - 1, 1).getTime();
-      const endDateMillis = new Date(selectedYear, selectedMonth, 0).getTime();
+      const endDateMillis = new Date(selectedYear, selectedMonth, 0, 23, 59, 59, 999).getTime();
       
       const response = await transactionService.getTransactions({
         page: 0,
@@ -77,7 +93,7 @@ const Transactions = () => {
       const formattedTransactions = dataContent.map(tx => ({
         id: tx.id || Math.random(),
         title: tx.description || tx.merchantName || 'Без названия',
-        subtitle: tx.category?.name || 'Без категории',
+        subtitle: tx.category?.name || '',
         amount: Math.abs(tx.amount || 0).toString(),
         type: tx.type === 'EXPENSE' ? 'negative' : 'positive',
         icon: tx.category?.id ? `icon_${tx.category.id}` : 'default_icon',
@@ -106,17 +122,46 @@ const Transactions = () => {
     }
   };
 
+  const handleTransactionTypeChange = (type) => {
+    setTransactionType(type);
+    
+    if (type === 'INCOME') {
+      const incomeCategory = categories.find(cat => 
+        cat.name.toLowerCase() === 'доход' || 
+        cat.name.toLowerCase() === 'income'
+      );
+      
+      if (incomeCategory) {
+        setCategory(incomeCategory.id);
+        setCategorySearch(incomeCategory.name);
+      } else {
+        setCategory('INCOME_CATEGORY');
+        setCategorySearch('Доход');
+      }
+      setShowCategoryDropdown(false);
+    } else {
+      setCategory('');
+      setCategorySearch('');
+    }
+  };
+
   const handleAddTransaction = async () => {
-    if (!amount || !category) {
-      alert('Пожалуйста, заполните сумму и выберите категорию');
+    if (!amount) {
+      alert('Пожалуйста, заполните сумму');
+      return;
+    }
+
+    if (transactionType === 'EXPENSE' && !category) {
+      alert('Пожалуйста, выберите категорию');
       return;
     }
 
     try {
-      const categoryId = isNaN(parseInt(category)) ? null : parseInt(category);
-      const selectedCategoryObj = categories.find(cat => cat.id == category);
+      const categoryId = transactionType === 'INCOME' 
+        ? categories.find(cat => cat.name.toLowerCase() === 'доход')?.id || null
+        : (isNaN(parseInt(category)) ? null : parseInt(category));
       
-      // Определяем знак суммы на основе типа операции
+      const selectedCategoryObj = categories.find(cat => cat.id == category);
       const amountValue = parseFloat(amount);
       const finalAmount = transactionType === 'EXPENSE' ? -Math.abs(amountValue) : Math.abs(amountValue);
       
@@ -135,6 +180,7 @@ const Transactions = () => {
       setDescription('');
       setCategorySearch('');
       setShowCategoryDropdown(false);
+      setTransactionType('EXPENSE');
       
       loadTransactions();
     } catch (err) {
@@ -193,12 +239,93 @@ const Transactions = () => {
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
   ];
 
+  const shortMonthNames = [
+    'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+    'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'
+  ];
+
+  const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+  // Генерация дней для календаря
+  const getCalendarDays = () => {
+    const firstDay = new Date(selectedYear, selectedMonth - 1, 1);
+    const lastDay = new Date(selectedYear, selectedMonth, 0);
+    const startDayOfWeek = (firstDay.getDay() + 6) % 7; // Понедельник = 0
+    const daysInMonth = lastDay.getDate();
+    
+    const days = [];
+    
+    // Пустые ячейки до первого дня
+    for (let i = 0; i < startDayOfWeek; i++) {
+      days.push(null);
+    }
+    
+    // Дни месяца
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(day);
+    }
+    
+    return days;
+  };
+
+  const handlePrevMonth = () => {
+    if (selectedMonth === 1) {
+      setSelectedMonth(12);
+      setSelectedYear(selectedYear - 1);
+    } else {
+      setSelectedMonth(selectedMonth - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (selectedMonth === 12) {
+      setSelectedMonth(1);
+      setSelectedYear(selectedYear + 1);
+    } else {
+      setSelectedMonth(selectedMonth + 1);
+    }
+  };
+
+  const handleDayClick = (day) => {
+    if (day) {
+      setSelectedMonth(selectedMonth);
+      setSelectedYear(selectedYear);
+      setShowCalendar(false);
+      setCalendarView('month');
+    }
+  };
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    setCalendarView('month');
+  };
+
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month + 1);
+    setCalendarView('month');
+  };
+
+  const handleCurrentMonth = () => {
+    const now = new Date();
+    setSelectedMonth(now.getMonth() + 1);
+    setSelectedYear(now.getFullYear());
+    setShowCalendar(false);
+    setCalendarView('month');
+  };
+
+  const isToday = (day) => {
+    const today = new Date();
+    return day === today.getDate() && 
+           selectedMonth === today.getMonth() + 1 && 
+           selectedYear === today.getFullYear();
+  };
+
   const totalIncome = transactions
-    .filter(t => t.rawAmount > 0)
-    .reduce((sum, t) => sum + t.rawAmount, 0);
+    .filter(t => t.type === 'positive')
+    .reduce((sum, t) => sum + Math.abs(t.rawAmount), 0);
 
   const totalExpense = transactions
-    .filter(t => t.rawAmount < 0)
+    .filter(t => t.type === 'negative')
     .reduce((sum, t) => sum + Math.abs(t.rawAmount), 0);
 
   if (loading && transactions.length === 0) {
@@ -217,6 +344,9 @@ const Transactions = () => {
     );
   }
 
+  const isIncome = transactionType === 'INCOME';
+  const calendarDays = getCalendarDays();
+
   return (
     <>
       <Header />
@@ -230,11 +360,124 @@ const Transactions = () => {
               <input type="text" placeholder="Поиск" className="search__input" />
             </div>
 
-            <div className="operations__filter filter">
-              <button className="filter__button">
+            {/* Календарь и фильтр даты */}
+            <div className="operations__filter filter" ref={calendarRef}>
+              <button 
+                className={`filter__button ${showCalendar ? 'active' : ''}`}
+                onClick={() => setShowCalendar(!showCalendar)}
+              >
                 <span className="filter__text">{monthNames[selectedMonth - 1]} {selectedYear}</span>
-                <FaChevronDown />
+                <FaChevronDown className={`filter__chevron ${showCalendar ? 'rotated' : ''}`} />
               </button>
+
+              {showCalendar && (
+                <div className="calendar-dropdown">
+                  {calendarView === 'month' ? (
+                    <>
+                      {/* Шапка календаря */}
+                      <div className="calendar__header">
+                        <button 
+                          className="calendar__nav-btn"
+                          onClick={handlePrevMonth}
+                        >
+                          <FaChevronLeft />
+                        </button>
+                        <button 
+                          className="calendar__title"
+                          onClick={() => setCalendarView('year')}
+                        >
+                          {monthNames[selectedMonth - 1]} {selectedYear}
+                        </button>
+                        <button 
+                          className="calendar__nav-btn"
+                          onClick={handleNextMonth}
+                        >
+                          <FaChevronRight />
+                        </button>
+                      </div>
+
+                      {/* Дни недели */}
+                      <div className="calendar__weekdays">
+                        {dayNames.map(day => (
+                          <div key={day} className="calendar__weekday">{day}</div>
+                        ))}
+                      </div>
+
+                      {/* Дни месяца */}
+                      <div className="calendar__days">
+                        {calendarDays.map((day, index) => (
+                          <div 
+                            key={index} 
+                            className={`calendar__day ${day ? '' : 'empty'} ${day && isToday(day) ? 'today' : ''}`}
+                            onClick={() => handleDayClick(day)}
+                          >
+                            {day}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Кнопка "Текущий месяц" */}
+                      <button 
+                        className="calendar__current-btn"
+                        onClick={handleCurrentMonth}
+                      >
+                        Текущий месяц
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {/* Вид выбора года */}
+                      <div className="calendar__header">
+                        <button 
+                          className="calendar__nav-btn"
+                          onClick={() => setSelectedYear(selectedYear - 12)}
+                        >
+                          <FaChevronLeft />
+                        </button>
+                        <span className="calendar__title">
+                          {selectedYear - 6} - {selectedYear + 5}
+                        </span>
+                        <button 
+                          className="calendar__nav-btn"
+                          onClick={() => setSelectedYear(selectedYear + 12)}
+                        >
+                          <FaChevronRight />
+                        </button>
+                      </div>
+
+                      <div className="calendar__years-grid">
+                        {[...Array(12)].map((_, i) => {
+                          const year = selectedYear - 6 + i;
+                          return (
+                            <button
+                              key={year}
+                              className={`calendar__year-btn ${year === selectedYear ? 'active' : ''}`}
+                              onClick={() => {
+                                setSelectedYear(year);
+                                setCalendarView('month');
+                              }}
+                            >
+                              {year}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="calendar__months-grid">
+                        {shortMonthNames.map((name, index) => (
+                          <button
+                            key={index}
+                            className={`calendar__month-btn ${index + 1 === selectedMonth ? 'active' : ''}`}
+                            onClick={() => handleMonthSelect(index)}
+                          >
+                            {name}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="operations__summary summary">
@@ -289,14 +532,14 @@ const Transactions = () => {
                   <button
                     type="button"
                     className={`type-btn type-btn--expense ${transactionType === 'EXPENSE' ? 'active' : ''}`}
-                    onClick={() => setTransactionType('EXPENSE')}
+                    onClick={() => handleTransactionTypeChange('EXPENSE')}
                   >
                     Расход
                   </button>
                   <button
                     type="button"
                     className={`type-btn type-btn--income ${transactionType === 'INCOME' ? 'active' : ''}`}
-                    onClick={() => setTransactionType('INCOME')}
+                    onClick={() => handleTransactionTypeChange('INCOME')}
                   >
                     Доход
                   </button>
@@ -316,18 +559,35 @@ const Transactions = () => {
                   <div className="add-card__input-wrapper category-selector">
                     <input
                       type="text"
-                      placeholder={categoriesLoading ? "Загрузка категорий..." : "Категория"}
-                      className="add-card__input"
+                      placeholder={
+                        isIncome 
+                          ? 'Доход' 
+                          : (categoriesLoading ? "Загрузка категорий..." : "Категория")
+                      }
+                      className={`add-card__input ${isIncome ? 'category-locked' : ''}`}
                       value={categorySearch}
                       onChange={(e) => {
-                        setCategorySearch(e.target.value);
-                        setShowCategoryDropdown(true);
+                        if (!isIncome) {
+                          setCategorySearch(e.target.value);
+                          setShowCategoryDropdown(true);
+                        }
                       }}
-                      onFocus={() => setShowCategoryDropdown(true)}
-                      onClick={() => setShowCategoryDropdown(true)}
-                      readOnly={false}
+                      onFocus={() => {
+                        if (!isIncome) {
+                          setShowCategoryDropdown(true);
+                        }
+                      }}
+                      onClick={() => {
+                        if (!isIncome) {
+                          setShowCategoryDropdown(true);
+                        }
+                      }}
+                      readOnly={isIncome}
+                      disabled={isIncome}
                     />
-                    {showCategoryDropdown && (
+                   
+                    
+                    {!isIncome && showCategoryDropdown && (
                       <div className="category-dropdown">
                         {categoriesLoading ? (
                           <div className="category-item">Загрузка...</div>
